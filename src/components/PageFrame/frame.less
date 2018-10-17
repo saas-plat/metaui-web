@@ -1,0 +1,39 @@
+@import '../../style';
+
+.framelayout {
+  height: 100%;
+  overflow: auto;
+
+  .header {
+    background: #fff;
+  }
+
+  .footer {
+    text-align: center;
+  }
+
+  .breadcrumb {
+    // 样式有具体应用决定
+    padding: 16px @page-margin;
+  }
+
+  .footer {
+    text-align: center;
+  }
+  @media (max-width: 768px) {
+    .breadcrumb {
+      // 样式有具体应用决定
+      padding: 16px 0;
+    }
+  }
+
+  .logo {
+    height: 31px;
+    line-height: 31px;
+    margin: 16px 28px 16px 0;
+    color: #333;
+    font-weight: bold;
+    font-size: 20px;
+    float: left;
+  }
+}

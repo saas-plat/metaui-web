@@ -1,0 +1,35 @@
+.toolbar {
+  display: 'block';
+  margin-bottom: 12px;
+  min-height: 32px;
+
+  .title {
+    display: inline-block;
+  }
+
+  .btn {
+    margin-right: 8px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .right {
+    float: right;
+  }
+}
+
+@media (max-width: 576px) {
+  .toolbar {
+    text-align: center;
+
+    .title {
+      display: block !important;
+    }
+
+    .right {
+      float: none !important;
+    }
+  }
+}

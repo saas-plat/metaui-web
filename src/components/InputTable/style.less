@@ -1,0 +1,33 @@
+.inputtable {
+  .ant-input-affix-wrapper .ant-input-prefix,
+  .ant-input-affix-wrapper .ant-input-suffix {
+    color: fade(#000,20%);
+
+    &:hover {
+      cursor: pointer;
+      color: #40a9ff;
+    }
+  }
+
+  .disabled {
+    &.ant-input-affix-wrapper .ant-input-prefix,
+    &.ant-input-affix-wrapper .ant-input-suffix {
+      cursor: default !important;
+      color: fade(#000,20%) !important;
+    }
+  }
+}
+
+.inputtable-modal {
+  .ant-modal-header {
+    border-bottom: none;
+  }
+
+  .ant-modal-body {
+    padding: 0;
+  }
+
+  .ant-modal-footer {
+    border-top: none;
+  }
+}

@@ -1,0 +1,23 @@
+.template {
+  flex: 1;
+
+  .ant-spin-spinning {
+    width: 100%;
+    text-align: center;
+  }
+
+  .alertbox {
+    @margn: -24px;
+    margin: @margn @margn 0;
+    flex: 1;
+  }
+
+  @import 'style.dark.less';
+  @import 'style.light.less';
+}
+
+.modal .template{
+  .alertbox{
+    margin: 0;
+  }
+}

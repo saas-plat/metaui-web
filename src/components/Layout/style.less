@@ -1,0 +1,15 @@
+.layout {
+  &.flow {
+    .item {
+      display: inline-block;
+      padding: 2px 5px; 
+    }
+    @media (max-width: 576px) {
+      .item {
+        width: 100% !important;
+      }
+    }
+  }
+
+  &.grid {}
+}
