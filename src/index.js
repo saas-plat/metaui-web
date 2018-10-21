@@ -1,3 +1,23 @@
+  openHome = () => {
+    const {
+      orgid
+    } = this.props.match.params;
+    stores.moduleStore.closeAll();
+    this.props.history.push('/' + orgid);
+  }
+
+  changeModule = ({
+    key
+  }) => {
+    this.props.history.push(`/${key}`);
+  }
+
+  changeModuleToCurrent = () => {
+    this.changeModule({
+      key: stores.moduleStore.curModule.uid
+    });
+  }
+
 renderModuleSelector() {
     if (stores.moduleStore.openedModules.length <= 0) {
       return null;
