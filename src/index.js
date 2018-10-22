@@ -45,3 +45,10 @@ renderModuleSelector() {
       </Dropdown>
     </Breadcrumb.Item>);
   }
+
+
+history.listen((location)=>{
+    if (location.pathname.split('/')[2] === 'manage') {
+    stores.moduleStore.changeModule(null);
+  }
+});
