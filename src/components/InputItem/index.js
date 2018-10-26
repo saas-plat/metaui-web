@@ -14,9 +14,6 @@ import {
   Select
 } from 'antd';
 import './style';
-import {
-  warn
-} from '../../log';
 import RcRefSelect from 'rc-ref-select';
 import Base from '../Base';
 import InputTable from '../InputTable';
@@ -408,7 +405,7 @@ export default class InputItem extends Base {
         element = this.renderInputTable(config);
         break;
       default:
-        warn('not support input type ' + config.type);
+        //warn('not support input type ' + config.type);
         element = <span className='notsupport'></span>;
       }
     }

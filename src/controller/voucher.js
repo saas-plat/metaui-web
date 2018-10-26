@@ -1,18 +1,13 @@
 import {
   message
 } from 'antd';
-import i18n from '../i18n';
-import history from '../history';
-import {
+import {i18n,log,history,stores} from 'saas-plat-clientfx';
+const {
   warn
-} from '../log';
+} = log;
 import {
   map
 } from './util';
-import {
-  ui,
-  voucherStore
-} from '../stores';
 
 export const openVoucher = async (ctx, {
   orgid = ctx.orgid,
@@ -31,7 +26,7 @@ export const openVoucherModal = async (ctx, {
   id,
   title
 }) => {
-  ui.modal.show({
+  stores.ui.modal.show({
     url: `/${orgid}/${sysid?sysid+'/':''}${mid}/${id}`,
     title
   });
@@ -49,7 +44,7 @@ export const createVoucher = async (ctx, {
 export const editVoucher = ({
   id
 }) => {
-  const store = voucherStore.items.get(id);
+  const store = stores.voucherStore.items.get(id);
   if (store) {
     store.changeState('EDIT');
   } else {
@@ -71,10 +66,10 @@ export const loadVoucher = async ({
     message.error(i18n.t('查询未定义，加载数据失败!'), 1);
     return;
   }
-  const store = voucherStore.items.get(id);
+  const store = stores.voucherStore.items.get(id);
   if (store) {
     if (showLoading) {
-      ui.load(true, loadingText || i18n.t('单据加载中...'));
+      stores.ui.loading.show(loadingText || i18n.t('单据加载中...'));
     }
     await store.load(query, variables, async (data) => {
       return await map(
@@ -83,7 +78,7 @@ export const loadVoucher = async ({
       )
     });
     if (showLoading) {
-      ui.load(false);
+      stores.ui.loading.hide();
     }
   } else {
     warn('voucher store not found');
@@ -107,11 +102,11 @@ export const saveVoucher = async ({
     message.error(i18n.t('单据定义异常，保存失败!'), 1);
     return;
   }
-  const store = voucherStore.items.get(id);
+  const store = stores.voucherStore.items.get(id);
   if (store) {
     if (await viewModel.validate()) {
       if (showLoading) {
-        ui.load(true, loadingText || i18n.t('保存单据中...'));
+        stores.ui.loading.show(loadingText || i18n.t('保存单据中...'));
       }
       await store.save({
         ...(await map(viewModel, mapping)),
@@ -122,7 +117,7 @@ export const saveVoucher = async ({
         hideError,
       });
       if (showLoading) {
-        ui.load(false);
+        stores.ui.loading.hide();
       }
     }
   } else {
@@ -133,7 +128,7 @@ export const saveVoucher = async ({
 export const showVoucherOptions = ({
   id
 }) => {
-  const store = voucherStore.items.get(id);
+  const store = stores.voucherStore.items.get(id);
   if (store) {
     store.showOptions(true);
   } else {
@@ -144,7 +139,7 @@ export const showVoucherOptions = ({
 export const hideVoucherOptions = ({
   id
 }) => {
-  const store = voucherStore.items.get(id);
+  const store = stores.voucherStore.items.get(id);
   if (store) {
     store.showOptions(false);
   } else {

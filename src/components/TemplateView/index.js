@@ -5,21 +5,17 @@ import {
 import {
   observer
 } from "mobx-react";
-import {
-  ui,
-  moduleStore
-} from '../../stores';
-import * as stores from '../../stores';
+import * as tmpStores from '../../stores';
 import templateEngine from '../../template';
-import log, {
+import {log,history,stores} from 'saas-plat-clientfx';
+const {
   warn
-} from '../../log';
+} = log;
 import PropTypes from 'prop-types';
 import './style.less';
 import {
   translate
 } from 'react-i18next';
-import history from '../../history';
 import ViewWarpper from './ViewWarpper';
 
 @translate('pages')
@@ -60,20 +56,20 @@ export default class TemplateView extends React.Component {
       notSupport: false,
       moduleNotFound: false,
     })
-    const module = moduleStore.modules.find(it => it.id === mid && it.orgid === orgid);
+    const module = stores.moduleStore.modules.find(it => it.id === mid && it.orgid === orgid);
     if (module) {
       if (!module.view) {
         this.setState({
           loading: true
         });
-        ui.load();
-        await moduleStore.loadConfig(module.orgid, module.id);
+        stores.ui.loading.show();
+        await stores.moduleStore.loadConfig(module.orgid, module.id);
         await this.createInstance(module, {
           orgid,
           mid,
           code
         });
-        ui.load(false);
+        stores.ui.loading.hide()
       } else {
         await this.createInstance(module, {
           orgid,
@@ -112,7 +108,7 @@ export default class TemplateView extends React.Component {
       });
       if (!inst) {
         // 还没有加载，需要从后端查询id
-        ui.load();
+        stores.ui.loading.show();
         this.setState({
           loading: true
         });
@@ -128,7 +124,7 @@ export default class TemplateView extends React.Component {
           // 要是单据编号不存在，清空
           // code = '';
           warn('template instance not found by code ' + code);
-          ui.load(false);
+          stores.ui.loading.hide()
           this.setState({
             loading: false
           });
@@ -150,7 +146,7 @@ export default class TemplateView extends React.Component {
         loading: true
       });
       if (!loading) {
-        ui.load();
+        stores.ui.loading.show();
       }
       inst = await templateEngine.create(module, id, {
         orgid,
@@ -169,7 +165,7 @@ export default class TemplateView extends React.Component {
           notSupport: true
         });
       }
-      ui.load(false);
+      stores.ui.loading.hide()
     } else {
       this.setState({
         loading: false
@@ -180,7 +176,7 @@ export default class TemplateView extends React.Component {
   getStoreProvider({
     type = ''
   }) {
-    const provider = stores[type + 'Store'];
+    const provider = tmpStores[type + 'Store'];
     if (!provider) {
       warn('not found store provider for ' + type);
     }
@@ -266,7 +262,7 @@ export default class TemplateView extends React.Component {
     } = this.props.params;
     let content = null;
     if (!this.state.moduleNotFound) {
-      const module = moduleStore.modules.find(it => it.id === mid && it.orgid === orgid);
+      const module = stores.moduleStore.modules.find(it => it.id === mid && it.orgid === orgid);
       if (module) {
         if (module.error) {
           content = this.renderError(module);

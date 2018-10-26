@@ -6,8 +6,7 @@ import {
 import {
   message
 } from 'antd';
-import socket from '../socket';
-import i18n from '../i18n';
+import {socket,i18n} from 'saas-plat-clientfx';
 
 class Option {
   store;

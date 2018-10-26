@@ -1,4 +1,10 @@
-import log from '../log';
+import {
+  message
+} from 'antd';
+import {i18n,log,socket,stores} from 'saas-plat-clientfx';
+const {
+  warn
+} = log;
 import {
   map
 } from './util';
@@ -51,4 +57,66 @@ export const setField = async ({
       [name]: value
     });
   }
+}
+
+
+
+export const loadData = async ({
+  viewModel,
+}, {
+  query,
+  data,
+  variables,
+  mapping,
+  showLoading = true,
+  loadingText
+}) => {
+  if (showLoading) {
+    stores.ui.loading.show(loadingText || i18n.t('数据加载中...'));
+  }
+  try {
+    const ret = data || await socket.query(query, variables);
+    const mdata = await map(ret, mapping);
+    viewModel.setValue(mdata);
+  } catch (e) {
+    warn(e.message);
+    message.error(i18n.t('加载数据失败!'));
+  } finally {
+    if (showLoading) {
+      stores.ui.loading.hide();
+    }
+  }
+}
+
+export const appendData = async ({
+  viewModel,
+},{
+  query,
+  variables,
+  data,
+  mapping,
+  showLoading = true,
+  loadingText
+}) => {
+  if (showLoading) {
+    stores.ui.loading.show(loadingText || i18n.t('数据加载中...'));
+  }
+  try {
+    const ret = data || await socket.query(query, variables);
+    const mdata = await map(ret, mapping);
+    viewModel.mergeValue(mdata);
+  } catch (e) {
+    warn(e.message);
+    message.error(i18n.t('加载数据失败!'));
+  } finally {
+    if (showLoading) {
+      stores.ui.loading.hide();
+    }
+  }
+}
+
+export const mergeData = appendData;
+
+export const removeData = async () => {
+
 }

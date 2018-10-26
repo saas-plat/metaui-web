@@ -6,9 +6,7 @@ import {
 import {
   message
 } from 'antd';
-import socket from '../socket';
-import i18n from '../i18n';
-import history from '../history';
+import {socket,i18n,history} from 'saas-plat-clientfx';
 
 class Voucher {
   store;

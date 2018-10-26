@@ -1,21 +1,19 @@
 import {
   message
 } from 'antd';
-import i18n from '../i18n';
-import {
+import {i18n,log,stores} from 'saas-plat-clientfx';
+const {
   warn
-} from '../log';
+} = log;
 import {
   map
 } from './util';
-import {
-  optionStore
-} from '../stores';
+
 
 export const editOption = async ({
   id
 }) => {
-  const store = optionStore.items.get(id);
+  const store = stores.optionStore.items.get(id);
   if (store) {
     store.changeState('EDIT');
   } else {
@@ -36,7 +34,7 @@ export const loadOption = async ({
     message.error(i18n.t('选项定义异常，加载数据失败!'), 1);
     return;
   }
-  const store = optionStore.items.get(id);
+  const store = stores.optionStore.items.get(id);
   if (store) {
     await store.load(query, variables, async (data) => {
       return await map(
@@ -68,7 +66,7 @@ export const saveOption = async ({
     message.error(i18n.t('选项定义异常，保存失败!'), 1);
     return;
   }
-  const store = optionStore.items.get(id);
+  const store = stores.optionStore.items.get(id);
   if (store) {
     if (await viewModel.validate()) {
       await store.save({

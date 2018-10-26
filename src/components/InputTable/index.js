@@ -4,7 +4,9 @@ import {
 } from "mobx-react";
 import PropTypes from 'prop-types';
 import Base from '../Base';
-import i18n from '../../i18n';
+import {
+  translate
+} from 'react-i18next';
 import {
   Modal,
   Input,
@@ -14,6 +16,7 @@ import {
 import EditableTable from '../EditableTable';
 import './style';
 
+@translate('pages')
 // 可录入子表，用于相关表单的快速录入，比如进货时录入预付款信息
 @observer
 export default class InputTable extends Base {
@@ -104,7 +107,7 @@ export default class InputTable extends Base {
           onCancel={this.handleCancel}
           footer={[
             <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
-              {i18n.t('关闭')}
+              {this.props.t('关闭')}
             </Button>
           ]}>
           <EditableTable config={table} onChange={this.handleChange} />

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {
   Menu,
   Icon,
-  Breadcrumb,
   Dropdown,
 } from 'antd';
 import {history,stores} from 'saas-plat-clientfx';
@@ -38,9 +37,9 @@ export default class ModuleBreadcrumb extends React.Component {
       return null;
     }
     if (stores.moduleStore.openedModules.length === 1) {
-      return (<Breadcrumb.Item><a href="#" onClick={this.changeModuleToCurrent}>
+      return (<a href="#" onClick={this.changeModuleToCurrent}>
         {stores.moduleStore.curModule.name}
-      </a></Breadcrumb.Item>);
+      </a>);
     }
     const menu = (<Menu onClick={this.changeModule} theme={stores.user.theme}>
       {

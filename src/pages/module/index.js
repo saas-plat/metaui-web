@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  moduleStore
-} from '../../stores';
+import {stores} from 'saas-plat-clientfx';
 import TemplateView from '../../components/TemplateView';
 
 export default class Module extends React.Component {
@@ -17,7 +15,7 @@ export default class Module extends React.Component {
       match,staticContext
     } = this.props;
     if (match.params.mid && match.params.orgid && !(staticContext && staticContext.modalState)) {
-      moduleStore.openModule(match.params.orgid, match.params.mid);
+      stores.moduleStore.openModule(match.params.orgid, match.params.mid);
     }
   }
 
@@ -26,7 +24,7 @@ export default class Module extends React.Component {
       match,staticContext
     } = nextProps;
     if (match.params.mid && match.params.orgid && !(staticContext && staticContext.modalState)) {
-      moduleStore.openModule(match.params.orgid, match.params.mid);
+      stores.moduleStore.openModule(match.params.orgid, match.params.mid);
     }
   }
 

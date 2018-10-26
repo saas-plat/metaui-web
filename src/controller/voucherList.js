@@ -1,16 +1,14 @@
 import {
   message
 } from 'antd';
-import i18n from '../i18n';
-import {
+import {i18n,log,stores} from 'saas-plat-clientfx';
+const {
   warn
-} from '../log';
+} = log;
 import {
   map
 } from './util';
-import {
-  listStore
-} from '../stores';
+
 
 export const loadVoucherList = async (ctx, {
   query,
@@ -23,7 +21,7 @@ export const loadVoucherList = async (ctx, {
     return;
   }
 
-  await listStore.load(query, variables, async (data) => {
+  await stores.listStore.load(query, variables, async (data) => {
     return await map(
       data,
       mapping
