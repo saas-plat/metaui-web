@@ -1,74 +1,38 @@
 {
-  "name": "saas-plat-clientfx",
-  "version": "1.1.0",
-  "description": "clientfx",
+  "name": "saas-plat-template",
+  "version": "1.0.0",
+  "description": "client template module",
   "productName": "saas-plat",
-  "main": "main.js",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "webpack-dev-server --hot --progress --open --useLocalIp",
-    "nomock": "set NO_MOCK=true&& webpack-dev-server --hot --progress --open --useLocalIp",
-    "dev": "webpack --config webpack.config.js --progress --colors",
-    "prod": "rm -rf dist && webpack --config webpack.production.config.js --progress --colors",
-    "antlr": "antlr4 -Dlanguage=JavaScript ./src/Expression/dsl/Expr.g4 -o ./src/Expression/dsl",
-    "test": "jest"
+    "start": "node node_modules/saas-plat-clientTools/bin/start",
+    "build": "rm -rf dist && node node_modules/saas-plat-clientTools/bin/build",
+    "pub": "npm run build && npm publish --registry https://npm.saas-plat.com",
+    "test": "set DEBUG=saas-plat-clientfx:*,-not_this && mocha"
   },
   "repository": {
     "type": "git",
-    "url": "git@saas-plat.com:saas-plat-clientfx"
+    "url": "git@saas-plat.com:saas-plat-template"
   },
   "keywords": [
-    "clientfx"
+    "template voucher report"
   ],
   "author": "saas-plat",
   "license": "ISC",
-  "jest": {
-    "roots": [
-      "<rootDir>/test"
-    ],
-    "moduleFileExtensions": [
-      "js"
-    ],
-    "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test/__mocks__/fileMock.js",
-      ".*\\.(css|less|scss)$": "<rootDir>/test/__mocks__/styleMock.js"
-    },
-    "transform": {
-      "^.+\\.js$": "babel-jest"
-    }
-  },
   "dependencies": {
-    "@ivoviz/feedback.js": "^1.0.0-alpha.1",
-    "antd": "^3.0.2",
-    "antlr4": "^4.6.0",
-    "axios": "^0.17.1",
-    "css-element-queries": "^1.0.2",
-    "dragact": "^0.2.12",
-    "echarts": "^4.1.0",
-    "echarts-for-react": "^2.0.14",
-    "i18next": "^10.2.1",
-    "i18next-browser-languagedetector": "^2.1.0",
-    "i18next-xhr-backend": "^1.5.0",
+    "antd": "^3.10.2",
     "mobx": "^3.3.3",
     "mobx-react": "^4.3.5",
-    "nools": "^0.4.4",
     "prop-types": "^15.6.0",
-    "qrcode-react": "^0.1.16",
-    "rc-ref-select": "^1.0.0",
     "react": "^16.2.0",
-    "react-custom-scrollbars": "^4.2.1",
-    "react-dom": "^16.2.0",
-    "react-i18next": "^7.3.0",
-    "react-infinite-scroller": "^1.2.0",
-    "react-router-dom": "^4.2.2",
-    "react-virtualized": "^9.20.0",
-    "socket.io-client": "^2.0.4",
-    "ve": "^0.1.3"
+    "saas-plat-clientfx": "^1.3.18",
+    "saas-plat-login": "^1.0.3"
   },
   "devDependencies": {
     "autoprefixer": "^7.2.3",
+    "autoprefixer-loader": "^3.2.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.3",
-    "babel-jest": "^23.4.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-import": "^1.6.3",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
@@ -78,25 +42,8 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-1": "^6.24.1",
     "bundle-loader": "^0.5.5",
-    "copy-webpack-plugin": "^4.3.0",
-    "css-loader": "^0.28.7",
-    "enzyme": "^3.3.0",
     "eslint": "^4.13.1",
     "eslint-plugin-react": "^7.5.1",
-    "extract-text-webpack-plugin": "^3.0.2",
-    "file-loader": "^1.1.6",
-    "html-webpack-plugin": "^2.30.1",
-    "jest": "^23.4.0",
-    "json-loader": "^0.5.7",
-    "less": "^2.7.3",
-    "less-loader": "^4.0.5",
-    "postcss-loader": "^2.0.9",
-    "react-hot-loader": "^3.1.3",
-    "script-ext-html-webpack-plugin": "^2.0.1",
-    "socket.io": "^2.0.4",
-    "style-loader": "^0.19.1",
-    "url-loader": "^0.6.2",
-    "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.9.7"
+    "saas-plat-clientTools": "^1.0.13"
   }
 }
