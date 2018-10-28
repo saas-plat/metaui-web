@@ -8,10 +8,12 @@ import moment from 'moment';
 import {
   message
 } from 'antd';
-import log, {
+import {
+  log,Expression
+} from 'saas-plat-clientfx';
+const {
   warn
-} from '../log';
-import Expression from '../Expression';
+} = log;
 import schema from 'async-validator';
 
 export const metaSymbol = Symbol("meta");

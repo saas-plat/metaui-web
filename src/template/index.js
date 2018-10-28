@@ -3,21 +3,20 @@ import {
   observable,
   autorun
 } from 'mobx';
-import log, {
-  warn
-} from '../log';
+
 import {
   message
 } from 'antd';
 // 这里的actions是view可以配置的action
 import {
-  actions
-} from '../controller';
-import i18n from '../i18n';
+  controller,i18n,log,RuleSet
+} from 'saas-plat-clientfx';
+const {
+  warn
+} = log;
 
 import View from './View';
 import ViewModel from './Model';
-import RuleSet from '../RuleSet';
 
 class Event {
   @observable name;
@@ -96,7 +95,7 @@ class TemplateEngine {
       ViewModel: ViewModel,
       Event: Event
     }, {
-      ...bindContext(actions, ctx),
+      ...bindContext(controller.default, ctx),
       ...ctx
     });
     const inst = new Instance(this, id, config, view, viewModel, ruleset, options);

@@ -2,10 +2,13 @@ import {
   computed,
   observable
 } from "mobx";
-import Expression from '../../Expression';
 import {
+  log,
+  Expression
+} from 'saas-plat-clientfx';
+const {
   warn
-} from '../../log';
+} = log;
 import {
   assignId
 } from './util';
