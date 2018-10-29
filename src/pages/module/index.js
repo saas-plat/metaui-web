@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {stores} from 'saas-plat-clientfx';
+import {stores,observer} from 'saas-plat-clientfx';
 import TemplateView from '../../components/TemplateView';
+import Spin from '../../components/Spin';
 
+@observer
 export default class Module extends React.Component {
   static propTypes = {
     routes: PropTypes.array,
@@ -29,6 +31,9 @@ export default class Module extends React.Component {
   }
 
   render() {
+    if (stores.moduleStore.loadOrgs.indexOf(this.props.match.params.orgid) == -1){
+      return null;
+    }
     return (<TemplateView params={this.props.match.params} viewLoader={(type)=>require('./'+type[0].toUpperCase()+type.substr(1)+'.js')}></TemplateView>);
   }
 }

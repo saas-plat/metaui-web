@@ -2,7 +2,7 @@ import React from 'react';
 import Spin from '../Spin';
 import Base from '../Base';
 import './style.less';
-const theme = require('../../../theme');
+const style = require('!less-to-json-loader!./style.less');
 
 const loadEchart = (cb) => {
   require.ensure([], require => {
@@ -18,7 +18,7 @@ export default class Chart extends Base {
     } = this.props;
     //柱状图数据
     const barOption = {
-      color: [theme['primary-color']],  // todo 这里的颜色需要充default.less中取@brand-primary
+      color: [style['primary-color']],  // todo 这里的颜色需要充default.less中取@brand-primary
       tooltip: {
         trigger: 'axis',
         axisPointer: { // 坐标轴指示器，坐标轴触发有效

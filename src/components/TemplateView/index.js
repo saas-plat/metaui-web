@@ -2,20 +2,11 @@ import React from 'react';
 import {
   Alert
 } from 'antd';
-import {
-  observer
-} from "mobx-react";
-import * as tmpStores from '../../stores';
-import templateEngine from '../../template';
-import {log,history,stores} from 'saas-plat-clientfx';
-const {
-  warn
-} = log;
+import * as allStores from '../../stores';
+const {templateEngine, ...tmpStores} = allStores;
+import {log,warn,history,stores,translate,observer} from 'saas-plat-clientfx';
 import PropTypes from 'prop-types';
 import './style.less';
-import {
-  translate
-} from 'react-i18next';
 import ViewWarpper from './ViewWarpper';
 
 @translate('pages')

@@ -1,3 +1,5 @@
+@page-padding: 24px;
+
 .template {
   flex: 1;
 
@@ -7,17 +9,22 @@
   }
 
   .alertbox {
-    @margn: -24px;
-    margin: @margn @margn 0;
     flex: 1;
   }
-
   @import 'style.dark.less';
   @import 'style.light.less';
 }
 
-.modal .template{
-  .alertbox{
+.modal .template {
+  .alertbox {
     margin: 0;
+  }
+}
+
+.portal {
+  .template {
+    .alertbox {
+      margin: @page-padding @page-padding 0;
+    }
   }
 }

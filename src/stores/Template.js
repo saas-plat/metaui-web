@@ -278,4 +278,4 @@ class TemplateEngine {
   }
 }
 
-export default new TemplateEngine();
+export default TemplateEngine;
