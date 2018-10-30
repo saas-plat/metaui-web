@@ -9,8 +9,9 @@ import {
   message
 } from 'antd';
 import {
-  log,Expression
+  log
 } from 'saas-plat-clientfx';
+import Expression from 'saas-plat-expression';
 const {
   warn
 } = log;

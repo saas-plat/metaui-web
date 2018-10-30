@@ -9,7 +9,7 @@ import {
 } from 'antd';
 // 这里的actions是view可以配置的action
 import {
-  controller,i18n,log,RuleSet
+  controller,i18n,log
 } from 'saas-plat-clientfx';
 const {
   warn
@@ -17,6 +17,7 @@ const {
 
 import View from './View';
 import ViewModel from './Model';
+import RuleSet from '../RuleSet';
 
 class Event {
   @observable name;

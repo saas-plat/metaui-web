@@ -1,4 +1,4 @@
-import {Expression} from 'saas-plat-clientfx';
+import Expression from 'saas-plat-expression';
 
 export const map = async (obj, mapping) => {
   if (!mapping) {
