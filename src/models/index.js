@@ -1,4 +1,3 @@
-
 import {
   computed,
   observable
@@ -33,7 +32,7 @@ import {
   Action
 } from './Action';
 
-export default class View {
+export class View {
   key;
   @observable name;
 

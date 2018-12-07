@@ -16,6 +16,6 @@
       "libraryName": "antd",
       "libraryDirectory": "es",
       "style": true
-    }], "transform-runtime", "transform-decorators-legacy", "react-hot-loader/babel"
+    }], "transform-runtime", "transform-decorators-legacy"
   ]
 }
