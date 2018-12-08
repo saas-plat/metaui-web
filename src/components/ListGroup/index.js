@@ -11,7 +11,7 @@ import {
 import {
   observer
 } from "mobx-react";
-import Base from '../Base';
+import BaseComponent from '../BaseComponent';
 import InputItem from '../InputItem';
 import './style.less';
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
@@ -20,7 +20,7 @@ const Panel = Collapse.Panel;
 const ObserverList = observer(List);
 
 @observer
-export default class ListGroup extends Base {
+export default class ListGroup extends BaseComponent {
 
   handleChangeTimer = (it,value)=>{
     this.changeValues = {...this.changeValues,[it.name]:value};

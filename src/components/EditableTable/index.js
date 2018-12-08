@@ -10,8 +10,8 @@ import {
 import InputItem from '../InputItem';
 import {
   Toolbar
-} from '../toolbar';
-import Base from '../Base';
+} from '../Toolbar';
+import BaseComponent from '../BaseComponent';
 import './style';
 
 @observer
@@ -69,7 +69,7 @@ class EditableCell extends React.Component {
 }
 
 @observer
-export default class EditableTable extends Base {
+export default class EditableTable extends BaseComponent {
 
   onCellChange = (index, key) => {
     return (value) => {
@@ -130,14 +130,13 @@ export default class EditableTable extends Base {
   }
   render() {
     const {
-      dataSource,
+      data,
       columns,
       bordered,
       showHeader,
       size,
       title
     } = this.props.config;
-    const data = (this.context.viewModel.getValue(dataSource) || []).slice();
     const columnItems = this.createColumns(columns).concat([{
       key: 'column_Operation',
       title: '',

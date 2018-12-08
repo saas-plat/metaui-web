@@ -1,7 +1,4 @@
 import {
-  warn
-} from 'saas-plat-clientfx';
-import {
   Input
 } from './Input';
 import {

@@ -7,14 +7,14 @@ import './style';
 import {
   createComponent
 } from '../util';
-import Base from '../Base';
+import BaseComponent from '../BaseComponent';
 
 const FormItem = Form.Item;
 
 @Form.create()
-export class TemplateForm extends Base {
+export default class TemplateForm extends BaseComponent {
   static propTypes = {
-    config: PropTypes.object,
+    config: PropTypes.object.isRequired,
     form: PropTypes.object,
     onSubmit: PropTypes.func,
   }
@@ -66,7 +66,7 @@ export class TemplateForm extends Base {
         },
       }
     };
-    return <FormItem {...formItemLayout} label={config.labelText} className='formItem'>
+    return <FormItem key={config.key} {...formItemLayout} label={config.labelText} className='formItem'>
             {getFieldDecorator(config.key,{rules: config.rules.map(it=>it.toJS())})(
               createComponent(config.formItem, {
               onChange:(value)=>this.handleChangeTimer(config.formItem, value)
@@ -77,7 +77,7 @@ export class TemplateForm extends Base {
   render() {
     return (
       <Form className="templateform" onSubmit={this.handleSave}>
-        {this.props.config.filter(it=>it.visible).map(it=>this.renderFormItem(it))}
+        {this.props.config.items.filter(it=>it.visible).map(it=>this.renderFormItem(it))}
       </Form>
     );
   }

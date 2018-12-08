@@ -1,6 +1,6 @@
 import React from 'react';
 import Spin from '../Spin';
-import Base from '../Base';
+import BaseComponent from '../BaseComponent';
 import './style.less';
 const style = require('!less-to-json-loader!./style.less');
 
@@ -10,7 +10,7 @@ const loadEchart = (cb) => {
   }, 'echart');
 }
 
-export default class Chart extends Base {
+export default class Chart extends BaseComponent {
 
   getOption() {
     const {

@@ -2,10 +2,11 @@ import React from 'react';
 import {observer} from "mobx-react";
 import PropTypes from 'prop-types';
 import {Checkbox,Row,Col} from 'antd';
+import BaseComponent from '../BaseComponent';
 import './style';
 
 @observer
-export class Total extends React.Component {
+export class Total extends BaseComponent {
   static propTypes = {
     config: PropTypes.object
   }

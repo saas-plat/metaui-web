@@ -7,7 +7,7 @@ import {
 } from 'antd';
 import PropTypes from 'prop-types';
 import './style';
-import Base from '../Base';
+import BaseComponent from '../BaseComponent';
 import {
   observer
 } from "mobx-react";
@@ -23,7 +23,7 @@ TextAndIcon.propTypes = {
 }
 
 @observer
-export class ButtonItem extends Base {
+export class ButtonItem extends BaseComponent {
   static propTypes = {
     config: PropTypes.object,
   };
@@ -46,7 +46,7 @@ export class ButtonItem extends Base {
 }
 
 @observer
-export class DropdownButton extends Base {
+export class DropdownButton extends BaseComponent {
   static propTypes = {
     config: PropTypes.object,
   };
@@ -96,13 +96,12 @@ export class DropdownButton extends Base {
   }
 }
 
-export const Toolbar = observer(({
-  config
-}) => {
-  return (
-    <div className='toolbar'>
-      {config.text?<h2 className='title'>{config.text}</h2>:null}
-      {(config.groups).map(g => ((g.items.length > 1 || (g.items.length === 1 && g.items[0].items.length <= 0))
+export default class Toolbar extends BaseComponent {
+  render() {
+    return (
+      <div className='toolbar'>
+      {this.props.config.text?<h2 className='title'>{this.props.config.text}</h2>:null}
+      {(this.props.config.groups).map(g => ((g.items.length > 1 || (g.items.length === 1 && g.items[0].items.length <= 0))
         ? <Button.Group
             key={g.key}
             className={['btn',g.pull]}>
@@ -111,10 +110,7 @@ export const Toolbar = observer(({
         : (g.items.length === 1)
           ? <DropdownButton key={g.items[0].key} config={g.items[0]}/>
           : null))}
-    </div>
-  );
-});
-
-Toolbar.propTypes = {
-  config: PropTypes.object,
+        </div>
+    );
+  }
 }

@@ -10,7 +10,7 @@ import {
 } from './Action';
 
 export class Tree {
-  view;
+  store;
   key;
 
   @observable onLoading;
@@ -22,14 +22,14 @@ export class Tree {
   }
 
   @computed get state() {
-    return this.view.state;
+    return this.store.state;
   }
 
-  constructor(view, name, onLoading, onLoad, onLoaded) {
-    //assert(view);
+  constructor(store, name, onLoading, onLoad, onLoaded) {
+    //assert(store);
 
     this.key = assignId();
-    this.view = view;
+    this.store = store;
     this.name = name || 'Tree' + this.key;
 
     this.onLoading = onLoading;
@@ -37,7 +37,7 @@ export class Tree {
     this.onLoaded = onLoaded;
   }
 
-  static create(view, object = []) {
+  static create(store, object = []) {
     let name, onLoading, onLoad, onLoaded;
 
     name = object.name;
@@ -45,13 +45,13 @@ export class Tree {
     onLoad = object.onLoad;
     onLoaded = object.onLoaded;
 
-    return new Tree(view, name,
-      Action.create(view, onLoading), Action.create(view, onLoad), Action.create(view, onLoaded));
+    return new Tree(store, name,
+      Action.create(store, onLoading), Action.create(store, onLoad), Action.create(store, onLoaded));
   }
 }
 
 export class Table {
-  view;
+  store;
   key;
 
   @observable onLoading;
@@ -63,14 +63,14 @@ export class Table {
   }
 
   @computed get state() {
-    return this.view.state;
+    return this.store.state;
   }
 
-  constructor(view, name, onLoading, onLoad, onLoaded) {
-    //assert(view);
+  constructor(store, name, onLoading, onLoad, onLoaded) {
+    //assert(store);
 
     this.key = assignId();
-    this.view = view;
+    this.store = store;
     this.name = name || 'Table' + this.key;
 
     this.onLoading = onLoading;
@@ -78,7 +78,7 @@ export class Table {
     this.onLoaded = onLoaded;
   }
 
-  static create(view, object = []) {
+  static create(store, object = []) {
     let name, onLoading, onLoad, onLoaded;
 
     name = object.name;
@@ -86,7 +86,7 @@ export class Table {
     onLoad = object.onLoad;
     onLoaded = object.onLoaded;
 
-    return new Table(view, name,
-      Action.create(view, onLoading), Action.create(view, onLoad), Action.create(view, onLoaded));
+    return new Table(store, name,
+      Action.create(store, onLoading), Action.create(store, onLoad), Action.create(store, onLoaded));
   }
 }

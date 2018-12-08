@@ -30,11 +30,16 @@
     "echarts": "^4.2.0-rc.2",
     "echarts-for-react": "^2.0.15-beta.0",
     "less-to-json-loader": "^1.1.0",
+    "lodash": "^4.17.11",
     "mobx": "^3.3.3",
     "mobx-react": "^4.3.5",
     "prop-types": "^15.6.0",
     "rc-ref-select": "^1.0.0",
-    "react": "^16.6.0"
+    "react": "^16.6.0",
+    "react-dom": "^16.6.3",
+    "react-i18next": "^8.3.8",
+    "saas-plat-expression": "^1.0.0",
+    "webpack": "^4.27.1"
   },
   "devDependencies": {
     "@storybook/react": "^4.0.12",
@@ -51,8 +56,10 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-1": "^6.24.1",
     "bundle-loader": "^0.5.5",
+    "css-loader": "^2.0.0",
     "eslint": "^4.13.1",
     "eslint-plugin-react": "^7.5.1",
-    "less-loader": "^4.1.0"
+    "less-loader": "^4.1.0",
+    "style-loader": "^0.23.1"
   }
 }

@@ -2,9 +2,9 @@ import React from 'react';
 import { Row, Col, Modal, Button } from 'antd';
 import SearchTree from './SearchTree';
 import DataTable from './DataTable';
-import Base from '../Base';
+import BaseComponent from '../BaseComponent';
 
-export default class TreeTable extends Base{
+export default class TreeTable extends BaseComponent{
   state = {
    loading: false,
    visible: false,

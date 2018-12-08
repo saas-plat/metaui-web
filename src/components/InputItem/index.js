@@ -15,8 +15,9 @@ import {
 } from 'antd';
 import './style';
 import RcRefSelect from 'rc-ref-select';
-import Base from '../Base';
+import BaseComponent from '../BaseComponent';
 import InputTable from '../InputTable';
+import moment from 'moment';
 
 const TextArea = Input.TextArea;
 const {
@@ -26,9 +27,9 @@ const {
 } = DatePicker;
 
 @observer
-export default class InputItem extends Base {
+export default class InputItem extends BaseComponent {
   static propTypes = {
-    config: PropTypes.object,
+    config: PropTypes.object.isRequired,
     autoFocus: PropTypes.bool,
     state: PropTypes.string,
     // for form item
@@ -36,7 +37,7 @@ export default class InputItem extends Base {
     value: PropTypes.any,
   }
 
-  handleChange = (value)=>{
+  handleChange = (value) => {
     this.props.onChange && this.props.onChange(value);
   }
 
@@ -55,7 +56,7 @@ export default class InputItem extends Base {
       className='input'
       placeholder={placeholder} defaultValue={defaultValue}
       disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
-      value={this.context.viewModel.getValue(value)}
+      value={value}
       onChange={(e)=>{this.context.onEvent(config, 'change', {value:e.target.value}),this.handleChange(e.target.value)}}
       onBlur={()=>this.context.onEvent(config, 'blur')}
       onFocus={()=>this.context.onEvent(config, 'focus')}/>);
@@ -88,7 +89,7 @@ export default class InputItem extends Base {
         autoFocus={this.props.autoFocus}
         size={size}
         className='input'
-        value={this.context.viewModel.getValue(value)}
+        value={value}
         defaultValue={defaultValue}
         disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
         min={min}
@@ -132,7 +133,7 @@ export default class InputItem extends Base {
       size={size}
       className='input'
       placeholder={placeholder} defaultValue={defaultValue} disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
-      value={this.context.viewModel.getValue(value)}
+      value={value}
       onChange={(value)=>{this.context.onEvent(config, 'change', {value}),this.handleChange(value)}}
       onBlur={()=>this.context.onEvent(config, 'blur')}
       onFocus={()=>this.context.onEvent(config, 'focus')}
@@ -181,7 +182,7 @@ export default class InputItem extends Base {
     className='input'
     allowClear={clear} showTime={showTime} disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
     placeholder={placeholder} defaultValue={defaultValue}
-    value={this.context.viewModel.getValue(value)}
+    value={moment(value)}
     format={format}
     onChange={(value)=>{this.context.onEvent(config, 'change', {value}),this.handleChange(value)}}
     onBlur={()=>this.context.onEvent(config, 'blur')}
@@ -205,7 +206,7 @@ export default class InputItem extends Base {
     className='input'
     allowEmpty={clear}  disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
     placeholder={placeholder} defaultValue={defaultValue}
-    value={this.context.viewModel.getValue(value)}
+    value={moment(value)}
     format={format}
     onChange={(value)=>{this.context.onEvent(config, 'change', {value}),this.handleChange(value)}}
     onBlur={()=>this.context.onEvent(config, 'blur')}
@@ -225,7 +226,7 @@ export default class InputItem extends Base {
       size={size}
       className='input'
       disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
-      checked={!!this.context.viewModel.getValue(value)} defaultChecked={!!defaultValue}
+      checked={!!value} defaultChecked={!!defaultValue}
       onChange={(value)=>{this.context.onEvent(config, 'change', {value}),this.handleChange(value)}}
       onBlur={()=>this.context.onEvent(config, 'blur')}
       onFocus={()=>this.context.onEvent(config, 'focus')}
@@ -245,7 +246,7 @@ export default class InputItem extends Base {
       size={size}
       className='input'
       disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
-      checked={!!this.context.viewModel.getValue(value)} defaultChecked={!!defaultValue}
+      checked={!!value} defaultChecked={!!defaultValue}
       onChange={(value)=>{this.context.onEvent(config, 'change', {value}),this.handleChange(value)}}
       onBlur={()=>this.context.onEvent(config, 'blur')}
       onFocus={()=>this.context.onEvent(config, 'focus')}
@@ -265,7 +266,7 @@ export default class InputItem extends Base {
       // todo format
       return value;
     }
-    const val = (this.context.viewModel.getValue(value) || []).slice();
+    const val = (value || []).slice();
     return <Select
       id={key}
       className='input'
@@ -300,7 +301,7 @@ export default class InputItem extends Base {
       // todo format
       return value;
     }
-    const val = (this.context.viewModel.getValue(value) || []).slice();
+    const val = (value || []).slice();
     return <TreeSelect id={key}
         autoFocus={this.props.autoFocus}
         size={size}
@@ -327,7 +328,7 @@ export default class InputItem extends Base {
       // todo format
       return value;
     }
-    const val = (this.context.viewModel.getValue(value) || []).slice();
+    const val = (value || []).slice();
     return <RcRefSelect id={key}
         className='input'
         prefixCls='ant-select'
@@ -348,7 +349,7 @@ export default class InputItem extends Base {
   }
 
   renderText(config) {
-    return <span className='text'>{this.context.viewModel[config.value]}</span>;
+    return <span className='text'>{this.context.model[config.value]}</span>;
   }
 
   render() {

@@ -1,7 +1,155 @@
 import React from 'react';
-import { storiesOf } from '@storybook/react';
-import Form from '../components/Form';
+import {
+  storiesOf
+} from '@storybook/react';
+import {
+  Model,
+  ViewModel,
+  TemplateProvider,
+  Form
+} from '../src';
+
+const model = Model.create({
+  item1: 'AAAAAAAAA',
+  obj2: {
+    f1: 'BBBBBBBB',
+    f2: new Date(),
+    f3: 1000000.55,
+  },
+  array1: [1, 2, 3, 4, 100, 1000000.11]
+});
+
+const viewModel = ViewModel.create({
+  type: 'form',
+  items: [{
+    type: 'text',
+    value: 'code',
+    text: 'code'
+  }, {
+    type: 'datetime',
+    value: 'obj2.f2',
+    text: 'datetime'
+  }, {
+    type: 'time',
+    value: 'obj2.f2',
+    text: 'time'
+  }, {
+    type: 'number',
+    value: 'obj2.f3',
+    format: 'thousandth',
+    text: 'number'
+  }, {
+    type: 'check',
+    value: 'obj2.f3',
+    text: 'check'
+  }, {
+    type: 'switch',
+    value: 'obj2.f3',
+    text: 'switch'
+  }, {
+    type: 'select',
+    value: 'array1',
+    text: 'select'
+  }, {
+    type: 'treeselect',
+    value: 'array1',
+    text: 'treeselect'
+  }, {
+    name: 'item2',
+    text: 'item2',
+    type: 'refselect',
+    dropdownStyle: 'list',
+    value: 'array1',
+    multiple: true,
+    query: '=obj1{a,b,c,d,e}',
+    displayField: 'a',
+    sortField: 'a', // 树形全部取回来需要按照树结构排序
+    mapping: '={f1:$a,f2:$b,f3:$c}',
+    setValue: 'obj2',
+    pageSize: 200
+  }, {
+    name: 'item3',
+    text: 'item3',
+    type: 'refselect',
+    dropdownStyle: 'tree',
+    value: 'obj2.f1',
+    expandAll: true,
+    //expandedKeys:[],
+    range: 'leaf', // leaf parent all
+    query: '=obj1{id,pid,a,b,c,d,e,leaf}',
+    variables: '{pid:$id}', // 去掉查询变量一次取出全部
+    idField: 'id',
+    pidField: 'pid',
+    displayField: ['a'],
+    leafField: 'leaf',
+    mapping: '={f1:$a,f2:$b,f3:$c}',
+    setValue: 'obj2'
+  }, {
+    name: 'item4',
+    text: 'item4',
+    type: 'refselect',
+    dropdownStyle: 'table',
+    value: 'obj2.f1',
+    query: 'obj1{id,pid,a,b,c,d,e}',
+    variables: '{pid:$id}',
+    idField: 'id',
+    pidField: 'pid',
+    leafField: 'leaf',
+    columns: [{
+      title: 'aaa',
+      value: 'a'
+    }, {
+      title: 'bbb',
+      value: 'b'
+    }, {
+      title: 'ccc',
+      value: 'c'
+    }, {
+      title: 'ddd',
+      value: 'd'
+    }],
+    mapping: '={f1:$a,f2:$b,f3:$c}',
+    setValue: 'obj2'
+  }, {
+    name: 'item6',
+    text: 'item6',
+    type: 'refselect',
+    dropdownStyle: 'treetable',
+    value: 'obj2.f1',
+    multiple: false,
+    range: 'leaf', // leaf parent all
+    treequery: '=obj1{id,pid,a,b,c,d,e}',
+    idField: 'id',
+    pidField: 'pid',
+    treeDisplayField: 'a',
+    treeSelectable: true,
+    tableQuery: '=obj2{a,b,c,d,e}',
+    tableVariables: '{objid:$id}',
+    columns: [{
+      title: 'aaa',
+      value: 'a'
+    }, {
+      title: 'bbb',
+      value: 'b'
+    }, {
+      title: 'ccc',
+      value: 'c'
+    }, {
+      title: 'ddd',
+      value: 'd'
+    }],
+    mapping: '={f1:$a,f2:$b,f3:$c}',
+    setValue: 'obj2'
+  }, {
+    name: 'inputtable',
+    text: 'inputtable',
+    type: 'inputtable',
+    value: 'array1',
+    table: {
+
+    }
+  }]
+}, model)
 
 storiesOf('Form', module)
-  .add('Form', () => <Form></Form>)
-)
+  .add('Form', () => <TemplateProvider><Form config={viewModel}/></TemplateProvider>)

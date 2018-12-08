@@ -1,7 +1,15 @@
-import * as models from './models';
-import * as components from './components';
+import Model from './model';
+import ViewModel from './viewmodel';
+import TemplateProvider from './components/TemplateProvider';
+import Form from './components/Form';
+import CardForm from './components/CardForm';
+import Toolbar from './components/Toolbar';
 
 module.exports = {
-  ...models,
-  ...components
+  Model,
+  ViewModel,
+  TemplateProvider,
+  Form,
+  CardForm,
+  Toolbar
 }

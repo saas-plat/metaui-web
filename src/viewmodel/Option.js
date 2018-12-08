@@ -13,7 +13,7 @@ import {
 } from './util';
 
 class ActionItem {
-  view;
+  store;
   key;
 
   @observable name;
@@ -25,31 +25,31 @@ class ActionItem {
   @observable onClick;
 
   @computed get text() {
-    return this.view.execExpr(this.textExpr);
+    return this.store.execExpr(this.textExpr);
   }
   @computed get icon() {
-    return this.view.execExpr(this.iconExpr);
+    return this.store.execExpr(this.iconExpr);
   }
   @computed get disable() {
-    return this.view.execExpr(this.disableExpr);
+    return this.store.execExpr(this.disableExpr);
   }
   @computed get visible() {
-    return this.view.execExpr(this.visibleExpr);
+    return this.store.execExpr(this.visibleExpr);
   }
 
-  constructor(view, name, text, icon, disableExpr = false, visibleExpr = true, onClick) {
-    this.view = view;
+  constructor(store, name, text, icon, disableExpr = false, visibleExpr = true, onClick) {
+    this.store = store;
     this.key = assignId('Item');
     this.name = name || this.key;
-    this.textExpr = this.view.parseExpr(text);
-    this.iconExpr = this.view.parseExpr(icon);
-    this.disableExpr = view.parseExpr(disableExpr);
-    this.visibleExpr = view.parseExpr(visibleExpr);
+    this.textExpr = this.store.parseExpr(text);
+    this.iconExpr = this.store.parseExpr(icon);
+    this.disableExpr = store.parseExpr(disableExpr);
+    this.visibleExpr = store.parseExpr(visibleExpr);
 
     this.onClick = onClick;
   }
 
-  static create(view, obj) {
+  static create(store, obj) {
     const {
       name,
       title,
@@ -59,7 +59,7 @@ class ActionItem {
       visible,
       ...action
     } = obj;
-    return new ActionItem(view, name, title || text, icon, disable, visible, Action.create(view, {
+    return new ActionItem(store, name, title || text, icon, disable, visible, Action.create(store, {
       name: 'goto',
       ...action
     }));
@@ -67,7 +67,7 @@ class ActionItem {
 }
 
 class OptionItem {
-  view;
+  store;
   key;
 
   @observable name;
@@ -84,51 +84,51 @@ class OptionItem {
   @observable inputItem;
 
   @computed get state() {
-    return this.view.state;
+    return this.store.state;
   }
 
   @computed get type() {
-    return this.view.execExpr(this.typeExpr);
+    return this.store.execExpr(this.typeExpr);
   }
   @computed get groups() {
     return this.allgroups.filter(it => it.visible);
   }
   @computed get text() {
-    return this.view.execExpr(this.textExpr);
+    return this.store.execExpr(this.textExpr);
   }
   @computed get description() {
-    return this.view.execExpr(this.descriptionExpr);
+    return this.store.execExpr(this.descriptionExpr);
   }
   @computed get tip() {
-    return this.view.execExpr(this.tipExpr);
+    return this.store.execExpr(this.tipExpr);
   }
   @computed get icon() {
-    return this.view.execExpr(this.iconExpr);
+    return this.store.execExpr(this.iconExpr);
   }
   @computed get disable() {
-    return this.view.execExpr(this.disableExpr);
+    return this.store.execExpr(this.disableExpr);
   }
   @computed get visible() {
-    return this.view.execExpr(this.visibleExpr);
+    return this.store.execExpr(this.visibleExpr);
   }
 
-  constructor(view, name, text, description, tip, icon, disableExpr = false, visibleExpr = true, inputItem, btns = [], groups) {
-    this.view = view;
+  constructor(store, name, text, description, tip, icon, disableExpr = false, visibleExpr = true, inputItem, btns = [], groups) {
+    this.store = store;
     this.key = assignId('Item');
     this.name = name || this.key;
-    this.textExpr = this.view.parseExpr(text);
-    this.descriptionExpr = this.view.parseExpr(description);
-    this.tipExpr = this.view.parseExpr(tip);
-    this.iconExpr = this.view.parseExpr(icon);
-    this.disableExpr = view.parseExpr(disableExpr);
-    this.visibleExpr = view.parseExpr(visibleExpr);
+    this.textExpr = this.store.parseExpr(text);
+    this.descriptionExpr = this.store.parseExpr(description);
+    this.tipExpr = this.store.parseExpr(tip);
+    this.iconExpr = this.store.parseExpr(icon);
+    this.disableExpr = store.parseExpr(disableExpr);
+    this.visibleExpr = store.parseExpr(visibleExpr);
 
     this.allgroups = groups;
     this.btns = btns;
     this.inputItem = inputItem;
   }
 
-  static create(view, obj) {
+  static create(store, obj) {
     let child;
     if (obj.child) {
       child = obj.child;
@@ -138,15 +138,15 @@ class OptionItem {
     if (!Array.isArray(child)) {
       child = [child];
     }
-    return new OptionItem(view, obj.name, obj.title || obj.text, obj.description, obj.tip, obj.icon, obj.disable, obj.visible,
-      Input.create(view, obj),
-      (obj.btns || []).map(it => ActionItem.create(view, it)),
-      child.filter(it => it.type === 'group' || it.type === 'list').map(it => OptionGroup.create(view, it)));
+    return new OptionItem(store, obj.name, obj.title || obj.text, obj.description, obj.tip, obj.icon, obj.disable, obj.visible,
+      Input.create(store, obj),
+      (obj.btns || []).map(it => ActionItem.create(store, it)),
+      child.filter(it => it.type === 'group' || it.type === 'list').map(it => OptionGroup.create(store, it)));
   }
 }
 
 class OptionGroup {
-  view;
+  store;
   key;
 
   @observable allgroups;
@@ -163,7 +163,7 @@ class OptionGroup {
   @observable btns;
 
   @computed get state() {
-    return this.view.state;
+    return this.store.state;
   }
   @computed get groups() {
     return this.allgroups.filter(it => it.visible);
@@ -172,55 +172,55 @@ class OptionGroup {
     return this.allitems.filter(it => it.visible);
   }
   @computed get type() {
-    return this.view.execExpr(this.typeExpr);
+    return this.store.execExpr(this.typeExpr);
   }
   @computed get text() {
-    return this.view.execExpr(this.textExpr);
+    return this.store.execExpr(this.textExpr);
   }
   @computed get description() {
-    return this.view.execExpr(this.descriptionExpr);
+    return this.store.execExpr(this.descriptionExpr);
   }
   @computed get icon() {
-    return this.view.execExpr(this.iconExpr);
+    return this.store.execExpr(this.iconExpr);
   }
   @computed get disable() {
-    return this.view.execExpr(this.disableExpr);
+    return this.store.execExpr(this.disableExpr);
   }
   @computed get visible() {
-    return this.view.execExpr(this.visibleExpr);
+    return this.store.execExpr(this.visibleExpr);
   }
 
-  constructor(view, type, name, text, description, icon, disableExpr = false, visibleExpr = true, groups = [], items = [], btns = []) {
-    this.view = view;
+  constructor(store, type, name, text, description, icon, disableExpr = false, visibleExpr = true, groups = [], items = [], btns = []) {
+    this.store = store;
     this.key = assignId('OptionGroup');
     this.name = name || this.key;
-    this.typeExpr = this.view.parseExpr(type);
-    this.textExpr = this.view.parseExpr(text);
-    this.descriptionExpr = this.view.parseExpr(description);
-    this.iconExpr = this.view.parseExpr(icon);
-    this.disableExpr = view.parseExpr(disableExpr);
-    this.visibleExpr = view.parseExpr(visibleExpr);
+    this.typeExpr = this.store.parseExpr(type);
+    this.textExpr = this.store.parseExpr(text);
+    this.descriptionExpr = this.store.parseExpr(description);
+    this.iconExpr = this.store.parseExpr(icon);
+    this.disableExpr = store.parseExpr(disableExpr);
+    this.visibleExpr = store.parseExpr(visibleExpr);
 
     this.allgroups = groups;
     this.allitems = items;
     this.allbtns = btns;
   }
 
-  static create(view, obj) {
+  static create(store, obj) {
     const items = obj.items || [];
     let btns = obj.btns || [];
     if (!Array.isArray(btns)) {
       btns = [btns];
     }
-    return new OptionGroup(view, obj.type, obj.name, obj.title || obj.text, obj.description, obj.icon, obj.disable, obj.visible,
-      items.filter(it => it.type === 'group' || it.type === 'list').map(it => OptionGroup.create(view, it)),
-      items.filter(it => it.type !== 'group' && it.type !== 'list').map(it => OptionItem.create(view, it)),
-      btns.map(it => ActionItem.create(view, it)));
+    return new OptionGroup(store, obj.type, obj.name, obj.title || obj.text, obj.description, obj.icon, obj.disable, obj.visible,
+      items.filter(it => it.type === 'group' || it.type === 'list').map(it => OptionGroup.create(store, it)),
+      items.filter(it => it.type !== 'group' && it.type !== 'list').map(it => OptionItem.create(store, it)),
+      btns.map(it => ActionItem.create(store, it)));
   }
 }
 
 export class ListGroup {
-  view;
+  store;
   key;
 
   @observable name;
@@ -237,7 +237,7 @@ export class ListGroup {
   }
 
   @computed get state() {
-    return this.view.state;
+    return this.store.state;
   }
 
   @computed get groups() {
@@ -246,24 +246,24 @@ export class ListGroup {
 
   @computed get gutter() {
     // 24列布局
-    const span = parseInt(this.view.execExpr(this.gutterExpr));
+    const span = parseInt(this.store.execExpr(this.gutterExpr));
     return span !== 0 ? (span) : 16;
   }
 
-  constructor(view, name, gutterExpr = 16, groups = [], onBeforeChange, onChange, onAfterChange) {
-    //assert(view);
+  constructor(store, name, gutterExpr = 16, groups = [], onBeforeChange, onChange, onAfterChange) {
+    //assert(store);
     this.key = assignId('ListGroup');
-    this.view = view;
+    this.store = store;
     this.name = name || this.key;
     this.allgroups = groups;
-    this.gutterExpr = view.parseExpr(gutterExpr);
+    this.gutterExpr = store.parseExpr(gutterExpr);
 
     this.onBeforeChange = onBeforeChange;
     this.onChange = onChange;
     this.onAfterChange = onAfterChange;
   }
 
-  static create(view, object) {
+  static create(store, object) {
     let groups, name, gutter,
       onChanging,onChange,onChanged;
 
@@ -282,7 +282,7 @@ export class ListGroup {
     if (!Array.isArray(groups)) {
       groups = [groups];
     }
-    return new ListGroup(view, name, gutter, groups.map(it => OptionGroup.create(view, it)),
-      Action.create(view, onChanging), Action.create(view, onChange), Action.create(view, onChanged));
+    return new ListGroup(store, name, gutter, groups.map(it => OptionGroup.create(store, it)),
+      Action.create(store, onChanging), Action.create(store, onChange), Action.create(store, onChanged));
   }
 }

@@ -8,7 +8,7 @@ import {
 } from './util';
 
 export class Action {
-  view;
+  store;
   key;
 
   @observable nameExpr;
@@ -16,28 +16,28 @@ export class Action {
 
   // 需要执行actions方法名称
   @computed get name() {
-    return this.view.execExpr(this.nameExpr);
+    return this.store.execExpr(this.nameExpr);
   }
   set name(nameExpr) {
-    this.nameExpr = this.view.parseExpr(nameExpr);
+    this.nameExpr = this.store.parseExpr(nameExpr);
   }
 
-  constructor(view, name, args = {}) {
+  constructor(store, name, args = {}) {
     this.key = assignId();
-    this.view = view;
-    this.nameExpr = this.view.parseExpr(name);
+    this.store = store;
+    this.nameExpr = this.store.parseExpr(name);
     const obj = {};
     const exprs = new Map();
     this.keys = Object.keys(args);
     this.keys.forEach(key => {
-      exprs.set(key, view.parseExpr(args[key]));
+      exprs.set(key, store.parseExpr(args[key]));
       Object.defineProperty(obj, key, {
         enumerable: true, // 这里必须是可枚举的要不observable不好使
         get: () => {
-          return view.execExpr(exprs.get(key));
+          return store.execExpr(exprs.get(key));
         },
         set: (expr) => {
-          exprs.set(key, view.parseExpr(expr));
+          exprs.set(key, store.parseExpr(expr));
         }
       });
     });
@@ -55,18 +55,18 @@ export class Action {
     }
   }
 
-  static create(view, obj) {
+  static create(store, obj) {
     if (typeof obj === 'string') {
-      return new Action(view, obj);
+      return new Action(store, obj);
     } else if (Array.isArray(obj)) {
-      return obj.map(it => Action.create(view, it));
+      return obj.map(it => Action.create(store, it));
     } else if (obj) {
       const {
         name,
         args,
         ...other
       } = obj;
-      return new Action(view, name, { ...other,
+      return new Action(store, name, { ...other,
         ...args
       });
     } else {

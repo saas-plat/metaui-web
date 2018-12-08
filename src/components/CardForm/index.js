@@ -12,27 +12,29 @@ import './style';
 import {
   createComponent
 } from '../util';
-import Base from '../Base';
+import BaseComponent from '../BaseComponent';
 
 const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
 
 @Form.create()
-export class CardForm extends Base {
+export default class CardForm extends BaseComponent {
   static propTypes = {
-    config: PropTypes.object,
+    config: PropTypes.object.isRequired,
     form: PropTypes.object,
   }
 
-  handleChangeTimer = (it,value)=>{
-    this.changeValues = {...this.changeValues,[it.name]:value};
-    if (this.timer){
+  handleChangeTimer = (it, value) => {
+    this.changeValues = { ...this.changeValues,
+      [it.name]: value
+    };
+    if (this.timer) {
       return;
     }
-    this.timer = setTimeout(()=>{
+    this.timer = setTimeout(() => {
       this.context.onEvent(this.props.config, 'change', this.changeValues);
       this.timer = null;
-    },400);
+    }, 400);
   }
 
   handleSave = (e) => {

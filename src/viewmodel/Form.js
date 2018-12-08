@@ -13,7 +13,7 @@ import {
 const ItemDefaultWidth = 360;
 
 class Rule {
-  view;
+  store;
   key;
 
   // string: Must be of type string. This is the default type.
@@ -40,42 +40,42 @@ class Rule {
   @observable fieldsExpr;
   @observable defaultFieldExpr;
 
-  constructor(view, typeExpr, requiredExpr, messageExpr, enumExpr, lenExpr, patternExpr, whitespaceExpr, fieldsExpr, defaultFieldExpr) {
+  constructor(store, typeExpr, requiredExpr, messageExpr, enumExpr, lenExpr, patternExpr, whitespaceExpr, fieldsExpr, defaultFieldExpr) {
     this.key = assignId('Rule');
-    this.view = view;
+    this.store = store;
 
-    this.typeExpr = view.parseExpr(typeExpr);
-    this.requiredExpr = view.parseExpr(requiredExpr);
-    this.messageExpr = view.parseExpr(messageExpr);
-    this.enumExpr = view.parseExpr(enumExpr);
-    this.lenExpr = view.parseExpr(lenExpr);
-    this.patternExpr = view.parseExpr(patternExpr);
-    this.whitespaceExpr = view.parseExpr(whitespaceExpr);
-    this.fieldsExpr = view.parseExpr(fieldsExpr);
-    this.defaultFieldExpr = view.parseExpr(defaultFieldExpr);
+    this.typeExpr = store.parseExpr(typeExpr);
+    this.requiredExpr = store.parseExpr(requiredExpr);
+    this.messageExpr = store.parseExpr(messageExpr);
+    this.enumExpr = store.parseExpr(enumExpr);
+    this.lenExpr = store.parseExpr(lenExpr);
+    this.patternExpr = store.parseExpr(patternExpr);
+    this.whitespaceExpr = store.parseExpr(whitespaceExpr);
+    this.fieldsExpr = store.parseExpr(fieldsExpr);
+    this.defaultFieldExpr = store.parseExpr(defaultFieldExpr);
   }
 
-  static create(view, obj) {
-    return new Layout(view, obj.type, obj.required, obj.message, obj.enum, obj.len, obj.pattern, obj.whitespace, obj.fields, obj.defaultField);
+  static create(store, obj) {
+    return new Layout(store, obj.type, obj.required, obj.message, obj.enum, obj.len, obj.pattern, obj.whitespace, obj.fields, obj.defaultField);
   }
 
   toJS() {
     return {
-      type: this.view.execExpr(this.typeExpr),
-      required: this.view.execExpr(this.requiredExpr),
-      message: this.view.execExpr(this.messageExpr),
-      enum: this.view.execExpr(this.enumExpr),
-      len: this.view.execExpr(this.lenExpr),
-      pattern: this.view.execExpr(this.patternExpr),
-      whitespace: this.view.execExpr(this.whitespaceExpr),
-      fields: this.view.execExpr(this.fieldsExpr),
-      defaultField: this.view.execExpr(this.defaultFieldExpr),
+      type: this.store.execExpr(this.typeExpr),
+      required: this.store.execExpr(this.requiredExpr),
+      message: this.store.execExpr(this.messageExpr),
+      enum: this.store.execExpr(this.enumExpr),
+      len: this.store.execExpr(this.lenExpr),
+      pattern: this.store.execExpr(this.patternExpr),
+      whitespace: this.store.execExpr(this.whitespaceExpr),
+      fields: this.store.execExpr(this.fieldsExpr),
+      defaultField: this.store.execExpr(this.defaultFieldExpr),
     }
   }
 }
 
 class FormItem {
-  view;
+  store;
   key;
 
   @observable labelSpanExpr;
@@ -90,7 +90,7 @@ class FormItem {
   }
 
   @computed get width() {
-    const v = this.view.execExpr(this.widthExpr);
+    const v = this.store.execExpr(this.widthExpr);
     if (v.indexOf('%') > -1) {
       return v;
     }
@@ -112,43 +112,43 @@ class FormItem {
   }
 
   @computed get state() {
-    return this.view.state;
+    return this.store.state;
   }
 
   @computed get labelSpan() {
-    const span = parseInt(this.view.execExpr(this.labelSpanExpr));
+    const span = parseInt(this.store.execExpr(this.labelSpanExpr));
     return span !== 0 ? ((span || 4) % 24) : span;
   }
 
   @computed get labelText() {
-    return this.view.execExpr(this.labelTextExpr);
+    return this.store.execExpr(this.labelTextExpr);
   }
 
-  constructor(view, labelSpanExpr = 6, labelTextExpr = '', widthExpr = '', formItem, rules = []) {
+  constructor(store, labelSpanExpr = 6, labelTextExpr = '', widthExpr = '', formItem, rules = []) {
     this.key = assignId('FormItem');
-    this.view = view;
-    this.labelSpanExpr = view.parseExpr(labelSpanExpr);
-    this.labelTextExpr = view.parseExpr(labelTextExpr);
+    this.store = store;
+    this.labelSpanExpr = store.parseExpr(labelSpanExpr);
+    this.labelTextExpr = store.parseExpr(labelTextExpr);
 
-    this.widthExpr = view.parseExpr(widthExpr);
+    this.widthExpr = store.parseExpr(widthExpr);
 
     this.formItem = formItem;
     this.rules = rules;
   }
 
-  static create(view, obj, options) {
+  static create(store, obj, options) {
     let labelSpan = obj.labelSpan || options.labelSpan;
     let labelText = obj.labelText || obj.label || obj.text;
     if (!labelSpan && !labelText) {
       labelSpan = 0;
     }
     // formitem 和 inputitem 合并一起配置
-    return new FormItem(view, labelSpan, labelText, obj.width || options.itemWidth, createView(view, obj), (obj.rules || []).map(it => Rule.create(view, it)));
+    return new FormItem(store, labelSpan, labelText, obj.width || options.itemWidth, createView(store, obj), (obj.rules || []).map(it => Rule.create(store, it)));
   }
 }
 
 export class Layout {
-  view;
+  store;
   key;
 
   @observable name;
@@ -159,32 +159,32 @@ export class Layout {
   @observable items;
 
   @computed get state() {
-    return this.view.state;
+    return this.store.state;
   }
 
   @computed get itemWidth() {
-    return parseFloat(this.view.execExpr(this.itemWidthExpr)) || ItemDefaultWidth;
+    return parseFloat(this.store.execExpr(this.itemWidthExpr)) || ItemDefaultWidth;
   }
 
   @computed get columnCount() {
-    const count = parseInt(this.view.execExpr(this.columnCountExpr));
+    const count = parseInt(this.store.execExpr(this.columnCountExpr));
     return count !== 0 ? (count || 4) : count;
   }
 
-  constructor(view, name, type = 'flow', columnCountExpr = 4, itemWidthExpr = ItemDefaultWidth, items = []) {
+  constructor(store, name, type = 'flow', columnCountExpr = 4, itemWidthExpr = ItemDefaultWidth, items = []) {
     this.key = assignId('Layout');
-    this.view = view;
+    this.store = store;
     this.name = name || this.key;
     this.type = type;
 
-    this.columnCountExpr = view.parseExpr(columnCountExpr);
-    this.itemWidthExpr = view.parseExpr(itemWidthExpr);
+    this.columnCountExpr = store.parseExpr(columnCountExpr);
+    this.itemWidthExpr = store.parseExpr(itemWidthExpr);
 
     this.items = items;
   }
 
-  static create(view, obj, options) {
-    return new Layout(view, obj.name, obj.type, obj.columnCount, obj.itemWidth, (obj.items || []).map(it => FormItem.create(view, it, {
+  static create(store, obj, options) {
+    return new Layout(store, obj.name, obj.type, obj.columnCount, obj.itemWidth, (obj.items || []).map(it => FormItem.create(store, it, {
       itemWidth: obj.itemWidth,
       ...options
     })));
@@ -192,7 +192,7 @@ export class Layout {
 }
 
 export class Tab {
-  view;
+  store;
   key;
 
   @observable name;
@@ -207,34 +207,34 @@ export class Tab {
   }
 
   @computed get state() {
-    return this.view.state;
+    return this.store.state;
   }
 
   @computed get text() {
-    return this.view.execExpr(this.textExpr);
+    return this.store.execExpr(this.textExpr);
   }
   @computed get icon() {
-    return this.view.execExpr(this.iconExpr);
+    return this.store.execExpr(this.iconExpr);
   }
   @computed get disable() {
-    return this.view.execExpr(this.disableExpr);
+    return this.store.execExpr(this.disableExpr);
   }
   @computed get visible() {
-    return this.view.execExpr(this.visibleExpr);
+    return this.store.execExpr(this.visibleExpr);
   }
 
-  constructor(view, name, text, icon, disableExpr = false, visibleExpr = true, panel) {
+  constructor(store, name, text, icon, disableExpr = false, visibleExpr = true, panel) {
     this.key = assignId('Tab');
-    this.view = view;
+    this.store = store;
     this.name = name || this.key;
-    this.textExpr = this.view.parseExpr(text);
-    this.iconExpr = this.view.parseExpr(icon);
-    this.disableExpr = view.parseExpr(disableExpr);
-    this.visibleExpr = view.parseExpr(visibleExpr);
+    this.textExpr = this.store.parseExpr(text);
+    this.iconExpr = this.store.parseExpr(icon);
+    this.disableExpr = store.parseExpr(disableExpr);
+    this.visibleExpr = store.parseExpr(visibleExpr);
     this.panel = panel;
   }
 
-  static create(view, obj, options) {
+  static create(store, obj, options) {
     let tab;
     if (obj.panel || obj.type === 'tab') {
       tab = obj;
@@ -243,13 +243,13 @@ export class Tab {
         panel: obj
       };
     }
-    return new Tab(view, obj.name, obj.text, obj.icon, obj.disable, obj.visible, Layout.create(view, tab.panel, options));
+    return new Tab(store, obj.name, obj.text, obj.icon, obj.disable, obj.visible, Layout.create(store, tab.panel, options));
   }
 
 }
 
 export class Group {
-  view;
+  store;
   key;
 
   @observable name;
@@ -265,34 +265,34 @@ export class Group {
   }
 
   @computed get state() {
-    return this.view.state;
+    return this.store.state;
   }
 
   @computed get text() {
-    return this.view.execExpr(this.textExpr);
+    return this.store.execExpr(this.textExpr);
   }
   @computed get icon() {
-    return this.view.execExpr(this.iconExpr);
+    return this.store.execExpr(this.iconExpr);
   }
   @computed get disable() {
-    return this.view.execExpr(this.disableExpr);
+    return this.store.execExpr(this.disableExpr);
   }
   @computed get visible() {
-    return this.view.execExpr(this.visibleExpr);
+    return this.store.execExpr(this.visibleExpr);
   }
 
-  constructor(view, name, text, icon, disableExpr = false, visibleExpr = true, tabs = []) {
+  constructor(store, name, text, icon, disableExpr = false, visibleExpr = true, tabs = []) {
     this.key = assignId('Group');
-    this.view = view;
+    this.store = store;
     this.name = name || this.key;
-    this.textExpr = this.view.parseExpr(text);
-    this.iconExpr = this.view.parseExpr(icon);
-    this.disableExpr = view.parseExpr(disableExpr);
-    this.visibleExpr = view.parseExpr(visibleExpr);
+    this.textExpr = this.store.parseExpr(text);
+    this.iconExpr = this.store.parseExpr(icon);
+    this.disableExpr = store.parseExpr(disableExpr);
+    this.visibleExpr = store.parseExpr(visibleExpr);
     this.tabs = tabs;
   }
 
-  static create(view, obj, options) {
+  static create(store, obj, options) {
     let tabs = [];
     if (obj.type === 'tabs') {
       tabs = obj.items;
@@ -302,12 +302,12 @@ export class Group {
         panel: obj
       });
     }
-    return new Group(view, obj.name, obj.title || obj.text, obj.icon, obj.disable, obj.visible, tabs.map(it => Tab.create(view, it, options)));
+    return new Group(store, obj.name, obj.title || obj.text, obj.icon, obj.disable, obj.visible, tabs.map(it => Tab.create(store, it, options)));
   }
 }
 
 export class CardForm {
-  view;
+  store;
   key;
 
   @observable name;
@@ -324,30 +324,30 @@ export class CardForm {
   }
 
   @computed get state() {
-    return this.view.state;
+    return this.store.state;
   }
 
   @computed get labelSpan() {
     // 24列布局
-    const span = parseInt(this.view.execExpr(this.labelSpanExpr));
+    const span = parseInt(this.store.execExpr(this.labelSpanExpr));
     return span !== 0 ? ((span || 4) % 24) : span;
   }
 
-  constructor(view, name, labelSpanExpr = 4, groups = [], onBeforeChange, onChange, onAfterChange) {
-    //assert(view);
+  constructor(store, name, labelSpanExpr = 4, groups = [], onBeforeChange, onChange, onAfterChange) {
+    //assert(store);
 
     this.key = assignId('CardForm');
-    this.view = view;
+    this.store = store;
     this.name = name || this.key;
     this.groups = groups;
-    this.labelSpanExpr = view.parseExpr(labelSpanExpr);
+    this.labelSpanExpr = store.parseExpr(labelSpanExpr);
 
     this.onBeforeChange = onBeforeChange;
     this.onChange = onChange;
     this.onAfterChange = onAfterChange;
   }
 
-  static create(view, object = []) {
+  static create(store, object = []) {
     let groups, name, labelSpan,
     onChanging,onChange,onChanged;
 
@@ -366,9 +366,9 @@ export class CardForm {
     if (!Array.isArray(groups)) {
       groups = [groups];
     }
-    return new CardForm(view, name, labelSpan, groups.map(it => Group.create(view, it, {
+    return new CardForm(store, name, labelSpan, groups.map(it => Group.create(store, it, {
         labelSpan
       })),
-      Action.create(view, onChanging), Action.create(view, onChange), Action.create(view, onChanged));
+      Action.create(store, onChanging), Action.create(store, onChange), Action.create(store, onChanged));
   }
 }
