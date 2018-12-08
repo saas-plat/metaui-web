@@ -16,13 +16,35 @@ export default class TemplateProvider extends React.Component {
 
   static childContextTypes = {
     model: PropTypes.object,
-    onEvent: PropTypes.func,
+    onAction: PropTypes.func,
     t: PropTypes.func,
+  }
+
+  _setValue = async (target, {
+    value
+  }) => {
+    const setField = target.setValue || target.value;
+    if (setField) {
+      this.props.model.set(setField, value);
+    } else {
+      console.log('setValue field not found, skip setValue');
+    }
+  }
+
+  handleEvent = (target, event, args) => {
+    const action = target['on' + event[0].toUpperCase() + event.substr(1)];
+    const handler = this['_' + action.name];
+    if (handler) {
+      handler(target, args);
+    }
+    if (this.props.onEvent) {
+      this.props.onEvent(target, event, args);
+    }
   }
 
   getChildContext() {
     return {
-      onEvent: this.props.onEvent,
+      onEvent: this.handleEvent,
       model: this.props.model,
       t: this.props.t,
     };
