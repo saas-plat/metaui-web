@@ -29,6 +29,8 @@ const viewModel = ViewModel.create({
     type: 'text',
     value: 'code',
     text: 'code',
+    icon: 'form',
+    tip: 'xxxxxxxxxxxxx',
     rules: [{
       required: true
     }]
@@ -36,6 +38,7 @@ const viewModel = ViewModel.create({
     type: 'datetime',
     value: 'obj2.f2',
     text: 'datetime',
+    icon: 'lock',
     required: true,
     extra: 'xxxxxxxxxxxxx'
   }, {

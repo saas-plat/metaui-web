@@ -91,6 +91,8 @@ class FormItem {
 
   @observable labelSpanExpr;
   @observable labelTextExpr;
+  @observable labelIconExpr;
+  @observable tipTextExpr;
   @observable formItem;
   @observable widthExpr; // flowlayout每项宽度
   @observable extraExpr;
@@ -141,12 +143,20 @@ class FormItem {
   @computed get labelText() {
     return this.store.execExpr(this.labelTextExpr);
   }
+  @computed get labelIcon() {
+    return this.store.execExpr(this.labelIconExpr);
+  }
+  @computed get tipText() {
+    return this.store.execExpr(this.tipTextExpr);
+  }
 
-  constructor(store, labelSpanExpr = 6, labelTextExpr = '', widthExpr = '', extraExpr, formItem, rules = []) {
+  constructor(store, labelSpanExpr = 6, labelTextExpr = '',labelIconExpr  , tipTextExpr = '',  widthExpr = '', extraExpr, formItem, rules = []) {
     this.key = assignId('FormItem');
     this.store = store;
     this.labelSpanExpr = store.parseExpr(labelSpanExpr);
     this.labelTextExpr = store.parseExpr(labelTextExpr);
+    this.labelIconExpr = store.parseExpr(labelIconExpr);
+    this.tipTextExpr = store.parseExpr(tipTextExpr);
 
     this.widthExpr = store.parseExpr(widthExpr);
     this.extraExpr = store.parseExpr(extraExpr);
@@ -191,7 +201,7 @@ class FormItem {
         obj.rules.push(rule);
       }
     }
-    return new FormItem(store, labelSpan, labelText, obj.width || options.itemWidth, obj.extra,
+    return new FormItem(store, labelSpan, labelText, obj.labelIcon || obj.icon, obj.tipText || obj.tip, obj.width || options.itemWidth, obj.extra,
       createView(store, obj),
       // 默认有一条规则obj中尝试查找
       obj.rules.map(it => Rule.create(store, it, {

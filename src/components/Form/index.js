@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Form,
-  Button
+  Button,
+  Tooltip,
+  Icon
 } from 'antd';
 import './style';
 import {
@@ -19,7 +21,8 @@ export default class TemplateForm extends BaseComponent {
     form: PropTypes.object,
     onSubmit: PropTypes.func,
     submitText: PropTypes.string,
-    submitButtonHide: PropTypes.boolean,
+    submitButtonHide: PropTypes.bool,
+    block: PropTypes.bool,
     children: PropTypes.element,
   }
 
@@ -80,7 +83,18 @@ export default class TemplateForm extends BaseComponent {
         },
       }
     } : null;
-    return <FormItem key={config.key} {...formItemLayout} label={config.labelText} className='formItem' extra={config.extra}>
+    let labelHelp = null;
+    if (config.labelIcon){
+      let icon = <Icon type="question-circle" />;
+      if (config.tipText){
+        labelHelp = <Tooltip title={config.tipText}>
+          {icon}
+        </Tooltip>
+      }else{
+        labelHelp = icon;
+      }      
+    }
+    return <FormItem key={config.key} {...formItemLayout} label={<span>{config.labelText} {labelHelp}</span>} className='formItem' extra={config.extra}>
             {getFieldDecorator(config.key,{rules: config.rules.map(it=>it.toJS())})(
               createComponent(config.formItem, {
                 ...options,
@@ -112,7 +126,7 @@ export default class TemplateForm extends BaseComponent {
       <Form className="templateform" layout={this.props.config.itemLayoutType} onSubmit={this.handleSave}>
         {this.renderLayout(this.props.config)}
         {!this.props.submitButtonHide?<FormItem {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">{this.props.submitText || this.context.t('保存')}</Button>
+          <Button type="primary" block={this.props.block} htmlType="submit">{this.props.submitText || this.context.t('保存')}</Button>
         </FormItem>:null}
         {this.props.children || null}
       </Form>
