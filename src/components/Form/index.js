@@ -1,16 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Form
+  Form,
+  Button
 } from 'antd';
 import './style';
 import {
   createComponent
 } from '../util';
-import {
-  FlowLayout,
-  GridLayout
-} from '../Layout';
 import BaseComponent from '../BaseComponent';
 
 const FormItem = Form.Item;
@@ -21,6 +18,9 @@ export default class TemplateForm extends BaseComponent {
     config: PropTypes.object.isRequired,
     form: PropTypes.object,
     onSubmit: PropTypes.func,
+    submitText: PropTypes.string,
+    submitButtonHide: PropTypes.boolean,
+    children: PropTypes.element,
   }
 
   handleChangeTimer = (it, value) => {
@@ -42,6 +42,9 @@ export default class TemplateForm extends BaseComponent {
   handleSave = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
+      if(err){
+        return;
+      }
       this.context.onEvent(this.props.config, 'submit', values, ()=>{
         this.props.onSubmit && this.props.onSubmit(values);
       });
@@ -93,9 +96,25 @@ export default class TemplateForm extends BaseComponent {
   }
 
   render() {
+    let labelSpan = this.props.config.labelSpan;
+    const tailFormItemLayout = this.props.config.layout === 'horizontal' ? {
+      xs: {
+        span: 24,
+        offset: 0,
+      },
+      sm: {
+        span: 24-labelSpan,
+        offset: labelSpan,
+      },
+    } : null;
+
     return (
       <Form className="templateform" layout={this.props.config.itemLayoutType} onSubmit={this.handleSave}>
         {this.renderLayout(this.props.config)}
+        {!this.props.submitButtonHide?<FormItem {...tailFormItemLayout}>
+          <Button type="primary" htmlType="submit">{this.props.submitText || this.context.t('保存')}</Button>
+        </FormItem>:null}
+        {this.props.children || null}
       </Form>
     );
   }

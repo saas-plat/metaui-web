@@ -1,5 +1,6 @@
 import {
-  observable
+  observable,
+  computed
 } from "mobx";
 import Expression from 'saas-plat-expression';
 import {
@@ -25,6 +26,10 @@ export default class ViewStore {
 
   constructor(model) {
     this.model = model;
+  }
+
+  @computed get state(){
+    return this.model.get('state');
   }
 
   parseExpr(txt) {

@@ -59,7 +59,7 @@ class Rule {
   static create(store, obj, options = {}) {
     return new Rule(store,
       obj.type || 'string',
-      obj.message || (options.labelText + translater.t('输入无效，请修改')),
+      obj.message || (options.labelText + translater.t('输入无效')),
       obj.required || options.required,
       obj.enum || options.enum,
       obj.len || options.len,
@@ -434,22 +434,32 @@ export class Form {
   @observable name;
   @observable layout; // horizontal vertical inline
 
+  @observable labelSpanExpr;
+
   @observable items;
 
   @computed get state() {
     return this.store.state;
   }
 
-  constructor(store, name, layout = 'horizontal', items = []) {
+  @computed get labelSpan() {
+    const span = parseInt(this.store.execExpr(this.labelSpanExpr));
+    return span !== 0 ? ((span || 4) % 24) : span;
+  }
+
+  constructor(store, name, layout = 'horizontal', labelSpanExpr, items = []) {
     this.key = assignId('Form');
     this.store = store;
     this.name = name || this.key;
     this.layout = layout;
-
+    this.labelSpanExpr = store.parseExpr(labelSpanExpr);
     this.items = items;
   }
 
-  static create(store, obj, options = {}) {
-    return new Form(store, obj.name, obj.layout, (obj.items || []).map(it => FormItem.create(store, it, options)));
+  static create(store, obj) {
+    return new Form(store, obj.name, obj.layout, obj.labelSpan || 6,
+      (obj.items || []).map(it => FormItem.create(store, it, {
+        labelSpan: obj.labelSpan
+      })));
   }
 }
