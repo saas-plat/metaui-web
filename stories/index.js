@@ -3,6 +3,9 @@ import {
   storiesOf
 } from '@storybook/react';
 import {
+  action
+} from '@storybook/addon-actions';
+import {
   Model,
   ViewModel,
   TemplateProvider,
@@ -21,14 +24,20 @@ const model = Model.create({
 
 const viewModel = ViewModel.create({
   type: 'form',
+  layout: 'vertical',
   items: [{
     type: 'text',
     value: 'code',
-    text: 'code'
+    text: 'code',
+    rules: [{
+      required: true
+    }]
   }, {
     type: 'datetime',
     value: 'obj2.f2',
-    text: 'datetime'
+    text: 'datetime',
+    required: true,
+    extra: 'xxxxxxxxxxxxx'
   }, {
     type: 'time',
     value: 'obj2.f2',
@@ -152,4 +161,4 @@ const viewModel = ViewModel.create({
 }, model)
 
 storiesOf('Form', module)
-  .add('Form', () => <TemplateProvider><Form config={viewModel}/></TemplateProvider>)
+  .add('Form', () => <TemplateProvider onEvent={(target,event,args)=>action(target.name + '.'+event)(args)}><Form config={viewModel}/></TemplateProvider>)

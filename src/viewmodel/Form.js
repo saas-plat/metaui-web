@@ -9,6 +9,7 @@ import {
 import {
   Action
 } from './Action';
+import translater from '../translater';
 
 const ItemDefaultWidth = 360;
 
@@ -37,10 +38,10 @@ class Rule {
   @observable lenExpr;
   @observable patternExpr;
   @observable whitespaceExpr;
-  @observable fieldsExpr;
-  @observable defaultFieldExpr;
+  @observable minExpr;
+  @observable maxExpr;
 
-  constructor(store, typeExpr, requiredExpr, messageExpr, enumExpr, lenExpr, patternExpr, whitespaceExpr, fieldsExpr, defaultFieldExpr) {
+  constructor(store, typeExpr, messageExpr, requiredExpr, enumExpr, lenExpr, patternExpr, whitespaceExpr, minExpr, maxExpr) {
     this.key = assignId('Rule');
     this.store = store;
 
@@ -51,12 +52,22 @@ class Rule {
     this.lenExpr = store.parseExpr(lenExpr);
     this.patternExpr = store.parseExpr(patternExpr);
     this.whitespaceExpr = store.parseExpr(whitespaceExpr);
-    this.fieldsExpr = store.parseExpr(fieldsExpr);
-    this.defaultFieldExpr = store.parseExpr(defaultFieldExpr);
+    this.minExpr = store.parseExpr(minExpr);
+    this.maxExpr = store.parseExpr(maxExpr);
   }
 
-  static create(store, obj) {
-    return new Layout(store, obj.type, obj.required, obj.message, obj.enum, obj.len, obj.pattern, obj.whitespace, obj.fields, obj.defaultField);
+  static create(store, obj, options = {}) {
+    return new Rule(store,
+      obj.type || 'string',
+      obj.message || (options.labelText + translater.t('输入无效，请修改')),
+      obj.required || options.required,
+      obj.enum || options.enum,
+      obj.len || options.len,
+      obj.pattern || options.pattern,
+      obj.whitespace || options.whitespace,
+      obj.min || options.min,
+      obj.max || options.max
+    );
   }
 
   toJS() {
@@ -68,8 +79,8 @@ class Rule {
       len: this.store.execExpr(this.lenExpr),
       pattern: this.store.execExpr(this.patternExpr),
       whitespace: this.store.execExpr(this.whitespaceExpr),
-      fields: this.store.execExpr(this.fieldsExpr),
-      defaultField: this.store.execExpr(this.defaultFieldExpr),
+      min: this.store.execExpr(this.minExpr),
+      max: this.store.execExpr(this.maxExpr),
     }
   }
 }
@@ -82,6 +93,7 @@ class FormItem {
   @observable labelTextExpr;
   @observable formItem;
   @observable widthExpr; // flowlayout每项宽度
+  @observable extraExpr;
 
   @observable rules;
 
@@ -110,6 +122,12 @@ class FormItem {
   set disabled(disabledExpr) {
     this.formItem.disabled = disabledExpr;
   }
+  @computed get extra() {
+    return this.store.execExpr(this.extraExpr);
+  }
+  set extra(extraExpr) {
+    this.extraExpr = this.store.parseExpr(extraExpr);
+  }
 
   @computed get state() {
     return this.store.state;
@@ -124,26 +142,62 @@ class FormItem {
     return this.store.execExpr(this.labelTextExpr);
   }
 
-  constructor(store, labelSpanExpr = 6, labelTextExpr = '', widthExpr = '', formItem, rules = []) {
+  constructor(store, labelSpanExpr = 6, labelTextExpr = '', widthExpr = '', extraExpr, formItem, rules = []) {
     this.key = assignId('FormItem');
     this.store = store;
     this.labelSpanExpr = store.parseExpr(labelSpanExpr);
     this.labelTextExpr = store.parseExpr(labelTextExpr);
 
     this.widthExpr = store.parseExpr(widthExpr);
+    this.extraExpr = store.parseExpr(extraExpr);
 
     this.formItem = formItem;
     this.rules = rules;
   }
 
-  static create(store, obj, options) {
+  static create(store, obj, options = {}) {
     let labelSpan = obj.labelSpan || options.labelSpan;
     let labelText = obj.labelText || obj.label || obj.text;
     if (!labelSpan && !labelText) {
       labelSpan = 0;
     }
     // formitem 和 inputitem 合并一起配置
-    return new FormItem(store, labelSpan, labelText, obj.width || options.itemWidth, createView(store, obj), (obj.rules || []).map(it => Rule.create(store, it)));
+    if (!obj.rules || obj.rules.length <= 0) {
+      obj.rules = obj.rules || [];
+      const rule = {};
+      // 规则type 和数据类型重复
+      // if ('type' in obj) {
+      //   rule.type = obj.type;
+      // }
+      if ('required' in obj) {
+        rule.required = obj.required;
+      }
+      if ('enum' in obj) {
+        rule.enum = obj.enum;
+      }
+      if ('len' in obj) {
+        rule.len = obj.len;
+      }
+      if ('pattern' in obj) {
+        rule.pattern = obj.pattern;
+      }
+      if ('min' in obj) {
+        rule.min = obj.min;
+      }
+      if ('max' in obj) {
+        rule.max = obj.max;
+      }
+      if (Object.keys(rule).length > 0) {
+        obj.rules.push(rule);
+      }
+    }
+    return new FormItem(store, labelSpan, labelText, obj.width || options.itemWidth, obj.extra,
+      createView(store, obj),
+      // 默认有一条规则obj中尝试查找
+      obj.rules.map(it => Rule.create(store, it, {
+        ...obj,
+        labelText
+      })));
   }
 }
 
@@ -183,7 +237,7 @@ export class Layout {
     this.items = items;
   }
 
-  static create(store, obj, options) {
+  static create(store, obj, options = {}) {
     return new Layout(store, obj.name, obj.type, obj.columnCount, obj.itemWidth, (obj.items || []).map(it => FormItem.create(store, it, {
       itemWidth: obj.itemWidth,
       ...options
@@ -234,7 +288,7 @@ export class Tab {
     this.panel = panel;
   }
 
-  static create(store, obj, options) {
+  static create(store, obj, options = {}) {
     let tab;
     if (obj.panel || obj.type === 'tab') {
       tab = obj;
@@ -292,7 +346,7 @@ export class Group {
     this.tabs = tabs;
   }
 
-  static create(store, obj, options) {
+  static create(store, obj, options = {}) {
     let tabs = [];
     if (obj.type === 'tabs') {
       tabs = obj.items;
@@ -349,7 +403,7 @@ export class CardForm {
 
   static create(store, object = []) {
     let groups, name, labelSpan,
-    onChanging,onChange,onChanged;
+      onChanging, onChange, onChanged;
 
     if (Array.isArray(object)) {
       groups = object;
@@ -357,9 +411,9 @@ export class CardForm {
       groups = object.groups;
       name = object.name;
       labelSpan = object.labelSpan;
-      onChanging=object.onChanging;
-      onChange=object.onChange;
-      onChanged=object.onChanged;
+      onChanging = object.onChanging;
+      onChange = object.onChange;
+      onChanged = object.onChanged;
     } else {
       groups = [object];
     }
@@ -370,5 +424,32 @@ export class CardForm {
         labelSpan
       })),
       Action.create(store, onChanging), Action.create(store, onChange), Action.create(store, onChanged));
+  }
+}
+
+export class Form {
+  store;
+  key;
+
+  @observable name;
+  @observable layout; // horizontal vertical inline
+
+  @observable items;
+
+  @computed get state() {
+    return this.store.state;
+  }
+
+  constructor(store, name, layout = 'horizontal', items = []) {
+    this.key = assignId('Form');
+    this.store = store;
+    this.name = name || this.key;
+    this.layout = layout;
+
+    this.items = items;
+  }
+
+  static create(store, obj, options = {}) {
+    return new Form(store, obj.name, obj.layout, (obj.items || []).map(it => FormItem.create(store, it, options)));
   }
 }

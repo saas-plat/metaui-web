@@ -12,7 +12,6 @@ import {
   Table
 } from './Table';
 
-
 export class Input {
   store;
   key;
@@ -170,7 +169,7 @@ export class Input {
     this.maxExpr = this.store.parseExpr(maxExpr);
   }
 
-  toString(){
+  toString() {
     return this.type + ':' + this.name;
   }
 
@@ -247,6 +246,26 @@ export class Input {
         Action.create(store, object.onExtraClicked),
         Table.create(store, object.table));
     } else {
+      if (!object.format) {
+        switch (object.type) {
+        case 'date':
+        case 'daterange':
+          object.format = "YYYY-MM-DD";
+          break;
+        case 'datetime':
+          object.format = "YYYY-MM-DD HH:mm:ss";
+          break;
+        case 'time':
+          object.format = "HH:mm:ss";
+          break;
+        case 'week':
+          object.format = "YYYY-wo";
+          break;
+        case 'month':
+          object.format = "YYYY-MM";
+          break;
+        }
+      }
       return new Input(store, object.name, object.type, object.placeholder, object.clear,
         object.visible, object.disabled, object.size, object.maxLength, object.width, object.defaultValue, object.value, object.setValue || object.value, object.mapping,
         object.format, object.error, object.extra, object.min, object.max, Action.create(store, object.onChanging),

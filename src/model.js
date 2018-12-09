@@ -30,7 +30,7 @@ export default class Model {
     });
   }
 
-  constructor(data) {
+  constructor(data = {}) {
     this.data = data;
   }
 

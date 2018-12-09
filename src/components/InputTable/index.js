@@ -12,11 +12,7 @@ import {
 } from 'antd';
 import EditableTable from '../EditableTable';
 import './style';
-import {
-  translate
-} from 'react-i18next';
 
-@translate()
 // 可录入子表，用于相关表单的快速录入，比如进货时录入预付款信息
 @observer
 export default class InputTable extends BaseComponent {

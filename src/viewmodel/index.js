@@ -3,7 +3,7 @@ import {
 } from "mobx";
 import Expression from 'saas-plat-expression';
 import {
-  Layout,
+  Form,
   CardForm
 } from './Form';
 import {
@@ -42,7 +42,7 @@ export default class ViewStore {
     case 'toolbar':
       return Toolbar.create(store, obj);
     case 'form':
-      return Layout.create(store, obj);
+      return Form.create(store, obj);
     case 'cardform':
       return CardForm.create(store, obj);
     case 'tree':

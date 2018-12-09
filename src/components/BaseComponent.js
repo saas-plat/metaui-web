@@ -7,8 +7,8 @@ export default class BaseComponent extends React.Component{
   }
 
   static contextTypes = {
-    model: PropTypes.object.isRequired,
     onEvent: PropTypes.func.isRequired,
+    t: PropTypes.func.isRequired,
   }
 
   state = {}

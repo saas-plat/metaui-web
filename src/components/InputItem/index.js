@@ -41,6 +41,17 @@ export default class InputItem extends BaseComponent {
     this.props.onChange && this.props.onChange(value);
   }
 
+  setValue = async (target, {
+    value
+  }) => {
+    const setField = target.setValue || target.value;
+    if (setField) {
+      target.store.model.set(setField, value);
+    // } else {
+    //   console.log('setValue field not found, skip setValue');
+    }
+  }
+
   renderInput(config) {
     const {
       key,
@@ -57,7 +68,7 @@ export default class InputItem extends BaseComponent {
       placeholder={placeholder} defaultValue={defaultValue}
       disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
       value={value}
-      onChange={(e)=>{this.context.onEvent(config, 'change', {value:e.target.value}),this.handleChange(e.target.value)}}
+      onChange={(e)=>{this.context.onEvent(config, 'change', {value:e.target.value}, this.setValue),this.handleChange(e.target.value)}}
       onBlur={()=>this.context.onEvent(config, 'blur')}
       onFocus={()=>this.context.onEvent(config, 'focus')}/>);
   }
@@ -96,7 +107,7 @@ export default class InputItem extends BaseComponent {
         max={max}
         formatter={formatter}
         parser={parser}
-        onChange={(value)=>{this.context.onEvent(config, 'change', {value}),this.handleChange(value)}}
+        onChange={(value)=>{this.context.onEvent(config, 'change', {value}, this.setValue),this.handleChange(value)}}
         onBlur={()=>this.context.onEvent(config, 'blur')}
         onFocus={()=>this.context.onEvent(config, 'focus')}
       />
@@ -134,7 +145,7 @@ export default class InputItem extends BaseComponent {
       className='input'
       placeholder={placeholder} defaultValue={defaultValue} disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
       value={value}
-      onChange={(value)=>{this.context.onEvent(config, 'change', {value}),this.handleChange(value)}}
+      onChange={(value)=>{this.context.onEvent(config, 'change', {value}, this.setValue),this.handleChange(value)}}
       onBlur={()=>this.context.onEvent(config, 'blur')}
       onFocus={()=>this.context.onEvent(config, 'focus')}
       autosize={autosize} />
@@ -182,9 +193,9 @@ export default class InputItem extends BaseComponent {
     className='input'
     allowClear={clear} showTime={showTime} disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
     placeholder={placeholder} defaultValue={defaultValue}
-    value={moment(value)}
+    value={moment(value,format)}
     format={format}
-    onChange={(value)=>{this.context.onEvent(config, 'change', {value}),this.handleChange(value)}}
+    onChange={(value)=>{this.context.onEvent(config, 'change', {value}, this.setValue),this.handleChange(value)}}
     onBlur={()=>this.context.onEvent(config, 'blur')}
     onFocus={()=>this.context.onEvent(config, 'focus')}/>
   }
@@ -206,9 +217,9 @@ export default class InputItem extends BaseComponent {
     className='input'
     allowEmpty={clear}  disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
     placeholder={placeholder} defaultValue={defaultValue}
-    value={moment(value)}
+    value={moment(value,format)}
     format={format}
-    onChange={(value)=>{this.context.onEvent(config, 'change', {value}),this.handleChange(value)}}
+    onChange={(value)=>{this.context.onEvent(config, 'change', {value}, this.setValue),this.handleChange(value)}}
     onBlur={()=>this.context.onEvent(config, 'blur')}
     onFocus={()=>this.context.onEvent(config, 'focus')}/>
   }
@@ -227,7 +238,7 @@ export default class InputItem extends BaseComponent {
       className='input'
       disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
       checked={!!value} defaultChecked={!!defaultValue}
-      onChange={(value)=>{this.context.onEvent(config, 'change', {value}),this.handleChange(value)}}
+      onChange={(value)=>{this.context.onEvent(config, 'change', {value}, this.setValue),this.handleChange(value)}}
       onBlur={()=>this.context.onEvent(config, 'blur')}
       onFocus={()=>this.context.onEvent(config, 'focus')}
       ></Checkbox>
@@ -247,7 +258,7 @@ export default class InputItem extends BaseComponent {
       className='input'
       disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
       checked={!!value} defaultChecked={!!defaultValue}
-      onChange={(value)=>{this.context.onEvent(config, 'change', {value}),this.handleChange(value)}}
+      onChange={(value)=>{this.context.onEvent(config, 'change', {value}, this.setValue),this.handleChange(value)}}
       onBlur={()=>this.context.onEvent(config, 'blur')}
       onFocus={()=>this.context.onEvent(config, 'focus')}
       ></Switch>
@@ -278,7 +289,7 @@ export default class InputItem extends BaseComponent {
       defaultValue={defaultValue}
       placeholder="Select a person"
       optionFilterProp="children"
-      onChange={(value)=>{this.context.onEvent(this.props.config, 'change', {value}),this.handleChange(value)}}
+      onChange={(value)=>{this.context.onEvent(this.props.config, 'change', {value}, this.setValue),this.handleChange(value)}}
       onBlur={()=>this.context.onEvent(this.props.config, 'blur')}
       onFocus={()=>this.context.onEvent(this.props.config, 'focus')}
       filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
@@ -309,7 +320,7 @@ export default class InputItem extends BaseComponent {
         value={val}
         defaultValue={defaultValue}
         disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
-        onChange={(value)=>{this.context.onEvent(this.props.config, 'change', {value}),this.handleChange(value)}}
+        onChange={(value)=>{this.context.onEvent(this.props.config, 'change', {value}, this.setValue),this.handleChange(value)}}
         onBlur={()=>this.context.onEvent(this.props.config, 'blur')}
         onFocus={()=>this.context.onEvent(this.props.config, 'focus')}
         />
@@ -328,7 +339,11 @@ export default class InputItem extends BaseComponent {
       // todo format
       return value;
     }
-    const val = (value || []).slice();
+    let val = (value || []).slice();
+    if (!Array.isArray(val)) {
+      val = [val];
+    }
+    val = val.map(it => it.toString());
     return <RcRefSelect id={key}
         className='input'
         prefixCls='ant-select'
@@ -338,7 +353,7 @@ export default class InputItem extends BaseComponent {
         defaultValue={defaultValue}
         disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
         formatter={formatter}
-        onChange={(value)=>{this.context.onEvent(this.props.config, 'change', {value}),this.handleChange(value)}}
+        onChange={(value)=>{this.context.onEvent(this.props.config, 'change', {value}, this.setValue),this.handleChange(value)}}
         onBlur={()=>this.context.onEvent(this.props.config, 'blur')}
         onFocus={()=>this.context.onEvent(this.props.config, 'focus')}
         />

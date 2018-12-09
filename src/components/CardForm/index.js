@@ -72,7 +72,7 @@ export default class CardForm extends BaseComponent {
         },
       }
     };
-    return <FormItem {...formItemLayout} label={config.labelText} className='formItem'>
+    return <FormItem {...formItemLayout} label={config.labelText} className='formItem' extra={config.extra}>
             {getFieldDecorator(config.key,{rules: config.rules.map(it=>it.toJS())})(createComponent(config.formItem, {
               ...options,
               onChange:(value)=>this.handleChangeTimer(config.formItem, value)
