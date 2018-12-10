@@ -8,9 +8,7 @@ import {
   Popconfirm
 } from 'antd';
 import InputItem from '../InputItem';
-import {
-  Toolbar
-} from '../Toolbar';
+import Toolbar from '../Toolbar';
 import BaseComponent from '../BaseComponent';
 import './style';
 
