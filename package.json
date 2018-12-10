@@ -1,6 +1,6 @@
 {
   "name": "saas-plat-template",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "template component",
   "productName": "saas-plat",
   "main": "dist/index.js",

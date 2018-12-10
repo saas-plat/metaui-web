@@ -365,7 +365,7 @@ export default class InputItem extends BaseComponent {
   }
 
   renderText(config) {
-    return <span className='text'>{this.context.model[config.value]}</span>;
+    return <span className='text'>{config.value}</span>;
   }
 
   render() {
