@@ -164,4 +164,6 @@ const viewModel = ViewModel.create({
 }, model)
 
 storiesOf('Form', module)
-  .add('Form', () => <TemplateProvider onEvent={(target,event,args)=>action(target.name + '.'+event)(args)}><Form config={viewModel}/></TemplateProvider>)
+  .add('Form', () => <TemplateProvider
+    onEvent={(name,args)=>action(name)(args)}
+    onAction={(name,args)=>action(name)(args)}><Form config={viewModel}/></TemplateProvider>)
