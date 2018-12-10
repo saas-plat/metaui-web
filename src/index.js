@@ -5,6 +5,10 @@ import TemplateProvider from './components/TemplateProvider';
 import Form from './components/Form';
 import CardForm from './components/CardForm';
 import Toolbar from './components/Toolbar';
+import Total from './components/Form';
+import AssociateInfo from './components/CardForm';
+import ListGroup from './components/ListGroup';
+import TreeTable from './components/TreeTable';
 
 module.exports = {
   translater,
@@ -13,5 +17,9 @@ module.exports = {
   TemplateProvider,
   Form,
   CardForm,
-  Toolbar
+  Toolbar,
+  Total,
+  AssociateInfo,
+  ListGroup,
+  TreeTable,
 }
