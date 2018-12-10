@@ -18,6 +18,7 @@ import RcRefSelect from 'rc-ref-select';
 import BaseComponent from '../BaseComponent';
 import InputTable from '../InputTable';
 import moment from 'moment';
+import _set from 'lodash/set';
 
 const TextArea = Input.TextArea;
 const {
@@ -46,7 +47,7 @@ export default class InputItem extends BaseComponent {
   }) => {
     const setField = target.setValue || target.value;
     if (setField) {
-      target.store.model.set(setField, value);
+      _set(target.store.model, setField, value);
     // } else {
     //   console.log('setValue field not found, skip setValue');
     }

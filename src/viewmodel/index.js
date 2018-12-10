@@ -20,6 +20,7 @@ import {
 import {
   Toolbar
 } from './Toolbar';
+import _get from 'lodash/get';
 
 export default class ViewStore {
   @observable model;
@@ -28,8 +29,8 @@ export default class ViewStore {
     this.model = model;
   }
 
-  @computed get state(){
-    return this.model.get('state');
+  @computed get state() {
+    return _get(this.model, 'state', null);
   }
 
   parseExpr(txt) {
@@ -40,27 +41,34 @@ export default class ViewStore {
     return expr.exec(this.model);
   }
 
-  static create(obj = {}, model) {
-    const store = new ViewStore(model);
+  createViewModel(obj) {
     const type = (obj.type || '').toLowerCase();
     switch (type) {
     case 'toolbar':
-      return Toolbar.create(store, obj);
+      return Toolbar.create(this, obj);
     case 'form':
-      return Form.create(store, obj);
+      return Form.create(this, obj);
     case 'cardform':
-      return CardForm.create(store, obj);
+      return CardForm.create(this, obj);
     case 'tree':
-      return Tree.create(store, obj);
+      return Tree.create(this, obj);
     case 'table':
-      return Table.create(store, obj);
+      return Table.create(this, obj);
     case 'chart':
-      return Chart.create(store, obj);
+      return Chart.create(this, obj);
     case 'listgroup':
-      return ListGroup.create(store, obj);
+      return ListGroup.create(this, obj);
     default:
-      console.error('not support view type', obj.type);
       return null;
     }
+  }
+
+  static create(obj = {}, model) {
+    const store = new ViewStore(model);
+    const viewModel = store.createViewModel(obj);
+    if (!viewModel) {
+      console.error('not support view type', obj.type);
+    }
+    return viewModel;
   }
 }

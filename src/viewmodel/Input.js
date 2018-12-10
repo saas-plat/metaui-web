@@ -11,6 +11,7 @@ import {
 import {
   Table
 } from './Table';
+import _get from 'lodash/get'; 
 
 export class Input {
   store;
@@ -123,7 +124,7 @@ export class Input {
     this.getValueExpr = this.store.parseExpr(getValueExpr);
   }
   @computed get value() {
-    return this.store.model.get(this.getValue);
+    return _get(this.store.model,this.getValue);
   }
   @computed get setValue() {
     return this.store.execExpr(this.setValueExpr);

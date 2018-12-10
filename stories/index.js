@@ -5,14 +5,13 @@ import {
 import {
   action
 } from '@storybook/addon-actions';
-import {
-  Model,
+import { 
   ViewModel,
   TemplateProvider,
   Form
 } from '../src';
 
-const model = Model.create({
+const model = {
   item1: 'AAAAAAAAA',
   obj2: {
     f1: 'BBBBBBBB',
@@ -20,7 +19,7 @@ const model = Model.create({
     f3: 1000000.55,
   },
   array1: [1, 2, 3, 4, 100, 1000000.11]
-});
+};
 
 const viewModel = ViewModel.create({
   type: 'form',

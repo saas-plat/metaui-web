@@ -1,4 +1,3 @@
-import Model from './model';
 import ViewModel from './viewmodel';
 import translater from './translater';
 import TemplateProvider from './components/TemplateProvider';
@@ -12,7 +11,6 @@ import TreeTable from './components/TreeTable';
 
 module.exports = {
   translater,
-  Model,
   ViewModel,
   TemplateProvider,
   Form,
