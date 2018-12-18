@@ -1,6 +1,7 @@
 import {
   observable,
-  computed
+  computed,
+  isObservableObject
 } from "mobx";
 import {
   assignId
@@ -11,6 +12,7 @@ import {
 import {
   Table
 } from './Table';
+import moment from 'moment';
 import _get from 'lodash/get';
 
 export class Input {
@@ -19,6 +21,7 @@ export class Input {
 
   @observable name;
   @observable typeExpr;
+  @observable textExpr;
   @observable placeholderExpr;
   @observable clearExpr;
   @observable visibleExpr;
@@ -66,6 +69,12 @@ export class Input {
   }
   set type(typeExpr) {
     this.typeExpr = this.store.parseExpr(typeExpr);
+  }
+  @computed get text() {
+    return this.store.execExpr(this.textExpr);
+  }
+  set text(textExpr) {
+    this.textExpr = this.store.parseExpr(textExpr);
   }
   @computed get placeholder() {
     return this.store.execExpr(this.placeholderExpr);
@@ -124,7 +133,7 @@ export class Input {
     this.getValueExpr = this.store.parseExpr(getValueExpr);
   }
   @computed get value() {
-    return _get(this.store.model,this.getValue);
+    return _get(this.store.model, this.getValue);
   }
   @computed get setValue() {
     return this.store.execExpr(this.setValueExpr);
@@ -174,7 +183,7 @@ export class Input {
     return this.type + ':' + this.name;
   }
 
-  constructor(store, name, typeExpr = 'text', placeholderExpr, clearExpr = false, visibleExpr = true, disabledExpr = false, sizeExpr = 'default',
+  constructor(store, name, typeExpr = 'text', textExpr, placeholderExpr, clearExpr = false, visibleExpr = true, disabledExpr = false, sizeExpr = 'default',
     maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr = '', errorExpr = true, extraExpr, minExpr = -Infinity, maxExpr = Infinity,
     onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
     onErrorClick, onAfterErrorClick, onBeforeExtraClick, onExtraClick, onAfterExtraClick) {
@@ -184,6 +193,7 @@ export class Input {
     this.name = name || this.key;
 
     this.typeExpr = store.parseExpr(typeExpr);
+    this.textExpr = store.parseExpr(textExpr);
     this.placeholderExpr = store.parseExpr(placeholderExpr);
     this.clearExpr = store.parseExpr(clearExpr);
     this.disabledExpr = store.parseExpr(disabledExpr);
@@ -203,7 +213,7 @@ export class Input {
 
     this.onBeforeChange = onBeforeChange;
     // 默认赋值功能
-    this.onChange = onChange;  //  || Action.create(store, 'setValue') 
+    this.onChange = onChange; //  || Action.create(store, 'setValue')
     this.onAfterChange = onAfterChange;
     this.onBeforeBlur = onBeforeBlur;
     this.onBlur = onBlur;
@@ -225,7 +235,7 @@ export class Input {
       object.format = object.format || 'thousandth';
     }
     if (object.type === 'refselect') {
-      return new RefInput(store, object.name, object.type, object.placeholder, object.clear,
+      return new RefInput(store, object.name, object.type, object.text, object.placeholder, object.clear,
         object.visible, object.disabled, object.size, object.maxLength, object.width, object.defaultValue, object.value, object.setValue || object.value, object.mapping,
         object.format, object.error, object.extra, object.min, object.max, Action.create(store, object.onChanging),
         Action.create(store, object.onChange), Action.create(store, object.onChanged), Action.create(store, object.onBluring),
@@ -236,7 +246,7 @@ export class Input {
         Action.create(store, object.onExtraClicked),
         object.dropdownStyle);
     } else if (object.type === 'inputtable' || object.type === 'table') {
-      return new InputTable(store, object.name, object.type, object.placeholder, object.clear,
+      return new InputTable(store, object.name, object.type, object.text, object.placeholder, object.clear,
         object.visible, object.disabled, object.size, object.maxLength, object.width, object.defaultValue, object.value, object.setValue || object.value, object.mapping,
         object.format, object.error, object.extra, object.min, object.max, Action.create(store, object.onChanging),
         Action.create(store, object.onChange), Action.create(store, object.onChanged), Action.create(store, object.onBluring),
@@ -246,6 +256,17 @@ export class Input {
         Action.create(store, object.onExtraClicking), Action.create(store, object.onExtraClick),
         Action.create(store, object.onExtraClicked),
         Table.create(store, object.table));
+    } else if (object.type === 'select') {
+      return new Select(store, object.name, object.type, object.text, object.placeholder, object.clear,
+        object.visible, object.disabled, object.size, object.maxLength, object.width, object.defaultValue, object.value, object.setValue || object.value, object.mapping,
+        object.format, object.error, object.extra, object.min, object.max, Action.create(store, object.onChanging),
+        Action.create(store, object.onChange), Action.create(store, object.onChanged), Action.create(store, object.onBluring),
+        Action.create(store, object.onBlur), Action.create(store, object.onBlured), Action.create(store, object.onFocusing),
+        Action.create(store, object.onFocus), Action.create(store, object.onFocused), Action.create(store, object.onErrorClicking),
+        Action.create(store, object.onErrorClick), Action.create(store, object.onErrorClicked),
+        Action.create(store, object.onExtraClicking), Action.create(store, object.onExtraClick),
+        Action.create(store, object.onExtraClicked),
+        object.dataSource, object.mode, object.dataMapping);
     } else {
       if (!object.format) {
         switch (object.type) {
@@ -267,7 +288,7 @@ export class Input {
           break;
         }
       }
-      return new Input(store, object.name, object.type, object.placeholder, object.clear,
+      return new Input(store, object.name, object.type, object.text, object.placeholder, object.clear,
         object.visible, object.disabled, object.size, object.maxLength, object.width, object.defaultValue, object.value, object.setValue || object.value, object.mapping,
         object.format, object.error, object.extra, object.min, object.max, Action.create(store, object.onChanging),
         Action.create(store, object.onChange), Action.create(store, object.onChanged), Action.create(store, object.onBluring),
@@ -280,15 +301,84 @@ export class Input {
   }
 }
 
+export class Select extends Input {
+  @observable modeExpr;
+  @observable dataSourceExpr;
+  @observable dataMappingExpr;
+
+  @computed get mode() {
+    return this.store.execExpr(this.modeExpr);
+  }
+  set mode(modeExpr) {
+    this.modeExpr = this.store.parseExpr(modeExpr);
+  }
+
+  @computed get value() {
+    const value = _get(this.store.model, this.getValue);
+    if (isObservableObject(value)) {
+      return value.slice();
+    }
+    return value;
+  }
+
+  @computed get dataSource() {
+    const mapping = this.store.execExpr(this.dataMappingExpr);
+    let data = (this.store.execExpr(this.dataSourceExpr) || []);
+    if (isObservableObject(data)) {
+      data = data.slice();
+    }
+    return data.map(it => {
+      if (mapping) {
+        return this.store.map(it, mapping);
+      } else {
+        // 基本数据类型转成{text,value}
+        if (typeof it === 'string' || typeof it === 'number' || typeof it === 'boolean' || it instanceof Date) {
+          let text;
+          if (this.format && it instanceof Date) {
+            text = moment(it).toString(this.format);
+          } else {
+            text = it.toString();
+          }
+          return {
+            text,
+            value: it
+          }
+        } else if ('text' in it && 'value' in it) {
+          return it;
+        } else {
+          // 过滤掉
+          console.warn('invalid data format', it);
+          return;
+        }
+      }
+    }).filter(it => it);
+  }
+
+  constructor(store, name, typeExpr = 'text', textExpr, placeholderExpr, clearExpr = false, visibleExpr = true, disabledExpr = false, sizeExpr = 'default',
+    maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr = '', errorExpr = true, extraExpr, minExpr = -Infinity, maxExpr = Infinity,
+    onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
+    onErrorClick, onAfterErrorClick, onBeforeExtraClick, onExtraClick, onAfterExtraClick,
+    dataSourceExpr, modeExpr, dataMappingExpr) {
+    super(store, name, typeExpr, textExpr, placeholderExpr, clearExpr, visibleExpr, disabledExpr, sizeExpr,
+      maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr, errorExpr, extraExpr, minExpr, maxExpr,
+      onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
+      onErrorClick, onAfterErrorClick, onBeforeExtraClick, onExtraClick, onAfterExtraClick);
+
+    this.dataSourceExpr = store.parseExpr(dataSourceExpr || []);
+    this.modeExpr = store.parseExpr(modeExpr);
+    this.dataMappingExpr = store.parseExpr(dataMappingExpr);
+  }
+}
+
 export class InputTable extends Input {
   @observable table;
 
-  constructor(store, name, typeExpr = 'text', placeholderExpr, clearExpr = false, visibleExpr = true, disabledExpr = false, sizeExpr = 'default',
+  constructor(store, name, typeExpr = 'text', textExpr, placeholderExpr, clearExpr = false, visibleExpr = true, disabledExpr = false, sizeExpr = 'default',
     maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr = '', errorExpr = true, extraExpr, minExpr = -Infinity, maxExpr = Infinity,
     onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
     onErrorClick, onAfterErrorClick, onBeforeExtraClick, onExtraClick, onAfterExtraClick,
     table) {
-    super(store, name, typeExpr, placeholderExpr, clearExpr, visibleExpr, disabledExpr, sizeExpr,
+    super(store, name, typeExpr, textExpr, placeholderExpr, clearExpr, visibleExpr, disabledExpr, sizeExpr,
       maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr, errorExpr, extraExpr, minExpr, maxExpr,
       onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
       onErrorClick, onAfterErrorClick, onBeforeExtraClick, onExtraClick, onAfterExtraClick);
@@ -298,11 +388,11 @@ export class InputTable extends Input {
 }
 
 export class RefInput extends Input {
-  constructor(store, name, typeExpr = 'text', placeholderExpr, clearExpr = false, visibleExpr = true, disabledExpr = false, sizeExpr = 'default',
+  constructor(store, name, typeExpr = 'text', textExpr, placeholderExpr, clearExpr = false, visibleExpr = true, disabledExpr = false, sizeExpr = 'default',
     maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr = '', errorExpr = true, extraExpr, minExpr = -Infinity, maxExpr = Infinity,
     onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
     onErrorClick, onAfterErrorClick, onBeforeExtraClick, onExtraClick, onAfterExtraClick) {
-    super(store, name, typeExpr, placeholderExpr, clearExpr, visibleExpr, disabledExpr, sizeExpr,
+    super(store, name, typeExpr, textExpr, placeholderExpr, clearExpr, visibleExpr, disabledExpr, sizeExpr,
       maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr, errorExpr, extraExpr, minExpr, maxExpr,
       onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
       onErrorClick, onAfterErrorClick, onBeforeExtraClick, onExtraClick, onAfterExtraClick)

@@ -11,7 +11,7 @@ import {
   InputNumber,
   TimePicker,
   TreeSelect,
-  Select
+  Select,
 } from 'antd';
 import './style';
 import RcRefSelect from 'rc-ref-select';
@@ -38,7 +38,16 @@ export default class InputItem extends BaseComponent {
     value: PropTypes.any,
   }
 
+  state = {
+    data:[],
+    fetching: false,
+  }
+
   handleChange = (value) => {
+    this.setState({
+      data:[],
+      fetching: false,
+    });
     this.props.onChange && this.props.onChange(value);
   }
 
@@ -232,6 +241,7 @@ export default class InputItem extends BaseComponent {
       value,
       defaultValue,
       disabled,
+      text,
       size
     } = config;
     return <Checkbox id={key}
@@ -240,10 +250,10 @@ export default class InputItem extends BaseComponent {
       className='input'
       disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
       checked={!!value} defaultChecked={!!defaultValue}
-      onChange={(value)=>{this.context.onEvent(config, 'change', {value}, this.setValue),this.handleChange(value)}}
+      onChange={(e)=>{this.context.onEvent(config, 'change', {value:e.target.checked}, this.setValue),this.handleChange(e.target.checked)}}
       onBlur={()=>this.context.onEvent(config, 'blur')}
       onFocus={()=>this.context.onEvent(config, 'focus')}
-      ></Checkbox>
+      >{text}</Checkbox>
   }
 
   renderSwitch(config) {
@@ -266,38 +276,36 @@ export default class InputItem extends BaseComponent {
       ></Switch>
   }
 
+
+
   renderSelect(config) {
     const {
       key,
       value,
       defaultValue,
       disabled,
-      format,
-      size
+      placeholder,
+      size,
+      mode,
+      dataSource,
     } = config;
-    const formatter = (value) => {
-      // todo format
-      return value;
-    }
-    const val = (value || []).slice();
     return <Select
       id={key}
       className='input'
       autoFocus={this.props.autoFocus}
       size={size}
       showSearch
+      mode={mode}
       disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
-      value={val}
+      value={value}
       defaultValue={defaultValue}
-      placeholder="Select a person"
+      placeholder={placeholder}
       optionFilterProp="children"
+      filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
       onChange={(value)=>{this.context.onEvent(this.props.config, 'change', {value}, this.setValue),this.handleChange(value)}}
       onBlur={()=>this.context.onEvent(this.props.config, 'blur')}
-      onFocus={()=>this.context.onEvent(this.props.config, 'focus')}
-      filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
-      <Select.Option value="jack">Jack</Select.Option>
-      <Select.Option value="lucy">Lucy</Select.Option>
-      <Select.Option value="tom">Tom</Select.Option>
+      onFocus={()=>this.context.onEvent(this.props.config, 'focus')}>
+      {dataSource.map(d => <Select.Option key={d.value}>{d.text}</Select.Option>)}
     </Select>
   }
 
@@ -307,26 +315,55 @@ export default class InputItem extends BaseComponent {
       value,
       defaultValue,
       disabled,
-      format,
-      size
+      placeholder,
+      size,
+
+      showSearch,
+      allowClear,
+      multiple,
+      treeDefaultExpandAll,
+      maxHeight = 400
     } = config;
-    const formatter = (value) => {
-      // todo format
-      return value;
-    }
-    const val = (value || []).slice();
     return <TreeSelect id={key}
         autoFocus={this.props.autoFocus}
         size={size}
+        allowClear={allowClear}
+        showSearch={showSearch}
+        placeholder={placeholder}
+        multiple={multiple}
+        treeDefaultExpandAll={treeDefaultExpandAll}
+        dropdownStyle={{ maxHeight: maxHeight, overflow: 'auto' }}
         className='input'
-        value={val}
+        value={value}
         defaultValue={defaultValue}
         disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
         onChange={(value)=>{this.context.onEvent(this.props.config, 'change', {value}, this.setValue),this.handleChange(value)}}
         onBlur={()=>this.context.onEvent(this.props.config, 'blur')}
-        onFocus={()=>this.context.onEvent(this.props.config, 'focus')}
-        />
+        onFocus={()=>this.context.onEvent(this.props.config, 'focus')}>
+          <TreeSelect.TreeNode value="parent 1" title="parent 1" key="0-1">
+           <TreeSelect.TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
+             <TreeSelect.TreeNode value="leaf1" title="my leaf" key="random" />
+             <TreeSelect.TreeNode value="leaf2" title="your leaf" key="random1" />
+           </TreeSelect.TreeNode>
+           <TreeSelect.TreeNode value="parent 1-1" title="parent 1-1" key="random2">
+             <TreeSelect.TreeNode value="sss" title={<b style={{ color: '#08c' }}>sss</b>} key="random3" />
+           </TreeSelect.TreeNode>
+          </TreeSelect.TreeNode>
+        </TreeSelect>
   }
+
+  fetchRemoteData = (value) => {
+   // this.setState({ data: [], fetching: true });
+   // fetch('https://randomuser.me/api/?results=5')
+   //   .then(response => response.json())
+   //   .then((body) => {
+   //     const data = body.results.map(user => ({
+   //       text: `${user.name.first} ${user.name.last}`,
+   //       value: user.login.username,
+   //     }));
+   //     this.setState({ data, fetching: false });
+   //   });
+ }
 
   renderRefSelect(config) {
     const {
@@ -341,8 +378,8 @@ export default class InputItem extends BaseComponent {
       // todo format
       return value;
     }
-    let val = (value || []).slice();
-    if (!Array.isArray(val)) {
+    let val;
+    if (!Array.isArray(value)) {
       val = [val];
     }
     val = val.map(it => it.toString());
