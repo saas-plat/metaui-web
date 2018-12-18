@@ -11,7 +11,7 @@ import {
 import {
   Table
 } from './Table';
-import _get from 'lodash/get'; 
+import _get from 'lodash/get';
 
 export class Input {
   store;
@@ -203,7 +203,7 @@ export class Input {
 
     this.onBeforeChange = onBeforeChange;
     // 默认赋值功能
-    this.onChange = onChange || Action.create(store, 'setValue');
+    this.onChange = onChange;  //  || Action.create(store, 'setValue') 
     this.onAfterChange = onAfterChange;
     this.onBeforeBlur = onBeforeBlur;
     this.onBlur = onBlur;

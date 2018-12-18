@@ -42,12 +42,13 @@ export default class InputItem extends BaseComponent {
     this.props.onChange && this.props.onChange(value);
   }
 
-  setValue = async (target, {
+  setValue = async ({
     value
   }) => {
-    const setField = target.setValue || target.value;
+    //debugger
+    const setField = this.props.config.setValue || this.props.config.value;
     if (setField) {
-      _set(target.store.model, setField, value);
+      _set(this.props.config.store.model, setField, value);
     // } else {
     //   console.log('setValue field not found, skip setValue');
     }
@@ -196,7 +197,7 @@ export default class InputItem extends BaseComponent {
     placeholder={placeholder} defaultValue={defaultValue}
     value={moment(value,format)}
     format={format}
-    onChange={(value)=>{this.context.onEvent(config, 'change', {value}, this.setValue),this.handleChange(value)}}
+    onChange={(moment,value)=>{this.context.onEvent(config, 'change', {value}, this.setValue),this.handleChange(value)}}
     onBlur={()=>this.context.onEvent(config, 'blur')}
     onFocus={()=>this.context.onEvent(config, 'focus')}/>
   }

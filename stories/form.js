@@ -5,19 +5,25 @@ import {
 import {
   action
 } from '@storybook/addon-actions';
-import { 
+import {
   ViewModel,
   TemplateProvider,
   Form
 } from '../src';
 
 const model = {
+  code: '',
   item1: 'AAAAAAAAA',
   obj2: {
     f1: 'BBBBBBBB',
     f2: new Date(),
     f3: 1000000.55,
   },
+  objarr: [{
+    a: 1
+  }, {
+    a: 20.11
+  }],
   array1: [1, 2, 3, 4, 100, 1000000.11]
 };
 
@@ -100,7 +106,7 @@ const viewModel = ViewModel.create({
     text: 'item4',
     type: 'refselect',
     dropdownStyle: 'table',
-    value: 'obj2.f1',
+    value: 'Aggs.sum(objarr,"a")',
     query: 'obj1{id,pid,a,b,c,d,e}',
     variables: '{pid:$id}',
     idField: 'id',
@@ -120,13 +126,13 @@ const viewModel = ViewModel.create({
       value: 'd'
     }],
     mapping: '={f1:$a,f2:$b,f3:$c}',
-    setValue: 'obj2'
+    setValue: 'objarr'
   }, {
     name: 'item6',
     text: 'item6',
     type: 'refselect',
     dropdownStyle: 'treetable',
-    value: 'obj2.f1',
+    value: 'Aggs.sum(objarr,"a")',
     multiple: false,
     range: 'leaf', // leaf parent all
     treequery: '=obj1{id,pid,a,b,c,d,e}',
@@ -150,7 +156,7 @@ const viewModel = ViewModel.create({
       value: 'd'
     }],
     mapping: '={f1:$a,f2:$b,f3:$c}',
-    setValue: 'obj2'
+    setValue: 'objarr'
   }, {
     name: 'inputtable',
     text: 'inputtable',
@@ -162,7 +168,10 @@ const viewModel = ViewModel.create({
   }]
 }, model)
 
-storiesOf('Form', module)
+storiesOf('数据表单', module)
   .add('Form', () => <TemplateProvider
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}><Form config={viewModel}/></TemplateProvider>)
+    .add('CardForm', () => <TemplateProvider
+      onEvent={(name,args)=>action(name)(args)}
+      onAction={(name,args)=>action(name)(args)}><Form config={viewModel}/></TemplateProvider>)

@@ -62,13 +62,13 @@ export default class TemplateProvider extends React.Component {
     tasks.push(this.triggerEvent(targetEvent.beforeEvent, args, this.props.context));
     typeof defaultAction.action === 'object' ?
       tasks.push(this.executeAction(defaultAction.action, args, this.props.context)) :
-      typeof defaultAction.beforeAction === 'function' ?
+      typeof defaultAction.action === 'function' ?
       tasks.push(defaultAction.action(args, this.props.context)) :
       null;
     tasks.push(this.triggerEvent(targetEvent.event, args, this.props.context));
     typeof defaultAction.afterAction === 'object' ?
       tasks.push(this.executeAction(defaultAction.afterAction, args, this.props.context)) :
-      typeof defaultAction.beforeAction === 'function' ?
+      typeof defaultAction.afterAction === 'function' ?
       tasks.push(defaultAction.afterAction(args, this.props.context)) :
       null;
     tasks.push(this.triggerEvent(targetEvent.afterEvent, args, this.props.context));

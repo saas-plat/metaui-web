@@ -58,7 +58,7 @@ class Rule {
 
   static create(store, obj, options = {}) {
     return new Rule(store,
-      obj.type || 'string',
+      obj.type,
       obj.message || (options.labelText + translater.t('输入无效')),
       obj.required || options.required,
       obj.enum || options.enum,
