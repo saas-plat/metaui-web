@@ -94,6 +94,9 @@ const select = ViewModel.create({
   type: 'select',
   value: 'number',
   dataSource: '$array',
+  displayField: 'a',
+  valueField: 'b',
+  sortField: 'a',
 }, model);
 
 const treeselect = ViewModel.create({
@@ -105,6 +108,7 @@ const treeselect = ViewModel.create({
   valueField: 'b',
   idField: 'id',
   pidField: 'pid',
+  sortField: 'a',
 }, model);
 
 const refselect = ViewModel.create({

@@ -34,9 +34,6 @@ export class Input {
   @observable errorExpr;
   @observable extraExpr;
 
-  @observable minExpr;
-  @observable maxExpr;
-
   // 取值表达式
   @observable getValueExpr;
   // 赋值映射
@@ -166,12 +163,6 @@ export class Input {
     this.extraExpr = this.store.parseExpr(extraExpr);
   }
 
-  @computed get min() {
-    return this.store.execExpr(this.minExpr);
-  }
-  set min(minExpr) {
-    this.minExpr = this.store.parseExpr(minExpr);
-  }
   @computed get max() {
     return this.store.execExpr(this.maxExpr);
   }
@@ -184,7 +175,7 @@ export class Input {
   }
 
   constructor(store, name, typeExpr = 'text', textExpr, placeholderExpr, clearExpr = false, visibleExpr = true, disabledExpr = false, sizeExpr = 'default',
-    maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr = '', errorExpr = true, extraExpr, minExpr = -Infinity, maxExpr = Infinity,
+    maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr = '', errorExpr = true, extraExpr,
     onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
     onErrorClick, onAfterErrorClick, onBeforeExtraClick, onExtraClick, onAfterExtraClick) {
 
@@ -208,8 +199,6 @@ export class Input {
     this.formatExpr = store.parseExpr(formatExpr);
     this.errorExpr = store.parseExpr(errorExpr);
     this.extraExpr = store.parseExpr(extraExpr);
-    this.minExpr = store.parseExpr(minExpr);
-    this.maxExpr = store.parseExpr(maxExpr);
 
     this.onBeforeChange = onBeforeChange;
     // 默认赋值功能
@@ -237,7 +226,7 @@ export class Input {
     if (object.type === 'refselect') {
       return new RefInput(store, object.name, object.type, object.text, object.placeholder, object.clear,
         object.visible, object.disabled, object.size, object.maxLength, object.width, object.defaultValue, object.value, object.setValue || object.value, object.mapping,
-        object.format, object.error, object.extra, object.min, object.max, Action.create(store, object.onChanging),
+        object.format, object.error, object.extra, Action.create(store, object.onChanging),
         Action.create(store, object.onChange), Action.create(store, object.onChanged), Action.create(store, object.onBluring),
         Action.create(store, object.onBlur), Action.create(store, object.onBlured), Action.create(store, object.onFocusing),
         Action.create(store, object.onFocus), Action.create(store, object.onFocused), Action.create(store, object.onErrorClicking),
@@ -248,7 +237,7 @@ export class Input {
     } else if (object.type === 'inputtable' || object.type === 'table') {
       return new InputTable(store, object.name, object.type, object.text, object.placeholder, object.clear,
         object.visible, object.disabled, object.size, object.maxLength, object.width, object.defaultValue, object.value, object.setValue || object.value, object.mapping,
-        object.format, object.error, object.extra, object.min, object.max, Action.create(store, object.onChanging),
+        object.format, object.error, object.extra, Action.create(store, object.onChanging),
         Action.create(store, object.onChange), Action.create(store, object.onChanged), Action.create(store, object.onBluring),
         Action.create(store, object.onBlur), Action.create(store, object.onBlured), Action.create(store, object.onFocusing),
         Action.create(store, object.onFocus), Action.create(store, object.onFocused), Action.create(store, object.onErrorClicking),
@@ -259,14 +248,39 @@ export class Input {
     } else if (object.type === 'select') {
       return new Select(store, object.name, object.type, object.text, object.placeholder, object.clear,
         object.visible, object.disabled, object.size, object.maxLength, object.width, object.defaultValue, object.value, object.setValue || object.value, object.mapping,
-        object.format, object.error, object.extra, object.min, object.max, Action.create(store, object.onChanging),
+        object.format, object.error, object.extra, Action.create(store, object.onChanging),
         Action.create(store, object.onChange), Action.create(store, object.onChanged), Action.create(store, object.onBluring),
         Action.create(store, object.onBlur), Action.create(store, object.onBlured), Action.create(store, object.onFocusing),
         Action.create(store, object.onFocus), Action.create(store, object.onFocused), Action.create(store, object.onErrorClicking),
         Action.create(store, object.onErrorClick), Action.create(store, object.onErrorClicked),
         Action.create(store, object.onExtraClicking), Action.create(store, object.onExtraClick),
         Action.create(store, object.onExtraClicked),
-        object.dataSource, object.mode, object.dataMapping);
+        object.dataSource, object.mode,
+        object.displayField, object.valueField, object.sortField);
+    } else if (object.type === 'treeselect') {
+      return new TreeSelect(store, object.name, object.type, object.text, object.placeholder, object.clear,
+        object.visible, object.disabled, object.size, object.maxLength, object.width, object.defaultValue, object.value, object.setValue || object.value, object.mapping,
+        object.format, object.error, object.extra, Action.create(store, object.onChanging),
+        Action.create(store, object.onChange), Action.create(store, object.onChanged), Action.create(store, object.onBluring),
+        Action.create(store, object.onBlur), Action.create(store, object.onBlured), Action.create(store, object.onFocusing),
+        Action.create(store, object.onFocus), Action.create(store, object.onFocused), Action.create(store, object.onErrorClicking),
+        Action.create(store, object.onErrorClick), Action.create(store, object.onErrorClicked),
+        Action.create(store, object.onExtraClicking), Action.create(store, object.onExtraClick),
+        Action.create(store, object.onExtraClicked),
+        object.dataSource, object.mode,
+        object.displayField, object.valueField, object.sortField,
+        object.showSearch, object.allowClear, object.treeDefaultExpandAll, object.maxHeight, object.treeCheckable,
+        object.idField, object.pidField);
+    } else if (object.type === 'number') {
+      return new NumberInput(store, object.name, object.type, object.text, object.placeholder, object.clear,
+        object.visible, object.disabled, object.size, object.maxLength, object.width, object.defaultValue, object.value, object.setValue || object.value, object.mapping,
+        object.format, object.error, object.extra, object.min, object.max, Action.create(store, object.onChanging),
+        Action.create(store, object.onChange), Action.create(store, object.onChanged), Action.create(store, object.onBluring),
+        Action.create(store, object.onBlur), Action.create(store, object.onBlured), Action.create(store, object.onFocusing),
+        Action.create(store, object.onFocus), Action.create(store, object.onFocused), Action.create(store, object.onErrorClicking),
+        Action.create(store, object.onErrorClick), Action.create(store, object.onErrorClicked),
+        Action.create(store, object.onExtraClicking), Action.create(store, object.onExtraClick),
+        Action.create(store, object.onExtraClicked));
     } else {
       if (!object.format) {
         switch (object.type) {
@@ -290,7 +304,7 @@ export class Input {
       }
       return new Input(store, object.name, object.type, object.text, object.placeholder, object.clear,
         object.visible, object.disabled, object.size, object.maxLength, object.width, object.defaultValue, object.value, object.setValue || object.value, object.mapping,
-        object.format, object.error, object.extra, object.min, object.max, Action.create(store, object.onChanging),
+        object.format, object.error, object.extra, Action.create(store, object.onChanging),
         Action.create(store, object.onChange), Action.create(store, object.onChanged), Action.create(store, object.onBluring),
         Action.create(store, object.onBlur), Action.create(store, object.onBlured), Action.create(store, object.onFocusing),
         Action.create(store, object.onFocus), Action.create(store, object.onFocused), Action.create(store, object.onErrorClicking),
@@ -301,10 +315,38 @@ export class Input {
   }
 }
 
+export class NumberInput extends Input {
+
+  @observable minExpr;
+  @observable maxExpr;
+
+  @computed get min() {
+    return this.store.execExpr(this.minExpr);
+  }
+  set min(minExpr) {
+    this.minExpr = this.store.parseExpr(minExpr);
+  }
+
+  constructor(store, name, typeExpr = 'text', textExpr, placeholderExpr, clearExpr = false, visibleExpr = true, disabledExpr = false, sizeExpr = 'default',
+    maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr = '', errorExpr = true, extraExpr, minExpr = -Infinity, maxExpr = Infinity,
+    onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
+    onErrorClick, onAfterErrorClick, onBeforeExtraClick, onExtraClick, onAfterExtraClick) {
+    super(store, name, typeExpr, textExpr, placeholderExpr, clearExpr, visibleExpr, disabledExpr, sizeExpr,
+      maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr, errorExpr, extraExpr,
+      onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
+      onErrorClick, onAfterErrorClick, onBeforeExtraClick, onExtraClick, onAfterExtraClick);
+
+    this.minExpr = store.parseExpr(minExpr);
+    this.maxExpr = store.parseExpr(maxExpr);
+  }
+}
+
 export class Select extends Input {
   @observable modeExpr;
   @observable dataSourceExpr;
-  @observable dataMappingExpr;
+  @observable displayFieldExpr;
+  @observable valueFieldExpr;
+  @observable sortFieldExpr;
 
   @computed get mode() {
     return this.store.execExpr(this.modeExpr);
@@ -321,52 +363,234 @@ export class Select extends Input {
     return value;
   }
 
+  @computed get displayField() {
+    return this.store.execExpr(this.displayFieldExpr);
+  }
+  set displayField(displayFieldExpr) {
+    this.displayFieldExpr = this.store.parseExpr(displayFieldExpr);
+  }
+  @computed get valueField() {
+    return this.store.execExpr(this.valueFieldExpr);
+  }
+  set valueField(valueFieldExpr) {
+    this.valueFieldExpr = this.store.parseExpr(valueFieldExpr);
+  }
+  @computed get sortField() {
+    return this.store.execExpr(this.sortFieldExpr);
+  }
+  set sortField(sortFieldExpr) {
+    this.sortFieldExpr = this.store.parseExpr(sortFieldExpr);
+  }
+
   @computed get dataSource() {
-    const mapping = this.store.execExpr(this.dataMappingExpr);
     let data = (this.store.execExpr(this.dataSourceExpr) || []);
     if (isObservableObject(data)) {
       data = data.slice();
     }
     return data.map(it => {
-      if (mapping) {
-        return this.store.map(it, mapping);
-      } else {
-        // 基本数据类型转成{text,value}
-        if (typeof it === 'string' || typeof it === 'number' || typeof it === 'boolean' || it instanceof Date) {
-          let text;
-          if (this.format && it instanceof Date) {
-            text = moment(it).toString(this.format);
-          } else {
-            text = it.toString();
-          }
-          return {
-            text,
-            value: it
-          }
-        } else if ('text' in it && 'value' in it) {
-          return it;
+
+      // 基本数据类型转成{text,value}
+      if (isPrimaryType(it)) {
+        let text;
+        if (this.format && it instanceof Date) {
+          text = moment(it).toString(this.format);
         } else {
-          // 过滤掉
-          console.warn('invalid data format', it);
-          return;
+          text = it.toString();
         }
+        return {
+          text,
+          value: it
+        }
+      } else {
+        let text;
+        if (this.format && it[this.displayField] instanceof Date) {
+          text = moment(it[this.displayField]).toString(this.format);
+        } else {
+          text = it.toString();
+        }
+        return {
+          text,
+          value: it[this.valueField]
+        };
       }
-    }).filter(it => it);
+
+    });
   }
 
   constructor(store, name, typeExpr = 'text', textExpr, placeholderExpr, clearExpr = false, visibleExpr = true, disabledExpr = false, sizeExpr = 'default',
-    maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr = '', errorExpr = true, extraExpr, minExpr = -Infinity, maxExpr = Infinity,
+    maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr = '', errorExpr = true, extraExpr,
     onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
     onErrorClick, onAfterErrorClick, onBeforeExtraClick, onExtraClick, onAfterExtraClick,
-    dataSourceExpr, modeExpr, dataMappingExpr) {
+    dataSourceExpr, modeExpr, dataMappingExpr, displayFieldExpr, valueFieldExpr, sortFieldExpr) {
     super(store, name, typeExpr, textExpr, placeholderExpr, clearExpr, visibleExpr, disabledExpr, sizeExpr,
-      maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr, errorExpr, extraExpr, minExpr, maxExpr,
+      maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr, errorExpr, extraExpr,
       onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
       onErrorClick, onAfterErrorClick, onBeforeExtraClick, onExtraClick, onAfterExtraClick);
 
     this.dataSourceExpr = store.parseExpr(dataSourceExpr || []);
     this.modeExpr = store.parseExpr(modeExpr);
     this.dataMappingExpr = store.parseExpr(dataMappingExpr);
+
+    this.displayFieldExpr = store.parseExpr(displayFieldExpr || 'id');
+    this.valueFieldExpr = store.parseExpr(valueFieldExpr || 'id');
+    this.sortFieldExpr = store.parseExpr(sortFieldExpr);
+  }
+}
+
+const isPrimaryType = (it) => {
+  return typeof it === 'string' || typeof it === 'number' || typeof it === 'boolean' || it instanceof Date;
+}
+
+const getTree = (data = [], pid = null, {
+  displayField,
+  valueField,
+  idField,
+  pidField,
+  sortField
+}) => {
+  return data.filter(it => {
+    if (isPrimaryType(it)) {
+      return it === pid;
+    }
+    return it[pidField] === pid;
+  }).sort((a, b) => {
+    if (isPrimaryType(a)) {
+      return a - b;
+    }
+    return a[sortField] - b[sortField];
+  }).map(it => {
+    let key, title, value;
+    if (isPrimaryType(it)) {
+      key = data.indexOf(it);
+      if (this.format && it instanceof Date) {
+        title = moment(it).toString(this.format);
+      } else {
+        title = it.toString();
+      }
+      value = it;
+    } else {
+      key = it[idField];
+      if (this.format && it[this.displayField] instanceof Date) {
+        title = moment(it[this.displayField]).toString(this.format);
+      } else {
+        title = it.toString();
+      }
+      value = it[valueField];
+    }
+    return {
+      key,
+      value,
+      title,
+      children: getTree(data, value, {
+        displayField,
+        valueField,
+        idField,
+        pidField,
+        sortField
+      })
+    }
+  });
+}
+
+export class TreeSelect extends Select {
+
+  @observable idFieldExpr;
+  @observable pidFieldExpr;
+
+  @observable showSearchExpr;
+  @observable allowClearExpr;
+  @observable treeDefaultExpandAllExpr;
+  @observable maxHeightExpr;
+  @observable treeCheckableExpr;
+
+  @computed get multiple() {
+    return this.mode === 'multiple';
+  }
+  set multiple(multipleExpr) {
+    this.mode(this.store.execExpr(this.multipleExpr) ? 'multiple' : null);
+  }
+
+  @computed get showSearch() {
+    return this.store.execExpr(this.showSearchExpr);
+  }
+  set showSearch(showSearchExpr) {
+    this.showSearchExpr = this.store.parseExpr(showSearchExpr);
+  }
+  @computed get allowClear() {
+    return this.store.execExpr(this.allowClearExpr);
+  }
+  set allowClear(allowClearExpr) {
+    this.allowClearExpr = this.store.parseExpr(allowClearExpr);
+  }
+  @computed get treeDefaultExpandAll() {
+    return this.store.execExpr(this.treeDefaultExpandAllExpr);
+  }
+  set treeDefaultExpandAll(treeDefaultExpandAllExpr) {
+    this.treeDefaultExpandAllExpr = this.store.parseExpr(treeDefaultExpandAllExpr);
+  }
+  @computed get maxHeight() {
+    return this.store.execExpr(this.maxHeightExpr);
+  }
+  set maxHeight(maxHeightExpr) {
+    this.maxHeightExpr = this.store.parseExpr(maxHeightExpr);
+  }
+  @computed get treeCheckable() {
+    return this.store.execExpr(this.treeCheckableExpr);
+  }
+  set treeCheckable(treeCheckableExpr) {
+    this.treeCheckableExpr = this.store.parseExpr(treeCheckableExpr);
+  }
+
+  @computed get idField() {
+    return this.store.execExpr(this.idFieldExpr);
+  }
+  set idField(idFieldExpr) {
+    this.idFieldExpr = this.store.parseExpr(idFieldExpr);
+  }
+  @computed get pidField() {
+    return this.store.execExpr(this.pidFieldExpr);
+  }
+  set pidField(pidFieldExpr) {
+    this.pidFieldExpr = this.store.parseExpr(pidFieldExpr);
+  }
+
+  @computed get dataSource() {
+    let data = (this.store.execExpr(this.dataSourceExpr) || []);
+    if (isObservableObject(data)) {
+      data = data.slice();
+    }
+    // 转成tree结构
+    return getTree(data, null, {
+      displayField: this.displayField,
+      valueField: this.valueField,
+      idField: this.idField,
+      pidField: this.pidField,
+      sortField: this.sortField
+    });
+  }
+
+  constructor(store, name, typeExpr = 'text', textExpr, placeholderExpr, clearExpr = false, visibleExpr = true, disabledExpr = false, sizeExpr = 'default',
+    maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr = '', errorExpr = true, extraExpr,
+    onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
+    onErrorClick, onAfterErrorClick, onBeforeExtraClick, onExtraClick, onAfterExtraClick,
+    dataSourceExpr, modeExpr, dataMappingExpr,
+    showSearchExpr, allowClearExpr, treeDefaultExpandAllExpr, maxHeightExpr, treeCheckableExpr,
+    displayFieldExpr, valueFieldExpr, sortFieldExpr, idFieldExpr, pidFieldExpr) {
+    super(store, name, typeExpr, textExpr, placeholderExpr, clearExpr, visibleExpr, disabledExpr, sizeExpr,
+      maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr, errorExpr, extraExpr,
+      onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
+      onErrorClick, onAfterErrorClick, onBeforeExtraClick, onExtraClick, onAfterExtraClick,
+      dataSourceExpr, modeExpr,
+      displayFieldExpr, valueFieldExpr, sortFieldExpr);
+
+    this.showSearchExpr = store.parseExpr(showSearchExpr || false);
+    this.allowClearExpr = store.parseExpr(allowClearExpr || true);
+    this.treeDefaultExpandAllExpr = store.parseExpr(treeDefaultExpandAllExpr || true);
+    this.maxHeightExpr = store.parseExpr(maxHeightExpr || 400);
+    this.treeCheckableExpr = store.parseExpr(treeCheckableExpr || false);
+
+    this.idFieldExpr = store.parseExpr(idFieldExpr || 'id');
+    this.pidFieldExpr = store.parseExpr(pidFieldExpr || 'pid');
   }
 }
 
@@ -374,12 +598,12 @@ export class InputTable extends Input {
   @observable table;
 
   constructor(store, name, typeExpr = 'text', textExpr, placeholderExpr, clearExpr = false, visibleExpr = true, disabledExpr = false, sizeExpr = 'default',
-    maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr = '', errorExpr = true, extraExpr, minExpr = -Infinity, maxExpr = Infinity,
+    maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr = '', errorExpr = true, extraExpr,
     onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
     onErrorClick, onAfterErrorClick, onBeforeExtraClick, onExtraClick, onAfterExtraClick,
     table) {
     super(store, name, typeExpr, textExpr, placeholderExpr, clearExpr, visibleExpr, disabledExpr, sizeExpr,
-      maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr, errorExpr, extraExpr, minExpr, maxExpr,
+      maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr, errorExpr, extraExpr,
       onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
       onErrorClick, onAfterErrorClick, onBeforeExtraClick, onExtraClick, onAfterExtraClick);
 
@@ -389,11 +613,11 @@ export class InputTable extends Input {
 
 export class RefInput extends Input {
   constructor(store, name, typeExpr = 'text', textExpr, placeholderExpr, clearExpr = false, visibleExpr = true, disabledExpr = false, sizeExpr = 'default',
-    maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr = '', errorExpr = true, extraExpr, minExpr = -Infinity, maxExpr = Infinity,
+    maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr = '', errorExpr = true, extraExpr,
     onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
     onErrorClick, onAfterErrorClick, onBeforeExtraClick, onExtraClick, onAfterExtraClick) {
     super(store, name, typeExpr, textExpr, placeholderExpr, clearExpr, visibleExpr, disabledExpr, sizeExpr,
-      maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr, errorExpr, extraExpr, minExpr, maxExpr,
+      maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr, errorExpr, extraExpr,
       onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
       onErrorClick, onAfterErrorClick, onBeforeExtraClick, onExtraClick, onAfterExtraClick)
   }

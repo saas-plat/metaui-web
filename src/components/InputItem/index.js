@@ -39,13 +39,13 @@ export default class InputItem extends BaseComponent {
   }
 
   state = {
-    data:[],
+    data: [],
     fetching: false,
   }
 
   handleChange = (value) => {
     this.setState({
-      data:[],
+      data: [],
       fetching: false,
     });
     this.props.onChange && this.props.onChange(value);
@@ -58,8 +58,8 @@ export default class InputItem extends BaseComponent {
     const setField = this.props.config.setValue || this.props.config.value;
     if (setField) {
       _set(this.props.config.store.model, setField, value);
-    // } else {
-    //   console.log('setValue field not found, skip setValue');
+      // } else {
+      //   console.log('setValue field not found, skip setValue');
     }
   }
 
@@ -276,8 +276,6 @@ export default class InputItem extends BaseComponent {
       ></Switch>
   }
 
-
-
   renderSelect(config) {
     const {
       key,
@@ -318,10 +316,12 @@ export default class InputItem extends BaseComponent {
       placeholder,
       size,
 
-      showSearch,
-      allowClear,
-      multiple,
-      treeDefaultExpandAll,
+      dataSource,
+      showSearch = false,
+      allowClear = true,
+      multiple = false,
+      treeCheckable= false,
+      treeDefaultExpandAll = true,
       maxHeight = 400
     } = config;
     return <TreeSelect id={key}
@@ -329,41 +329,35 @@ export default class InputItem extends BaseComponent {
         size={size}
         allowClear={allowClear}
         showSearch={showSearch}
+        filterTreeNode={(input, node) => node.props.title.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         placeholder={placeholder}
         multiple={multiple}
+        treeCheckable={treeCheckable}
         treeDefaultExpandAll={treeDefaultExpandAll}
         dropdownStyle={{ maxHeight: maxHeight, overflow: 'auto' }}
         className='input'
+        treeData={dataSource}
         value={value}
         defaultValue={defaultValue}
         disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
         onChange={(value)=>{this.context.onEvent(this.props.config, 'change', {value}, this.setValue),this.handleChange(value)}}
         onBlur={()=>this.context.onEvent(this.props.config, 'blur')}
         onFocus={()=>this.context.onEvent(this.props.config, 'focus')}>
-          <TreeSelect.TreeNode value="parent 1" title="parent 1" key="0-1">
-           <TreeSelect.TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
-             <TreeSelect.TreeNode value="leaf1" title="my leaf" key="random" />
-             <TreeSelect.TreeNode value="leaf2" title="your leaf" key="random1" />
-           </TreeSelect.TreeNode>
-           <TreeSelect.TreeNode value="parent 1-1" title="parent 1-1" key="random2">
-             <TreeSelect.TreeNode value="sss" title={<b style={{ color: '#08c' }}>sss</b>} key="random3" />
-           </TreeSelect.TreeNode>
-          </TreeSelect.TreeNode>
         </TreeSelect>
   }
 
   fetchRemoteData = (value) => {
-   // this.setState({ data: [], fetching: true });
-   // fetch('https://randomuser.me/api/?results=5')
-   //   .then(response => response.json())
-   //   .then((body) => {
-   //     const data = body.results.map(user => ({
-   //       text: `${user.name.first} ${user.name.last}`,
-   //       value: user.login.username,
-   //     }));
-   //     this.setState({ data, fetching: false });
-   //   });
- }
+    // this.setState({ data: [], fetching: true });
+    // fetch('https://randomuser.me/api/?results=5')
+    //   .then(response => response.json())
+    //   .then((body) => {
+    //     const data = body.results.map(user => ({
+    //       text: `${user.name.first} ${user.name.last}`,
+    //       value: user.login.username,
+    //     }));
+    //     this.setState({ data, fetching: false });
+    //   });
+  }
 
   renderRefSelect(config) {
     const {
