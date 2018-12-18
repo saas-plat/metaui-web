@@ -100,6 +100,7 @@ const select = ViewModel.create({
 }, model);
 
 const treeselect = ViewModel.create({
+  name: 'treesel',
   type: 'treeselect',
   value: 'number',
   dataSource: '$tree',

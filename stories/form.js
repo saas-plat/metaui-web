@@ -175,7 +175,7 @@ const listgroup = ViewModel.create({
 
 },model);
 
-storiesOf('数据表单', module)
+storiesOf('数据录入', module)
   .add('Form', () => <TemplateProvider
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}><Form config={viewModel}/></TemplateProvider>)

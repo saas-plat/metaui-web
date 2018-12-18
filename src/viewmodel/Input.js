@@ -441,12 +441,13 @@ const isPrimaryType = (it) => {
   return typeof it === 'string' || typeof it === 'number' || typeof it === 'boolean' || it instanceof Date;
 }
 
-const getTree = (data = [], pid = null, {
+const getTree = (data = [], pid, {
   displayField,
   valueField,
   idField,
   pidField,
-  sortField
+  sortField,
+  format
 }) => {
   return data.filter(it => {
     if (isPrimaryType(it)) {
@@ -459,21 +460,22 @@ const getTree = (data = [], pid = null, {
     }
     return a[sortField] - b[sortField];
   }).map(it => {
-    let key, title, value;
+    let key, title, value, id;
     if (isPrimaryType(it)) {
+      id = it;
       key = data.indexOf(it);
-      if (this.format && it instanceof Date) {
-        title = moment(it).toString(this.format);
+      if (format && it instanceof Date) {
+        title = moment(it).toString(format);
       } else {
         title = it.toString();
       }
       value = it;
     } else {
-      key = it[idField];
-      if (this.format && it[this.displayField] instanceof Date) {
-        title = moment(it[this.displayField]).toString(this.format);
+      key =id = it[idField];
+      if (format && it[displayField] instanceof Date) {
+        title = moment(it[displayField]).toString(format);
       } else {
-        title = it.toString();
+        title = it[displayField].toString();
       }
       value = it[valueField];
     }
@@ -481,12 +483,13 @@ const getTree = (data = [], pid = null, {
       key,
       value,
       title,
-      children: getTree(data, value, {
+      children: getTree(data, id, {
         displayField,
         valueField,
         idField,
         pidField,
-        sortField
+        sortField,
+        format
       })
     }
   });
@@ -560,12 +563,13 @@ export class TreeSelect extends Select {
       data = data.slice();
     }
     // 转成tree结构
-    return getTree(data, null, {
+    return getTree(data, undefined, {
       displayField: this.displayField,
       valueField: this.valueField,
       idField: this.idField,
       pidField: this.pidField,
-      sortField: this.sortField
+      sortField: this.sortField,
+      format: this.format,
     });
   }
 
@@ -573,9 +577,10 @@ export class TreeSelect extends Select {
     maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr = '', errorExpr = true, extraExpr,
     onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
     onErrorClick, onAfterErrorClick, onBeforeExtraClick, onExtraClick, onAfterExtraClick,
-    dataSourceExpr, modeExpr, dataMappingExpr,
+    dataSourceExpr, modeExpr, 
+    displayFieldExpr, valueFieldExpr, sortFieldExpr,
     showSearchExpr, allowClearExpr, treeDefaultExpandAllExpr, maxHeightExpr, treeCheckableExpr,
-    displayFieldExpr, valueFieldExpr, sortFieldExpr, idFieldExpr, pidFieldExpr) {
+     idFieldExpr, pidFieldExpr) {
     super(store, name, typeExpr, textExpr, placeholderExpr, clearExpr, visibleExpr, disabledExpr, sizeExpr,
       maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr, errorExpr, extraExpr,
       onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
