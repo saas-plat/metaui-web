@@ -8,7 +8,8 @@ import {
 import {
   ViewModel,
   TemplateProvider,
-  Form
+  Form,
+  ListGroup
 } from '../src';
 
 const model = {
@@ -168,6 +169,12 @@ const viewModel = ViewModel.create({
   }]
 }, model)
 
+const listgroup = ViewModel.create({
+  name: 'listgroup',
+  type: 'listgroup',
+
+},model);
+
 storiesOf('数据表单', module)
   .add('Form', () => <TemplateProvider
     onEvent={(name,args)=>action(name)(args)}
@@ -175,3 +182,6 @@ storiesOf('数据表单', module)
     .add('CardForm', () => <TemplateProvider
       onEvent={(name,args)=>action(name)(args)}
       onAction={(name,args)=>action(name)(args)}><Form config={viewModel}/></TemplateProvider>)
+      .add('ListGroup', () => <TemplateProvider
+        onEvent={(name,args)=>action(name)(args)}
+        onAction={(name,args)=>action(name)(args)}><ListGroup config={listgroup}/></TemplateProvider>)

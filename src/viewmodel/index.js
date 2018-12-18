@@ -4,6 +4,9 @@ import {
 } from "mobx";
 import Expression from 'saas-plat-expression';
 import {
+  Input
+} from './Input';
+import {
   Form,
   CardForm
 } from './Form';
@@ -44,20 +47,49 @@ export default class ViewStore {
   createViewModel(obj) {
     const type = (obj.type || '').toLowerCase();
     switch (type) {
+      // common
     case 'toolbar':
       return Toolbar.create(this, obj);
+
+      //  input
+    case 'text':
+    case 'textbox':
+    case 'input':
+    case 'textarea':
+    case 'number':
+    case 'check':
+    case 'checkbox':
+    case 'switch':
+    case 'date':
+    case 'datetime':
+    case 'month':
+    case 'daterange':
+    case 'week':
+    case 'time':
+    case 'select':
+    case 'listselect':
+    case 'treeselect':
+    case 'refselect':
+    case 'treetableselect':
+    case 'inputtable':
+      return Input.create(this, obj);
+
+      // form
     case 'form':
       return Form.create(this, obj);
     case 'cardform':
       return CardForm.create(this, obj);
-    case 'tree':
+    case 'listgroup':
+      return ListGroup.create(this, obj);
+
+      // display
+    case 'treetable':
       return Tree.create(this, obj);
     case 'table':
       return Table.create(this, obj);
     case 'chart':
       return Chart.create(this, obj);
-    case 'listgroup':
-      return ListGroup.create(this, obj);
+
     default:
       return null;
     }

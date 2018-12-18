@@ -8,6 +8,7 @@ import {
 import ViewModel from '../src/viewmodel';
 import TemplateProvider  from '../src/components/TemplateProvider';
 import InputItem from '../src/components/InputItem';
+import EditableTable from '../src/components/EditableTable';
 
 const model = {
   text: 'AAAAAAAAA',
@@ -30,67 +31,64 @@ const model = {
 
 const textbox = ViewModel.create({
   type: 'text',
-  value: 'code',
-  text: 'code',
+  value: 'text',
   icon: 'form',
   tip: 'xxxxxxxxxxxxx',
   rules: [{
     required: true
   }]
-});
+},model);
 
 const datetime = ViewModel.create({
   type: 'datetime',
-  value: 'obj2.f2',
-  text: 'datetime',
-  icon: 'lock',
+  value: 'date',
   required: true,
   extra: 'xxxxxxxxxxxxx'
-});
+},model);
 
 const time = ViewModel.create({
   type: 'time',
-  value: 'obj2.f2',
+  value: 'date',
   text: 'time'
-});
+},model);
 
 const number = ViewModel.create({
   type: 'number',
-  value: 'obj2.f3',
+  value: 'number',
   format: 'thousandth',
   text: 'number'
-});
+},model);
 
 const check = ViewModel.create({
   type: 'check',
-  value: 'obj2.f3',
+  value: 'bool',
   text: 'check'
-});
+},model);
 
 const switchbox = ViewModel.create({
   type: 'switch',
-  value: 'obj2.f3',
+  value: 'bool',
   text: 'switch'
-});
+},model);
 
 const select = ViewModel.create({
   type: 'select',
-  value: 'array1',
+  value: 'array',
   text: 'select'
-});
+},model);
 
 const treeselect = ViewModel.create({
   type: 'treeselect',
-  value: 'array1',
+  value: 'array',
   text: 'treeselect'
-});
+},model);
 
 const refselect = ViewModel.create({
   name: 'item2',
   text: 'item2',
   type: 'refselect',
   dropdownStyle: 'list',
-  value: 'array1',
+  value: 'array',
   multiple: true,
   query: '=obj1{a,b,c,d,e}',
   displayField: 'a',
@@ -98,7 +96,7 @@ const refselect = ViewModel.create({
   mapping: '={f1:$a,f2:$b,f3:$c}',
   setValue: 'obj2',
   pageSize: 200
-});
+},model);
 
 const reftree = ViewModel.create({
   name: 'item3',
@@ -117,7 +115,7 @@ const reftree = ViewModel.create({
   leafField: 'leaf',
   mapping: '={f1:$a,f2:$b,f3:$c}',
   setValue: 'obj2'
-});
+},model);
 
 const reftable = ViewModel.create({
   name: 'item4',
@@ -145,7 +143,7 @@ const reftable = ViewModel.create({
   }],
   mapping: '={f1:$a,f2:$b,f3:$c}',
   setValue: 'objarr'
-});
+},model);
 
 const reftreetable = ViewModel.create({
   name: 'item6',
@@ -177,19 +175,67 @@ const reftreetable = ViewModel.create({
   }],
   mapping: '={f1:$a,f2:$b,f3:$c}',
   setValue: 'objarr'
-});
+},model);
 
 const inputtable = ViewModel.create({
   name: 'inputtable',
   text: 'inputtable',
   type: 'inputtable',
-  value: 'array1',
+  value: 'objarr',
   table: {
 
   }
-});
+},model);
+
+const editabletable = ViewModel.create({
+  name: 'inputtable',
+  type: 'editabletable',
+  value: 'objarr',
+  table: {
+
+  }
+},model);
 
 storiesOf('数据录入', module)
   .add('TextBox', () => <TemplateProvider
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}><InputItem config={textbox}/></TemplateProvider>)
+    .add('DatePicker', () => <TemplateProvider
+      onEvent={(name,args)=>action(name)(args)}
+      onAction={(name,args)=>action(name)(args)}><InputItem config={datetime}/></TemplateProvider>)
+      .add('TimeBox', () => <TemplateProvider
+        onEvent={(name,args)=>action(name)(args)}
+        onAction={(name,args)=>action(name)(args)}><InputItem config={time}/></TemplateProvider>)
+        .add('NumberBox', () => <TemplateProvider
+          onEvent={(name,args)=>action(name)(args)}
+          onAction={(name,args)=>action(name)(args)}><InputItem config={number}/></TemplateProvider>)
+          .add('CheckBox', () => <TemplateProvider
+            onEvent={(name,args)=>action(name)(args)}
+            onAction={(name,args)=>action(name)(args)}><InputItem config={check}/></TemplateProvider>)
+            .add('Switch', () => <TemplateProvider
+              onEvent={(name,args)=>action(name)(args)}
+              onAction={(name,args)=>action(name)(args)}><InputItem config={switchbox}/></TemplateProvider>)
+              .add('Select', () => <TemplateProvider
+                onEvent={(name,args)=>action(name)(args)}
+                onAction={(name,args)=>action(name)(args)}><InputItem config={select}/></TemplateProvider>)
+                .add('TreeSelect', () => <TemplateProvider
+                  onEvent={(name,args)=>action(name)(args)}
+                  onAction={(name,args)=>action(name)(args)}><InputItem config={treeselect}/></TemplateProvider>)
+                  .add('RefSelect', () => <TemplateProvider
+                    onEvent={(name,args)=>action(name)(args)}
+                    onAction={(name,args)=>action(name)(args)}><InputItem config={refselect}/></TemplateProvider>)
+                    .add('RefTree', () => <TemplateProvider
+                      onEvent={(name,args)=>action(name)(args)}
+                      onAction={(name,args)=>action(name)(args)}><InputItem config={reftree}/></TemplateProvider>)
+                      .add('RefTable', () => <TemplateProvider
+                        onEvent={(name,args)=>action(name)(args)}
+                        onAction={(name,args)=>action(name)(args)}><InputItem config={reftable}/></TemplateProvider>)
+                        .add('RefTreeTable', () => <TemplateProvider
+                          onEvent={(name,args)=>action(name)(args)}
+                          onAction={(name,args)=>action(name)(args)}><InputItem config={reftreetable}/></TemplateProvider>)
+                          .add('InputTable', () => <TemplateProvider
+                            onEvent={(name,args)=>action(name)(args)}
+                            onAction={(name,args)=>action(name)(args)}><InputItem config={inputtable}/></TemplateProvider>)
+                            .add('EditableTable', () => <TemplateProvider
+                              onEvent={(name,args)=>action(name)(args)}
+                              onAction={(name,args)=>action(name)(args)}><EditableTable config={editabletable}/></TemplateProvider>)
