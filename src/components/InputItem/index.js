@@ -374,7 +374,7 @@ export default class InputItem extends BaseComponent {
     }
     let val;
     if (!Array.isArray(value)) {
-      val = [val];
+      val = [value];
     }
     val = val.map(it => it.toString());
     return <RcRefSelect id={key}
