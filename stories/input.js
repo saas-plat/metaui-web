@@ -116,12 +116,13 @@ const refselect = ViewModel.create({
   name: 'item2',
   text: 'item2',
   type: 'refselect',
-  dropdownStyle: 'list',
   value: 'obj.f1',
-  multiple: true,
+  dropdownStyle: 'list',
+  multiple: false,
+  showSearch: true,
   query: '=obj1{a,b,c,d,e}',
-  displayField: 'a',
-  sortField: 'a', // 树形全部取回来需要按照树结构排序
+  displayField: 'f1',
+  sortField: 'f1', // 树形全部取回来需要按照树结构排序
   mapping: '={f1:$a,f2:$b,f3:$c}',
   setValue: 'obj',
   pageSize: 200
@@ -131,9 +132,9 @@ const reftree = ViewModel.create({
   name: 'item3',
   text: 'item3',
   type: 'refselect',
-  dropdownStyle: 'tree',
   value: 'obj.f1',
   expandAll: true,
+  dropdownStyle: 'tree',
   //expandedKeys:[],
   range: 'leaf', // leaf parent all
   query: '=obj1{id,pid,a,b,c,d,e,leaf}',
@@ -178,7 +179,7 @@ const reftreetable = ViewModel.create({
   name: 'item6',
   text: 'item6',
   type: 'refselect',
-  dropdownStyle: 'treetable',
+  dropdownStyle: 'table',
   value: 'Aggs.sum(objarr,"a")',
   multiple: false,
   range: 'leaf', // leaf parent all

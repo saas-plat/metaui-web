@@ -233,7 +233,16 @@ export class Input {
         Action.create(store, object.onErrorClick), Action.create(store, object.onErrorClicked),
         Action.create(store, object.onExtraClicking), Action.create(store, object.onExtraClick),
         Action.create(store, object.onExtraClicked),
-        object.dropdownStyle);
+        object.dropdownStyle,
+        object.multiple,
+        object.showSearch,
+        object.query,
+        object.displayField,
+        object.sortField, // 树形全部取回来需要按照树结构排序
+        object.mapping,
+        object.setValue,
+        object.pageSize
+      );
     } else if (object.type === 'inputtable' || object.type === 'table') {
       return new InputTable(store, object.name, object.type, object.text, object.placeholder, object.clear,
         object.visible, object.disabled, object.size, object.maxLength, object.width, object.defaultValue, object.value, object.setValue || object.value, object.mapping,
@@ -471,7 +480,7 @@ const getTree = (data = [], pid, {
       }
       value = it;
     } else {
-      key =id = it[idField];
+      key = id = it[idField];
       if (format && it[displayField] instanceof Date) {
         title = moment(it[displayField]).toString(format);
       } else {
@@ -577,10 +586,10 @@ export class TreeSelect extends Select {
     maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr = '', errorExpr = true, extraExpr,
     onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
     onErrorClick, onAfterErrorClick, onBeforeExtraClick, onExtraClick, onAfterExtraClick,
-    dataSourceExpr, modeExpr, 
+    dataSourceExpr, modeExpr,
     displayFieldExpr, valueFieldExpr, sortFieldExpr,
     showSearchExpr, allowClearExpr, treeDefaultExpandAllExpr, maxHeightExpr, treeCheckableExpr,
-     idFieldExpr, pidFieldExpr) {
+    idFieldExpr, pidFieldExpr) {
     super(store, name, typeExpr, textExpr, placeholderExpr, clearExpr, visibleExpr, disabledExpr, sizeExpr,
       maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr, errorExpr, extraExpr,
       onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
@@ -617,13 +626,53 @@ export class InputTable extends Input {
 }
 
 export class RefInput extends Input {
+  @observable dropdownStyleExpr;
+  @observable multipleExpr;
+  @observable showSearchExpr;
+  @observable queryExpr;
+  @observable displayFieldExpr;
+  @observable sortFieldExpr;
+  @observable showHeaderExpr;
+
+  @computed get showHeader(){
+    return this.store.exec(this.showHeaderExpr)  ;
+  }
+
   constructor(store, name, typeExpr = 'text', textExpr, placeholderExpr, clearExpr = false, visibleExpr = true, disabledExpr = false, sizeExpr = 'default',
     maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr = '', errorExpr = true, extraExpr,
     onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
-    onErrorClick, onAfterErrorClick, onBeforeExtraClick, onExtraClick, onAfterExtraClick) {
+    onErrorClick, onAfterErrorClick, onBeforeExtraClick, onExtraClick, onAfterExtraClick,
+    dropdownStyleExpr,
+    multipleExpr,
+    showSearchExpr,
+    queryExpr,
+    displayFieldExpr,
+    sortFieldExpr,
+    showHeaderExpr,
+    columns,
+    pageSizeExpr) {
     super(store, name, typeExpr, textExpr, placeholderExpr, clearExpr, visibleExpr, disabledExpr, sizeExpr,
       maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr, errorExpr, extraExpr,
       onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
       onErrorClick, onAfterErrorClick, onBeforeExtraClick, onExtraClick, onAfterExtraClick)
+
+    this.dropdownStyleExpr = store.parseExpr(dropdownStyleExpr || 'table');
+    this.multipleExpr = store.parseExpr(multipleExpr || false);
+    this.showSearchExpr = store.parseExpr(showSearchExpr || true);
+    this.queryExpr = store.parseExpr(queryExpr);
+    this.displayFieldExpr = store.parseExpr(displayFieldExpr);
+    this.sortFieldExpr = store.parseExpr(sortFieldExpr);
+    this.showHeaderExpr = store.parseExpr(showHeaderExpr || this.dropdownStyle === 'table');
+    this.pageSizeExpr = store.parseExpr(pageSizeExpr || 20);
+    if (!columns){
+        // list 和 tree 不显示header
+      if (this.dropdownStyle !== 'table'){
+        columns = [{
+          key: 'value',
+          dataIndex: 'value'
+        }]
+      }
+    }
+    this.columns = columns;
   }
 }

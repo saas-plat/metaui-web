@@ -365,13 +365,8 @@ export default class InputItem extends BaseComponent {
       value,
       defaultValue,
       disabled,
-      format,
       size
     } = config;
-    const formatter = (value) => {
-      // todo format
-      return value;
-    }
     let val;
     if (!Array.isArray(value)) {
       val = [value];
@@ -385,7 +380,6 @@ export default class InputItem extends BaseComponent {
         size={size}
         defaultValue={defaultValue}
         disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
-        formatter={formatter}
         onChange={(value)=>{this.context.onEvent(this.props.config, 'change', {value}, this.setValue),this.handleChange(value)}}
         onBlur={()=>this.context.onEvent(this.props.config, 'blur')}
         onFocus={()=>this.context.onEvent(this.props.config, 'focus')}
