@@ -352,17 +352,36 @@ export default class InputItem extends BaseComponent {
       value,
       defaultValue,
       disabled,
-      size
+      size,
+
+      dataSource,
+      showHeader = true,
+      showSearch =true,
+      allowClear =true,
+      multiple =false,
+      defaultExpandAll = false,
+      defaultExpandKeys =[],
+      columns,
     } = config;
     let val;
     if (!Array.isArray(value)) {
       val = [value];
     }
     val = val.map(it => it.toString());
+    // labelInValue 用于格式化显示
     return <RcRefSelect id={key}
         className='input'
         prefixCls='ant-select'
         autoFocus={this.props.autoFocus}
+        labelInValue={true}
+        allowClear={allowClear}
+        showSearch={showSearch}
+        multiple={multiple}
+        dataSource={dataSource}
+        defaultExpandAll={defaultExpandAll}
+        defaultExpandKeys={defaultExpandKeys}
+        showHeader={showHeader}
+        columns={columns}
         value={val}
         size={size}
         defaultValue={defaultValue}
