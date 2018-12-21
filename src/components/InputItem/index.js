@@ -346,19 +346,6 @@ export default class InputItem extends BaseComponent {
         </TreeSelect>
   }
 
-  fetchRemoteData = (value) => {
-    // this.setState({ data: [], fetching: true });
-    // fetch('https://randomuser.me/api/?results=5')
-    //   .then(response => response.json())
-    //   .then((body) => {
-    //     const data = body.results.map(user => ({
-    //       text: `${user.name.first} ${user.name.last}`,
-    //       value: user.login.username,
-    //     }));
-    //     this.setState({ data, fetching: false });
-    //   });
-  }
-
   renderRefSelect(config) {
     const {
       key,
@@ -382,8 +369,7 @@ export default class InputItem extends BaseComponent {
         disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
         onChange={(value)=>{this.context.onEvent(this.props.config, 'change', {value}, this.setValue),this.handleChange(value)}}
         onBlur={()=>this.context.onEvent(this.props.config, 'blur')}
-        onFocus={()=>this.context.onEvent(this.props.config, 'focus')}
-        />
+        onFocus={()=>this.context.onEvent(this.props.config, 'focus')}/>
   }
 
   renderInputTable(config) {

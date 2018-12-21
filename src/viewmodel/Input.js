@@ -680,68 +680,60 @@ export class RefInput extends Input {
   @observable defaultExpandAllExpr;
   @observable defaultExpandKeysExpr;
 
-  @observable data = [];
-  @observable total;
-  @observable loading = false;
-
-  @computed get loaded() {
-    return this.total !== undefined;
-  }
-
   set dropdownStyle(dropdownStyleExpr) {
     this.dropdownStyleExpr = this.store.parseExpr(dropdownStyleExpr);
     this.showHeader = this.dropdownStyle === 'table';
   }
   @computed get dropdownStyle() {
-    return this.store.exec(this.dropdownStyleExpr);
+    return this.store.execExpr(this.dropdownStyleExpr);
   }
   set multiple(multipleExpr) {
     this.multipleExpr = this.store.parseExpr(multipleExpr);
   }
   @computed get multiple() {
-    return !!this.store.exec(this.multipleExpr);
+    return !!this.store.execExpr(this.multipleExpr);
   }
   set showSearch(showSearchExpr) {
     this.showSearchExpr = this.store.parseExpr(showSearchExpr);
   }
   @computed get showSearch() {
-    return !!this.store.exec(this.showSearchExpr);
+    return !!this.store.execExpr(this.showSearchExpr);
   }
   set query(queryExpr) {
     this.queryExpr = this.store.parseExpr(queryExpr);
   }
   @computed get query() {
-    return this.store.exec(this.queryExpr);
+    return this.store.execExpr(this.queryExpr);
   }
   set variables(variablesExpr) {
     this.variablesExpr = this.store.parseExpr(variablesExpr);
   }
   @computed get variables() {
-    return this.store.exec(this.variablesExpr);
+    return this.store.execExpr(this.variablesExpr);
   }
   set displayField(displayFieldExpr) {
     this.displayFieldExpr = this.store.parseExpr(displayFieldExpr);
   }
   @computed get displayField() {
-    return this.store.exec(this.displayFieldExpr);
+    return this.store.execExpr(this.displayFieldExpr);
   }
   set sortField(sortFieldExpr) {
     this.sortFieldExpr = this.store.parseExpr(sortFieldExpr);
   }
   @computed get sortField() {
-    return this.store.exec(this.sortFieldExpr);
+    return this.store.execExpr(this.sortFieldExpr);
   }
   set showHeader(showHeaderExpr) {
     this.showHeaderExpr = this.store.parseExpr(showHeaderExpr);
   }
   @computed get showHeader() {
-    return !!this.store.exec(this.showHeaderExpr);
+    return !!this.store.execExpr(this.showHeaderExpr);
   }
   set pageSize(pageSizeExpr) {
     this.pageSizeExpr = this.store.parseExpr(pageSizeExpr);
   }
   @computed get pageSize() {
-    return parseInt(this.store.exec(this.pageSizeExpr)) || 20;
+    return parseInt(this.store.execExpr(this.pageSizeExpr)) || 20;
   }
 
   @computed get idField() {
@@ -777,6 +769,14 @@ export class RefInput extends Input {
   }
   set defaultExpandKeys(defaultExpandKeysExpr) {
     this.defaultExpandKeysExpr = this.store.parseExpr(defaultExpandKeysExpr);
+  }
+
+  @observable data = [];
+  @observable total;
+  @observable loading = false;
+
+  @computed get loaded() {
+    return this.total !== undefined;
   }
 
   @computed get dataSource() {
