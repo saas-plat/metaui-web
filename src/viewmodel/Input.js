@@ -1,10 +1,12 @@
 import {
   observable,
   computed,
+  action,
   isObservableObject
 } from "mobx";
 import {
-  assignId
+  assignId,
+  queryData
 } from './util';
 import {
   Action
@@ -236,12 +238,13 @@ export class Input {
         object.dropdownStyle,
         object.multiple,
         object.showSearch,
-        object.query,
+        object.query, object.variables,
         object.displayField,
-        object.sortField, // 树形全部取回来需要按照树结构排序
+        object.sortField,
         object.mapping,
         object.setValue,
-        object.pageSize
+        object.pageSize,
+        object.idField, object.pidField, object.rootIdValue, object.defaultExpandAll, object.defaultExpandKeys
       );
     } else if (object.type === 'inputtable' || object.type === 'table') {
       return new InputTable(store, object.name, object.type, object.text, object.placeholder, object.clear,
@@ -279,7 +282,7 @@ export class Input {
         object.dataSource, object.mode,
         object.displayField, object.valueField, object.sortField,
         object.showSearch, object.allowClear, object.treeDefaultExpandAll, object.maxHeight, object.treeCheckable,
-        object.idField, object.pidField);
+        object.idField, object.pidField, object.rootIdValue);
     } else if (object.type === 'number') {
       return new NumberInput(store, object.name, object.type, object.text, object.placeholder, object.clear,
         object.visible, object.disabled, object.size, object.maxLength, object.width, object.defaultValue, object.value, object.setValue || object.value, object.mapping,
@@ -504,6 +507,33 @@ const getTree = (data = [], pid, {
   });
 }
 
+const getTreeTable = (data = [], pid, {
+  idField,
+  pidField,
+  sortField
+}) => {
+  return data.filter(it => {
+    return it[pidField] === pid;
+  }).sort((a, b) => {
+    if (isPrimaryType(a)) {
+      return a - b;
+    }
+    return a[sortField] - b[sortField];
+  }).map(it => {
+    let key, id;
+    key = id = it[idField];
+    return {
+      key,
+      ...it,
+      children: getTree(data, id, {
+        idField,
+        pidField,
+        sortField
+      })
+    }
+  });
+}
+
 export class TreeSelect extends Select {
 
   @observable idFieldExpr;
@@ -514,6 +544,7 @@ export class TreeSelect extends Select {
   @observable treeDefaultExpandAllExpr;
   @observable maxHeightExpr;
   @observable treeCheckableExpr;
+  @observable rootIdValueExpr;
 
   @computed get multiple() {
     return this.mode === 'multiple';
@@ -565,6 +596,12 @@ export class TreeSelect extends Select {
   set pidField(pidFieldExpr) {
     this.pidFieldExpr = this.store.parseExpr(pidFieldExpr);
   }
+  @computed get rootIdValue() {
+    return this.store.execExpr(this.rootIdValueExpr);
+  }
+  set rootIdValue(rootIdValueExpr) {
+    this.rootIdValueExpr = this.store.parseExpr(rootIdValueExpr);
+  }
 
   @computed get dataSource() {
     let data = (this.store.execExpr(this.dataSourceExpr) || []);
@@ -572,7 +609,7 @@ export class TreeSelect extends Select {
       data = data.slice();
     }
     // 转成tree结构
-    return getTree(data, undefined, {
+    return getTree(data, this.rootIdValue, {
       displayField: this.displayField,
       valueField: this.valueField,
       idField: this.idField,
@@ -589,7 +626,7 @@ export class TreeSelect extends Select {
     dataSourceExpr, modeExpr,
     displayFieldExpr, valueFieldExpr, sortFieldExpr,
     showSearchExpr, allowClearExpr, treeDefaultExpandAllExpr, maxHeightExpr, treeCheckableExpr,
-    idFieldExpr, pidFieldExpr) {
+    idFieldExpr, pidFieldExpr, rootIdValueExpr) {
     super(store, name, typeExpr, textExpr, placeholderExpr, clearExpr, visibleExpr, disabledExpr, sizeExpr,
       maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr, errorExpr, extraExpr,
       onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
@@ -605,6 +642,7 @@ export class TreeSelect extends Select {
 
     this.idFieldExpr = store.parseExpr(idFieldExpr || 'id');
     this.pidFieldExpr = store.parseExpr(pidFieldExpr || 'pid');
+    this.rootIdValueExpr = store.parseExpr(rootIdValueExpr);
   }
 }
 
@@ -630,12 +668,147 @@ export class RefInput extends Input {
   @observable multipleExpr;
   @observable showSearchExpr;
   @observable queryExpr;
+  @observable variablesExpr;
   @observable displayFieldExpr;
   @observable sortFieldExpr;
   @observable showHeaderExpr;
+  @observable pageSizeExpr;
 
-  @computed get showHeader(){
-    return this.store.exec(this.showHeaderExpr)  ;
+  @observable idFieldExpr;
+  @observable pidFieldExpr;
+  @observable rootIdValueExpr;
+  @observable defaultExpandAllExpr;
+  @observable defaultExpandKeysExpr;
+
+  @observable data = [];
+  @observable total;
+  @observable loading = false;
+
+  @computed get loaded() {
+    return this.total !== undefined;
+  }
+
+  set dropdownStyle(dropdownStyleExpr) {
+    this.dropdownStyleExpr = this.store.parseExpr(dropdownStyleExpr);
+    this.showHeader = this.dropdownStyle === 'table';
+  }
+  @computed get dropdownStyle() {
+    return this.store.exec(this.dropdownStyleExpr);
+  }
+  set multiple(multipleExpr) {
+    this.multipleExpr = this.store.parseExpr(multipleExpr);
+  }
+  @computed get multiple() {
+    return !!this.store.exec(this.multipleExpr);
+  }
+  set showSearch(showSearchExpr) {
+    this.showSearchExpr = this.store.parseExpr(showSearchExpr);
+  }
+  @computed get showSearch() {
+    return !!this.store.exec(this.showSearchExpr);
+  }
+  set query(queryExpr) {
+    this.queryExpr = this.store.parseExpr(queryExpr);
+  }
+  @computed get query() {
+    return this.store.exec(this.queryExpr);
+  }
+  set variables(variablesExpr) {
+    this.variablesExpr = this.store.parseExpr(variablesExpr);
+  }
+  @computed get variables() {
+    return this.store.exec(this.variablesExpr);
+  }
+  set displayField(displayFieldExpr) {
+    this.displayFieldExpr = this.store.parseExpr(displayFieldExpr);
+  }
+  @computed get displayField() {
+    return this.store.exec(this.displayFieldExpr);
+  }
+  set sortField(sortFieldExpr) {
+    this.sortFieldExpr = this.store.parseExpr(sortFieldExpr);
+  }
+  @computed get sortField() {
+    return this.store.exec(this.sortFieldExpr);
+  }
+  set showHeader(showHeaderExpr) {
+    this.showHeaderExpr = this.store.parseExpr(showHeaderExpr);
+  }
+  @computed get showHeader() {
+    return !!this.store.exec(this.showHeaderExpr);
+  }
+  set pageSize(pageSizeExpr) {
+    this.pageSizeExpr = this.store.parseExpr(pageSizeExpr);
+  }
+  @computed get pageSize() {
+    return parseInt(this.store.exec(this.pageSizeExpr)) || 20;
+  }
+
+  @computed get idField() {
+    return this.store.execExpr(this.idFieldExpr);
+  }
+  set idField(idFieldExpr) {
+    this.idFieldExpr = this.store.parseExpr(idFieldExpr);
+  }
+  @computed get pidField() {
+    return this.store.execExpr(this.pidFieldExpr);
+  }
+  set pidField(pidFieldExpr) {
+    this.pidFieldExpr = this.store.parseExpr(pidFieldExpr);
+  }
+  @computed get rootIdValue() {
+    return this.store.execExpr(this.rootIdValueExpr);
+  }
+  set rootIdValue(rootIdValueExpr) {
+    this.rootIdValueExpr = this.store.parseExpr(rootIdValueExpr);
+  }
+  @computed get defaultExpandAll() {
+    return !!this.store.execExpr(this.defaultExpandAllExpr);
+  }
+  set defaultExpandAll(defaultExpandAllExpr) {
+    this.defaultExpandAllExpr = this.store.parseExpr(defaultExpandAllExpr);
+  }
+  @computed get defaultExpandKeys() {
+    let keys = this.store.execExpr(this.defaultExpandKeysExpr);
+    if (isObservableObject(keys)) {
+      keys = keys.slice();
+    }
+    return keys;
+  }
+  set defaultExpandKeys(defaultExpandKeysExpr) {
+    this.defaultExpandKeysExpr = this.store.parseExpr(defaultExpandKeysExpr);
+  }
+
+  @computed get dataSource() {
+    const data = this.data.slice();
+    // 转成tree结构
+    return getTreeTable(data, this.rootIdValue, {
+      idField: this.idField,
+      pidField: this.pidField,
+      sortField: this.sortField,
+    });
+  }
+
+  @action async load(refresh = false) {
+    if (refresh || !this.total || this.data.length < this.total) {
+      this.loading = true;
+      try {
+        const {
+          results,
+          total
+        } = await queryData(this.query, {
+          ...this.variables,
+          limit: this.pageSize,
+          offset: refresh ? 0 : this.data.length
+        });
+        this.total = total;
+        this.data.splice(this.data.length, refresh ? this.data.length : 0, results);
+        this.loading = false;
+      } catch (err) {
+        this.loading = false;
+        throw err;
+      }
+    }
   }
 
   constructor(store, name, typeExpr = 'text', textExpr, placeholderExpr, clearExpr = false, visibleExpr = true, disabledExpr = false, sizeExpr = 'default',
@@ -646,11 +819,13 @@ export class RefInput extends Input {
     multipleExpr,
     showSearchExpr,
     queryExpr,
+    variablesExpr,
     displayFieldExpr,
     sortFieldExpr,
     showHeaderExpr,
     columns,
-    pageSizeExpr) {
+    pageSizeExpr,
+    idFieldExpr, pidFieldExpr, rootIdValueExpr, defaultExpandAllExpr, defaultExpandKeysExpr) {
     super(store, name, typeExpr, textExpr, placeholderExpr, clearExpr, visibleExpr, disabledExpr, sizeExpr,
       maxLengthExpr, widthExpr, defaultValueExpr, getValueExpr, setValueExpr, mappingExpr, formatExpr, errorExpr, extraExpr,
       onBeforeChange, onChange, onAfterChange, onBeforeBlur, onBlur, onAfterBlur, onBeforeFocus, onFocus, onAfterFocus, onBeforeErrorClick,
@@ -660,13 +835,14 @@ export class RefInput extends Input {
     this.multipleExpr = store.parseExpr(multipleExpr || false);
     this.showSearchExpr = store.parseExpr(showSearchExpr || true);
     this.queryExpr = store.parseExpr(queryExpr);
+    this.variablesExpr = store.parseExpr(variablesExpr);
     this.displayFieldExpr = store.parseExpr(displayFieldExpr);
     this.sortFieldExpr = store.parseExpr(sortFieldExpr);
     this.showHeaderExpr = store.parseExpr(showHeaderExpr || this.dropdownStyle === 'table');
     this.pageSizeExpr = store.parseExpr(pageSizeExpr || 20);
-    if (!columns){
-        // list 和 tree 不显示header
-      if (this.dropdownStyle !== 'table'){
+    if (!columns) {
+      // list 和 tree 不显示header
+      if (this.dropdownStyle !== 'table') {
         columns = [{
           key: 'value',
           dataIndex: 'value'
@@ -674,5 +850,10 @@ export class RefInput extends Input {
       }
     }
     this.columns = columns;
+    this.idFieldExpr = store.parseExpr(idFieldExpr || 'id');
+    this.pidFieldExpr = store.parseExpr(pidFieldExpr || 'pid');
+    this.rootIdValueExpr = store.parseExpr(rootIdValueExpr);
+    this.defaultExpandAllExpr = store.parseExpr(defaultExpandAllExpr || false);
+    this.defaultExpandKeysExpr = store.parseExpr(defaultExpandKeysExpr);
   }
 }
