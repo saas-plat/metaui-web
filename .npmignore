@@ -33,5 +33,7 @@ output.tar.gz
 /dev
 /src
 /test
+/stories
 /.*
 /main.js
+/gulpfile.js

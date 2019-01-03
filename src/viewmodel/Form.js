@@ -171,9 +171,10 @@ export class FormItem {
     if (!labelSpan && !labelText) {
       labelSpan = 0;
     }
+    let rules = obj.rules;
     // formitem 和 inputitem 合并一起配置
-    if (!obj.rules || obj.rules.length <= 0) {
-      obj.rules = obj.rules || [];
+    if (!rules || rules.length <= 0) {
+      rules = [];
       const rule = {};
       // 规则type 和数据类型重复
       // if ('type' in obj) {
@@ -198,13 +199,13 @@ export class FormItem {
         rule.max = obj.max;
       }
       if (Object.keys(rule).length > 0) {
-        obj.rules.push(rule);
+        rules.push(rule);
       }
     }
     return new FormItem(store, labelSpan, labelText, obj.labelIcon || obj.icon, obj.tipText || obj.tip, obj.width || options.itemWidth, obj.extra,
       createView(store, obj),
       // 默认有一条规则obj中尝试查找
-      obj.rules.map(it => Rule.create(store, it, {
+      rules.map(it => Rule.create(store, it, {
         ...obj,
         labelText
       })));
