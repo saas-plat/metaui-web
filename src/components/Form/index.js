@@ -95,7 +95,7 @@ export default class TemplateForm extends BaseComponent {
       }      
     }
     return <FormItem key={config.key} {...formItemLayout} label={<span>{config.labelText} {labelHelp}</span>} className='formItem' extra={config.extra}>
-            {getFieldDecorator(config.key,{rules: config.rules.map(it=>it.toJS())})(
+            {getFieldDecorator(config.formItem.name,{rules: config.rules.map(it=>it.toJS())})(
               createComponent(config.formItem, {
                 ...options,
                 onChange:(value)=>this.handleChangeTimer(config.formItem, value)
