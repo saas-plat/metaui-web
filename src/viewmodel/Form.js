@@ -13,7 +13,7 @@ import translater from '../translater';
 
 const ItemDefaultWidth = 360;
 
-class Rule {
+export class Rule {
   store;
   key;
 
@@ -85,7 +85,7 @@ class Rule {
   }
 }
 
-class FormItem {
+export class FormItem {
   store;
   key;
 
