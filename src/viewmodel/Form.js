@@ -41,6 +41,61 @@ export class Rule {
   @observable minExpr;
   @observable maxExpr;
 
+  @computed get type() {
+    return this.store.execExpr(this.typeExpr);
+  }
+  set type(typeExpr) {
+    this.typeExpr = this.store.parseExpr(typeExpr);
+  }
+  @computed get required() {
+    return this.store.execExpr(this.requiredExpr);
+  }
+  set required(requiredExpr) {
+    this.requiredExpr = this.store.parseExpr(requiredExpr);
+  }
+  @computed get message() {
+    return this.store.execExpr(this.messageExpr);
+  }
+  set message(messageExpr) {
+    this.messageExpr = this.store.parseExpr(messageExpr);
+  }
+  @computed get enum() {
+    return this.store.execExpr(this.enumExpr);
+  }
+  set enum(enumExpr) {
+    this.enumExpr = this.store.parseExpr(enumExpr);
+  }
+  @computed get len() {
+    return this.store.execExpr(this.lenExpr);
+  }
+  set len(lenExpr) {
+    this.lenExpr = this.store.parseExpr(lenExpr);
+  }
+  @computed get pattern() {
+    return this.store.execExpr(this.patternExpr);
+  }
+  set pattern(patternExpr) {
+    this.patternExpr = this.store.parseExpr(patternExpr);
+  }
+  @computed get whitespace() {
+    return this.store.execExpr(this.whitespaceExpr);
+  }
+  set whitespace(whitespaceExpr) {
+    this.whitespaceExpr = this.store.parseExpr(whitespaceExpr);
+  }
+  @computed get min() {
+    return this.store.execExpr(this.minExpr);
+  }
+  set min(minExpr) {
+    this.minExpr = this.store.parseExpr(minExpr);
+  }
+  @computed get max() {
+    return this.store.execExpr(this.maxExpr);
+  }
+  set max(maxExpr) {
+    this.maxExpr = this.store.parseExpr(maxExpr);
+  }
+
   constructor(store, typeExpr, messageExpr, requiredExpr, enumExpr, lenExpr, patternExpr, whitespaceExpr, minExpr, maxExpr) {
     this.key = assignId('Rule');
     this.store = store;
