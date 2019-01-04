@@ -44,11 +44,17 @@ export default class InputItem extends BaseComponent {
   }
 
   handleChange = (value) => {
-    this.setState({
-      data: [],
-      fetching: false,
-    });
-    this.props.onChange && this.props.onChange(value);
+    if (this.props.onChange) {
+      this.setState({
+        data: [],
+        fetching: false,
+      });
+      this.props.onChange(value);
+    } else {
+      this.context.onEvent(this.props.config, 'change', {
+        value
+      }, this.setValue);
+    }
   }
 
   setValue = async ({
@@ -78,8 +84,8 @@ export default class InputItem extends BaseComponent {
       className='input'
       placeholder={placeholder} defaultValue={defaultValue}
       disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
-      value={value}
-      onChange={(e)=>{this.context.onEvent(config, 'change', {value:e.target.value}, this.setValue),this.handleChange(e.target.value)}}
+      value={'value' in this.props?this.props.value:value}
+      onChange={(e)=>{this.handleChange(e.target.value)}}
       onBlur={()=>this.context.onEvent(config, 'blur')}
       onFocus={()=>this.context.onEvent(config, 'focus')}/>);
   }
@@ -98,11 +104,11 @@ export default class InputItem extends BaseComponent {
     let formatter, parser;
 
     if (format.toLowerCase() === 'thousandth') {
-      formatter = value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      formatter = value => `${'value' in this.props?this.props.value:value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       parser = value => value.replace(/\$(,*)/g, '');
     }
     if (format.toLowerCase() === 'percentage') {
-      formatter = value => `${value}%`;
+      formatter = value => `${'value' in this.props?this.props.value:value}%`;
       parser = value => value.replace('%', '');
     }
 
@@ -111,14 +117,14 @@ export default class InputItem extends BaseComponent {
         autoFocus={this.props.autoFocus}
         size={size}
         className='input'
-        value={value}
+        value={'value' in this.props?this.props.value:value}
         defaultValue={defaultValue}
         disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
         min={min}
         max={max}
         formatter={formatter}
         parser={parser}
-        onChange={(value)=>{this.context.onEvent(config, 'change', {value}, this.setValue),this.handleChange(value)}}
+        onChange={(value)=>{this.handleChange(value)}}
         onBlur={()=>this.context.onEvent(config, 'blur')}
         onFocus={()=>this.context.onEvent(config, 'focus')}
       />
@@ -155,8 +161,8 @@ export default class InputItem extends BaseComponent {
       size={size}
       className='input'
       placeholder={placeholder} defaultValue={defaultValue} disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
-      value={value}
-      onChange={(value)=>{this.context.onEvent(config, 'change', {value}, this.setValue),this.handleChange(value)}}
+      value={'value' in this.props?this.props.value:value}
+      onChange={(value)=>{this.handleChange(value)}}
       onBlur={()=>this.context.onEvent(config, 'blur')}
       onFocus={()=>this.context.onEvent(config, 'focus')}
       autosize={autosize} />
@@ -206,7 +212,7 @@ export default class InputItem extends BaseComponent {
     placeholder={placeholder} defaultValue={defaultValue}
     value={moment(value,format)}
     format={format}
-    onChange={(moment,value)=>{this.context.onEvent(config, 'change', {value}, this.setValue),this.handleChange(value)}}
+    onChange={(moment,value)=>{this.handleChange(value)}}
     onBlur={()=>this.context.onEvent(config, 'blur')}
     onFocus={()=>this.context.onEvent(config, 'focus')}/>
   }
@@ -230,7 +236,7 @@ export default class InputItem extends BaseComponent {
     placeholder={placeholder} defaultValue={defaultValue}
     value={moment(value,format)}
     format={format}
-    onChange={(value)=>{this.context.onEvent(config, 'change', {value}, this.setValue),this.handleChange(value)}}
+    onChange={(value)=>{this.handleChange(value)}}
     onBlur={()=>this.context.onEvent(config, 'blur')}
     onFocus={()=>this.context.onEvent(config, 'focus')}/>
   }
@@ -250,7 +256,7 @@ export default class InputItem extends BaseComponent {
       className='input'
       disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
       checked={!!value} defaultChecked={!!defaultValue}
-      onChange={(e)=>{this.context.onEvent(config, 'change', {value:e.target.checked}, this.setValue),this.handleChange(e.target.checked)}}
+      onChange={(e)=>{this.handleChange( {value:e.target.checked}, this.setValue),this.handleChange(e.target.checked)}}
       onBlur={()=>this.context.onEvent(config, 'blur')}
       onFocus={()=>this.context.onEvent(config, 'focus')}
       >{text}</Checkbox>
@@ -270,7 +276,7 @@ export default class InputItem extends BaseComponent {
       className='input'
       disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
       checked={!!value} defaultChecked={!!defaultValue}
-      onChange={(value)=>{this.context.onEvent(config, 'change', {value}, this.setValue),this.handleChange(value)}}
+      onChange={(value)=>{this.handleChange(value)}}
       onBlur={()=>this.context.onEvent(config, 'blur')}
       onFocus={()=>this.context.onEvent(config, 'focus')}
       ></Switch>
@@ -295,12 +301,12 @@ export default class InputItem extends BaseComponent {
       showSearch
       mode={mode}
       disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
-      value={value}
+      value={'value' in this.props?this.props.value:value}
       defaultValue={defaultValue}
       placeholder={placeholder}
       optionFilterProp="children"
       filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-      onChange={(value)=>{this.context.onEvent(this.props.config, 'change', {value}, this.setValue),this.handleChange(value)}}
+      onChange={(value)=>{this.handleChange(value)}}
       onBlur={()=>this.context.onEvent(this.props.config, 'blur')}
       onFocus={()=>this.context.onEvent(this.props.config, 'focus')}>
       {dataSource.map(d => <Select.Option key={d.value}>{d.text}</Select.Option>)}
@@ -320,7 +326,7 @@ export default class InputItem extends BaseComponent {
       showSearch = false,
       allowClear = true,
       multiple = false,
-      treeCheckable= false,
+      treeCheckable = false,
       treeDefaultExpandAll = true,
       maxHeight = 400
     } = config;
@@ -337,10 +343,10 @@ export default class InputItem extends BaseComponent {
         dropdownStyle={{ maxHeight: maxHeight, overflow: 'auto' }}
         className='input'
         treeData={dataSource}
-        value={value}
+        value={'value' in this.props?this.props.value:value}
         defaultValue={defaultValue}
         disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
-        onChange={(value)=>{this.context.onEvent(this.props.config, 'change', {value}, this.setValue),this.handleChange(value)}}
+        onChange={(value)=>{this.handleChange(value)}}
         onBlur={()=>this.context.onEvent(this.props.config, 'blur')}
         onFocus={()=>this.context.onEvent(this.props.config, 'focus')}>
         </TreeSelect>
@@ -356,11 +362,11 @@ export default class InputItem extends BaseComponent {
 
       dataSource,
       showHeader = true,
-      showSearch =true,
-      allowClear =true,
-      multiple =false,
+      showSearch = true,
+      allowClear = true,
+      multiple = false,
       defaultExpandAll = false,
-      defaultExpandKeys =[],
+      defaultExpandKeys = [],
       columns,
     } = config;
     let val;
@@ -386,7 +392,7 @@ export default class InputItem extends BaseComponent {
         size={size}
         defaultValue={defaultValue}
         disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
-        onChange={(value)=>{this.context.onEvent(this.props.config, 'change', {value}, this.setValue),this.handleChange(value)}}
+        onChange={(value)=>{this.handleChange(value)}}
         onBlur={()=>this.context.onEvent(this.props.config, 'blur')}
         onFocus={()=>this.context.onEvent(this.props.config, 'focus')}/>
   }
