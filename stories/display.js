@@ -31,9 +31,9 @@ storiesOf('数据展示', module)
 .add('Table', () => <TemplateProvider
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}><TreeTable config={table}/></TemplateProvider>)
-    .add('TreeTable', () => <TemplateProvider
-        onEvent={(name,args)=>action(name)(args)}
-        onAction={(name,args)=>action(name)(args)}><TreeTable config={treetable}/></TemplateProvider>)
-      .add('Chart', () => <TemplateProvider
-        onEvent={(name,args)=>action(name)(args)}
-        onAction={(name,args)=>action(name)(args)}><Chart config={chart}/></TemplateProvider>)
+.add('TreeTable', () => <TemplateProvider
+    onEvent={(name,args)=>action(name)(args)}
+    onAction={(name,args)=>action(name)(args)}><TreeTable config={treetable}/></TemplateProvider>)
+.add('Chart', () => <TemplateProvider
+    onEvent={(name,args)=>action(name)(args)}
+    onAction={(name,args)=>action(name)(args)}><Chart config={chart}/></TemplateProvider>)

@@ -16,6 +16,7 @@ import {
 } from './Table';
 import moment from 'moment';
 import _get from 'lodash/get';
+import _set from 'lodash/set';
 
 export class Input {
   store;
@@ -133,6 +134,12 @@ export class Input {
   }
   @computed get value() {
     return _get(this.store.model, this.getValue);
+  }
+  set value(value){
+    if (!this.setValue){
+      console.warn('can not set value', value);
+    }
+    return _set(this.store.model, this.setValue, value);
   }
   @computed get setValue() {
     return this.store.execExpr(this.setValueExpr);

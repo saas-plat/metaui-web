@@ -5,6 +5,8 @@
   "productName": "saas-plat",
   "main": "dist/index.js",
   "scripts": {
+    "i": "npm i --registry https://npm.saas-plat.com",
+    "up": "npm update --registry https://npm.saas-plat.com",
     "start": "start-storybook -p 9001 -c .storybook",
     "build": "rm -rf dist && gulp",
     "pub": "npm run build && npm publish --registry https://npm.saas-plat.com",

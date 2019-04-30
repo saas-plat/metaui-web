@@ -18,7 +18,6 @@ import RcRefSelect from 'rc-ref-select';
 import BaseComponent from '../BaseComponent';
 import InputTable from '../InputTable';
 import moment from 'moment';
-import _set from 'lodash/set';
 
 const TextArea = Input.TextArea;
 const {
@@ -60,13 +59,7 @@ export default class InputItem extends BaseComponent {
   setValue = async ({
     value
   }) => {
-    //debugger
-    const setField = this.props.config.setValue || this.props.config.value;
-    if (setField) {
-      _set(this.props.config.store.model, setField, value);
-      // } else {
-      //   console.log('setValue field not found, skip setValue');
-    }
+    this.props.config.value = value;
   }
 
   renderInput(config) {

@@ -20,8 +20,7 @@ export default class TemplateProvider extends React.Component {
   }
 
   static childContextTypes = {
-    onEvent: PropTypes.func,
-    t: PropTypes.func,
+    onEvent: PropTypes.func
   }
 
   handleEvent = (target, event, args, defaultAction = null) => {
@@ -131,8 +130,7 @@ export default class TemplateProvider extends React.Component {
 
   getChildContext() {
     return {
-      onEvent: this.handleEvent,
-      t: this.props.t,
+      onEvent: this.handleEvent, 
     };
   }
 
