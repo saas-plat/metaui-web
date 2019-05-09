@@ -3,8 +3,7 @@ import {
   computed
 } from "mobx";
 import {
-  assignId,
-  createView
+  assignId
 } from './util';
 import {
   Action
@@ -258,7 +257,7 @@ export class FormItem {
       }
     }
     return new FormItem(store, labelSpan, labelText, obj.labelIcon || obj.icon, obj.tipText || obj.tip, obj.width || options.itemWidth, obj.extra,
-      createView(store, obj),
+      store.createViewModel(store, obj),
       // 默认有一条规则obj中尝试查找
       rules.map(it => Rule.create(store, it, {
         ...obj,
