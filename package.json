@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@storybook/addon-actions": "^4.1.18",
-    "@storybook/react": "^4.1.18",
+    "@storybook/react": "^3.4.12",
     "eslint": "^4.13.1",
     "saas-plat-clientTools": "^1.0.61"
   }

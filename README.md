@@ -1,1 +1,1 @@
-chat module
+# Template Components
