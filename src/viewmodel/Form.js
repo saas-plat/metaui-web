@@ -1,4 +1,4 @@
-import {
+inputItemimport {
   observable,
   computed
 } from "mobx";
@@ -147,7 +147,7 @@ export class FormItem {
   @observable labelTextExpr;
   @observable labelIconExpr;
   @observable tipTextExpr;
-  @observable formItem;
+  @observable inputItem;
   @observable widthExpr; // flowlayout每项宽度
   @observable extraExpr;
 
@@ -167,16 +167,16 @@ export class FormItem {
   }
 
   @computed get visible() {
-    return this.formItem.visible;
+    return this.inputItem.visible;
   }
   set visible(visibleExpr) {
-    this.formItem.visible = visibleExpr;
+    this.inputItem.visible = visibleExpr;
   }
   @computed get disabled() {
-    return this.formItem.disabled;
+    return this.inputItem.disabled;
   }
   set disabled(disabledExpr) {
-    this.formItem.disabled = disabledExpr;
+    this.inputItem.disabled = disabledExpr;
   }
   @computed get extra() {
     return this.store.execExpr(this.extraExpr);
@@ -204,7 +204,7 @@ export class FormItem {
     return this.store.execExpr(this.tipTextExpr);
   }
 
-  constructor(store, labelSpanExpr = 6, labelTextExpr = '',labelIconExpr  , tipTextExpr = '',  widthExpr = '', extraExpr, formItem, rules = []) {
+  constructor(store, labelSpanExpr = 6, labelTextExpr = '',labelIconExpr  , tipTextExpr = '',  widthExpr = '', extraExpr, inputItem, rules = []) {
     this.key = assignId('FormItem');
     this.store = store;
     this.labelSpanExpr = store.parseExpr(labelSpanExpr);
@@ -215,7 +215,7 @@ export class FormItem {
     this.widthExpr = store.parseExpr(widthExpr);
     this.extraExpr = store.parseExpr(extraExpr);
 
-    this.formItem = formItem;
+    this.inputItem = formItem;
     this.rules = rules;
   }
 
@@ -257,7 +257,7 @@ export class FormItem {
       }
     }
     return new FormItem(store, labelSpan, labelText, obj.labelIcon || obj.icon, obj.tipText || obj.tip, obj.width || options.itemWidth, obj.extra,
-      store.createViewModel(store, obj),
+      store.createViewModel(obj),
       // 默认有一条规则obj中尝试查找
       rules.map(it => Rule.create(store, it, {
         ...obj,

@@ -92,13 +92,13 @@ export default class TemplateForm extends BaseComponent {
         </Tooltip>
       }else{
         labelHelp = icon;
-      }      
+      }
     }
     return <FormItem key={config.key} {...formItemLayout} label={<span>{config.labelText} {labelHelp}</span>} className='formItem' extra={config.extra}>
-            {getFieldDecorator(config.formItem.name,{rules: config.rules.map(it=>it.toJS())})(
-              createComponent(config.formItem, {
+            {getFieldDecorator(config.inputItem.name,{rules: config.rules.map(it=>it.toJS())})(
+              createComponent(config.inputItem, {
                 ...options,
-                onChange:(value)=>this.handleChangeTimer(config.formItem, value)
+                onChange:(value)=>this.handleChangeTimer(config.inputItem, value)
             }))}
           </FormItem>
   }
