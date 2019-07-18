@@ -249,6 +249,7 @@ export class Input {
         object.displayField,
         object.sortField,
         object.mapping,
+        object.columns,
         object.setValue,
         object.pageSize,
         object.idField, object.pidField, object.rootIdValue, object.defaultExpandAll, object.defaultExpandKeys

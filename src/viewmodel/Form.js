@@ -1,4 +1,4 @@
-inputItemimport {
+import {
   observable,
   computed
 } from "mobx";
@@ -215,7 +215,7 @@ export class FormItem {
     this.widthExpr = store.parseExpr(widthExpr);
     this.extraExpr = store.parseExpr(extraExpr);
 
-    this.inputItem = formItem;
+    this.inputItem = inputItem;
     this.rules = rules;
   }
 

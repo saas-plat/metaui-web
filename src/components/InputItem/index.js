@@ -363,10 +363,14 @@ export default class InputItem extends BaseComponent {
       columns,
     } = config;
     let val;
-    if (!Array.isArray(value)) {
-      val = [value];
+    if (!value || !Array.isArray(value.slice())) {
+      val = value ? [value] : [];
+    } else {
+      val = value.slice();
     }
-    val = val.map(it => it.toString());
+    val = val.map(it => ({
+      value: it.toString()
+    }));
     // labelInValue 用于格式化显示
     return <RcRefSelect id={key}
         className='input'

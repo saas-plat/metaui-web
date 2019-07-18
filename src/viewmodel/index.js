@@ -23,9 +23,6 @@ import {
 import {
   Toolbar
 } from './Toolbar';
-import {
-  t
-} from '../translater';
 import _get from 'lodash/get';
 
 export default class ViewStore {
@@ -155,6 +152,7 @@ ViewStore.register({
   'refselect': Input,
   'treetableselect': Input,
   'inputtable': Input,
+  //'editabletable': Table,
 
   // form
   'form': Form,
