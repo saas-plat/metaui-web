@@ -425,7 +425,7 @@ export class Group {
   }
 }
 
-export class CardForm {
+export class Voucher {
   store;
   key;
 
@@ -455,7 +455,7 @@ export class CardForm {
   constructor(store, name, labelSpanExpr = 4, groups = [], onBeforeChange, onChange, onAfterChange) {
     //assert(store);
 
-    this.key = assignId('CardForm');
+    this.key = assignId('Voucher');
     this.store = store;
     this.name = name || this.key;
     this.groups = groups;
@@ -485,7 +485,7 @@ export class CardForm {
     if (!Array.isArray(groups)) {
       groups = [groups];
     }
-    return new CardForm(store, name, labelSpan, groups.map(it => Group.create(store, it, {
+    return new Voucher(store, name, labelSpan, groups.map(it => Group.create(store, it, {
         labelSpan
       })),
       Action.create(store, onChanging), Action.create(store, onChange), Action.create(store, onChanged));

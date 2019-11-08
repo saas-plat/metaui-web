@@ -1,7 +1,7 @@
 {
-  "name": "saas-plat-template",
+  "name": "saas-plat-components-desktop",
   "version": "1.1.15",
-  "description": "template component",
+  "description": "desktop components",
   "productName": "saas-plat",
   "main": "dist/index.js",
   "scripts": {
@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://git.saas-plat.com/saas-plat-template"
+    "url": "https://git.saas-plat.com/saas-plat-components"
   },
   "keywords": [
     "component",
-    "template",
-    "form",
-    "list",
-    "chat"
+    "input",
+    "display",
+    "feedback",
+    "selector"
   ],
   "author": "saas-plat",
   "license": "ISC",

@@ -8,7 +8,7 @@ import {
 } from './Input';
 import {
   Form,
-  CardForm
+  Voucher
 } from './Form';
 import {
   Tree,
@@ -26,14 +26,14 @@ import {
 import _get from 'lodash/get';
 
 export default class ViewStore {
-  @observable model;
+  @observable data;
 
-  constructor(model) {
-    this.model = model;
+  constructor(data) {
+    this.data = data;
   }
 
   @computed get state() {
-    return _get(this.model, 'state', null);
+    return _get(this.data, 'state', null);
   }
 
   parseExpr(txt) {
@@ -41,7 +41,7 @@ export default class ViewStore {
   }
 
   execExpr(expr) {
-    return expr.exec(this.model);
+    return expr.exec(this.data);
   }
 
   map(obj, mapping) {
@@ -118,8 +118,8 @@ export default class ViewStore {
     }
   }
 
-  static create(obj = {}, model) {
-    const store = new ViewStore(model);
+  static create(obj = {}, data) {
+    const store = new ViewStore(data);
     const viewModel = store.createViewModel(obj);
     if (!viewModel) {
       console.error('not support view type', obj.type);
@@ -156,7 +156,8 @@ ViewStore.register({
 
   // form
   'form': Form,
-  'cardform': CardForm,
+  'cardform': Voucher,
+  'voucher': Voucher,
   'listgroup': ListGroup,
 
   // display

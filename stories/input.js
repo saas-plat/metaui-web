@@ -9,6 +9,7 @@ import ViewModel from '../src/viewmodel';
 import TemplateProvider from '../src/components/TemplateProvider';
 import InputItem from '../src/components/InputItem';
 import EditableTable from '../src/components/EditableTable';
+import Toolbar from '../src/components/Toolbar';
 
 const model = {
   text: 'AAAAAAAAA',
@@ -48,6 +49,13 @@ const model = {
     b: 200
   }]
 };
+
+
+const toolbar = ViewModel.create({
+  name: 'toolbar',
+  type: 'toolbar',
+
+},model);
 
 const textbox = ViewModel.create({
   type: 'text',
@@ -229,7 +237,10 @@ const editabletable = ViewModel.create({
   }],
 }, model);
 
-storiesOf('数据录入', module)
+storiesOf('数据输入', module)
+  .add('Toolbar', () => <TemplateProvider
+    onEvent={(name,args)=>action(name)(args)}
+    onAction={(name,args)=>action(name)(args)}><Toolbar config={toolbar}/></TemplateProvider>)
   .add('TextBox', () => <TemplateProvider
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}><InputItem config={textbox}/></TemplateProvider>)
