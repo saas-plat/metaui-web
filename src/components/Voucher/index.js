@@ -18,7 +18,7 @@ const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
 
 @Form.create()
-export default class CardForm extends BaseComponent {
+export default class Voucher extends BaseComponent {
   static propTypes = {
     config: PropTypes.object.isRequired,
     form: PropTypes.object,

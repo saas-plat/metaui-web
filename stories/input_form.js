@@ -7,7 +7,7 @@ import {
 } from '@storybook/addon-actions';
 import {
   ViewModel,
-  TemplateProvider,
+  ComponentProvider,
   Form,
   ListGroup
 } from '../src';
@@ -176,12 +176,12 @@ const listgroup = ViewModel.create({
 },model);
 
 storiesOf('数据录入', module)
-  .add('Form', () => <TemplateProvider
+  .add('Form', () => <ComponentProvider
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><Form config={viewModel}/></TemplateProvider>)
-    .add('CardForm', () => <TemplateProvider
+    onAction={(name,args)=>action(name)(args)}><Form config={viewModel}/></ComponentProvider>)
+    .add('CardForm', () => <ComponentProvider
       onEvent={(name,args)=>action(name)(args)}
-      onAction={(name,args)=>action(name)(args)}><Form config={viewModel}/></TemplateProvider>)
-      .add('ListGroup', () => <TemplateProvider
+      onAction={(name,args)=>action(name)(args)}><Form config={viewModel}/></ComponentProvider>)
+      .add('ListGroup', () => <ComponentProvider
         onEvent={(name,args)=>action(name)(args)}
-        onAction={(name,args)=>action(name)(args)}><ListGroup config={listgroup}/></TemplateProvider>)
+        onAction={(name,args)=>action(name)(args)}><ListGroup config={listgroup}/></ComponentProvider>)
