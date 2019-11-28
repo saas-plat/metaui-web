@@ -9,11 +9,11 @@ import {
 } from 'antd';
 import InputItem from '../InputItem';
 import Toolbar from '../Toolbar';
-import BaseComponent from '../BaseComponent';
+import {UIComponent} from 'saas-plat-metaui';
 import './style';
 
 @observer
-class EditableCell extends React.Component {
+class EditableCell extends UIComponent {
   static propTypes = {
     value: PropTypes.any,
     onChange: PropTypes.func
@@ -67,7 +67,7 @@ class EditableCell extends React.Component {
 }
 
 @observer
-export default class EditableTable extends BaseComponent {
+export default class EditableTable extends UIComponent {
 
   onCellChange = (index, key) => {
     return (value) => {

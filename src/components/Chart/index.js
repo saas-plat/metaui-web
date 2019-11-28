@@ -1,6 +1,6 @@
 import React from 'react';
 import Spin from '../Spin';
-import BaseComponent from '../BaseComponent';
+import {UIComponent} from 'saas-plat-metaui';
 import './style.less';
 const style = require('!less-to-json-loader!./style.less');
 
@@ -10,7 +10,7 @@ const loadEchart = (cb) => {
   }, 'echart');
 }
 
-export default class Chart extends BaseComponent {
+export default class Chart extends UIComponent {
 
   getOption() {
     const {

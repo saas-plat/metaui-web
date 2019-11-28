@@ -3,7 +3,7 @@ import {
   observer
 } from "mobx-react";
 import PropTypes from 'prop-types';
-import BaseComponent from '../BaseComponent';
+import {UIComponent} from 'saas-plat-metaui';
 import {
   Modal,
   Input,
@@ -15,7 +15,7 @@ import './style';
 
 // 可录入子表，用于相关表单的快速录入，比如进货时录入预付款信息
 @observer
-export default class InputTable extends BaseComponent {
+export default class InputTable extends UIComponent {
   static propTypes = {
     config: PropTypes.object,
     autoFocus: PropTypes.bool,

@@ -10,12 +10,12 @@ import './style';
 import {
   createComponent
 } from '../util';
-import BaseComponent from '../BaseComponent';
+import {UIComponent} from 'saas-plat-metaui';
 
 const FormItem = Form.Item;
 
 @Form.create()
-export default class TemplateForm extends BaseComponent {
+export default class TemplateForm extends UIComponent {
   static propTypes = {
     config: PropTypes.object.isRequired,
     form: PropTypes.object,

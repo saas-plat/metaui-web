@@ -5,10 +5,10 @@ import {
 import {
   action
 } from '@storybook/addon-actions';
+import {UIContainer,ViewStore} from 'saas-plat-metaui';
 import {
-  ViewModel,
-  ComponentProvider,
   Form,
+  Voucher,
   ListGroup
 } from '../src';
 
@@ -28,7 +28,7 @@ const model = {
   array1: [1, 2, 3, 4, 100, 1000000.11]
 };
 
-const viewModel = ViewModel.create({
+const viewModel = ViewStore.create({
   type: 'form',
   layout: 'vertical',
   items: [{
@@ -169,19 +169,19 @@ const viewModel = ViewModel.create({
   }]
 }, model)
 
-const listgroup = ViewModel.create({
+const listgroup = ViewStore.create({
   name: 'listgroup',
   type: 'listgroup',
 
 },model);
 
 storiesOf('数据录入', module)
-  .add('Form', () => <ComponentProvider
+  .add('Form', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><Form config={viewModel}/></ComponentProvider>)
-    .add('CardForm', () => <ComponentProvider
+    onAction={(name,args)=>action(name)(args)}><Form config={viewModel}/></UIContainer>)
+    .add('Voucher', () => <UIContainer
       onEvent={(name,args)=>action(name)(args)}
-      onAction={(name,args)=>action(name)(args)}><Form config={viewModel}/></ComponentProvider>)
-      .add('ListGroup', () => <ComponentProvider
+      onAction={(name,args)=>action(name)(args)}><Voucher config={viewModel}/></UIContainer>)
+      .add('ListGroup', () => <UIContainer
         onEvent={(name,args)=>action(name)(args)}
-        onAction={(name,args)=>action(name)(args)}><ListGroup config={listgroup}/></ComponentProvider>)
+        onAction={(name,args)=>action(name)(args)}><ListGroup config={listgroup}/></UIContainer>)

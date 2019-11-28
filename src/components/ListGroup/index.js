@@ -11,7 +11,7 @@ import {
 import {
   observer
 } from "mobx-react";
-import BaseComponent from '../BaseComponent';
+import {UIComponent} from 'saas-plat-metaui';
 import InputItem from '../InputItem';
 import './style.less';
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
@@ -20,7 +20,7 @@ const Panel = Collapse.Panel;
 const ObserverList = observer(List);
 
 @observer
-export default class ListGroup extends BaseComponent {
+export default class ListGroup extends UIComponent {
 
   handleChangeTimer = (it,value)=>{
     this.changeValues = {...this.changeValues,[it.name]:value};

@@ -5,8 +5,7 @@ import {
 import {
   action
 } from '@storybook/addon-actions';
-import ViewModel from '../src/viewmodel';
-import TemplateProvider from '../src/components/TemplateProvider';
+import {UIContainer,ViewStore} from 'saas-plat-metaui';
 import InputItem from '../src/components/InputItem';
 import EditableTable from '../src/components/EditableTable';
 import Toolbar from '../src/components/Toolbar';
@@ -51,13 +50,13 @@ const model = {
 };
 
 
-const toolbar = ViewModel.create({
+const toolbar = ViewStore.create({
   name: 'toolbar',
   type: 'toolbar',
 
 },model);
 
-const textbox = ViewModel.create({
+const textbox = ViewStore.create({
   type: 'text',
   value: 'text',
   icon: 'form',
@@ -67,38 +66,38 @@ const textbox = ViewModel.create({
   }]
 }, model);
 
-const datetime = ViewModel.create({
+const datetime = ViewStore.create({
   type: 'datetime',
   value: 'date',
   required: true,
   extra: 'xxxxxxxxxxxxx'
 }, model);
 
-const time = ViewModel.create({
+const time = ViewStore.create({
   type: 'time',
   value: 'date',
   text: 'time'
 }, model);
 
-const number = ViewModel.create({
+const number = ViewStore.create({
   type: 'number',
   value: 'number',
   format: 'thousandth',
   text: 'number'
 }, model);
 
-const check = ViewModel.create({
+const check = ViewStore.create({
   type: 'check',
   value: 'bool',
   text: 'check'
 }, model);
 
-const switchbox = ViewModel.create({
+const switchbox = ViewStore.create({
   type: 'switch',
   value: 'bool',
 }, model);
 
-const select = ViewModel.create({
+const select = ViewStore.create({
   type: 'select',
   value: 'number',
   dataSource: '$array',
@@ -107,7 +106,7 @@ const select = ViewModel.create({
   sortField: 'a',
 }, model);
 
-const treeselect = ViewModel.create({
+const treeselect = ViewStore.create({
   name: 'treesel',
   type: 'treeselect',
   value: 'number',
@@ -120,7 +119,7 @@ const treeselect = ViewModel.create({
   sortField: 'a',
 }, model);
 
-const reflist = ViewModel.create({
+const reflist = ViewStore.create({
   name: 'item2',
   text: 'item2',
   type: 'refselect',
@@ -139,7 +138,7 @@ const reflist = ViewModel.create({
   pageSize: 200
 }, model);
 
-const reftable = ViewModel.create({
+const reftable = ViewStore.create({
   name: 'item4',
   text: 'item4',
   type: 'refselect',
@@ -166,7 +165,7 @@ const reftable = ViewModel.create({
 }, model);
 
 // treetable和table带tree是不一样的，tree和table是不同的数据结构
-const reftreetable = ViewModel.create({
+const reftreetable = ViewStore.create({
   name: 'item6',
   text: 'item6',
   type: 'reftreeselect',
@@ -198,7 +197,7 @@ const reftreetable = ViewModel.create({
   setValue: 'objarr'
 }, model);
 
-const inputtable = ViewModel.create({
+const inputtable = ViewStore.create({
   name: 'inputtable',
   text: 'inputtable',
   type: 'inputtable',
@@ -218,7 +217,7 @@ const inputtable = ViewModel.create({
   }],
 }, model);
 
-const editabletable = ViewModel.create({
+const editabletable = ViewStore.create({
   name: 'inputtable',
   type: 'editabletable',
   value: 'objarr',
@@ -238,45 +237,45 @@ const editabletable = ViewModel.create({
 }, model);
 
 storiesOf('数据输入', module)
-  .add('Toolbar', () => <TemplateProvider
+  .add('Toolbar', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><Toolbar config={toolbar}/></TemplateProvider>)
-  .add('TextBox', () => <TemplateProvider
+    onAction={(name,args)=>action(name)(args)}><Toolbar config={toolbar}/></UIContainer>)
+  .add('TextBox', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><InputItem config={textbox}/></TemplateProvider>)
-  .add('DatePicker', () => <TemplateProvider
+    onAction={(name,args)=>action(name)(args)}><InputItem config={textbox}/></UIContainer>)
+  .add('DatePicker', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><InputItem config={datetime}/></TemplateProvider>)
-  .add('TimeBox', () => <TemplateProvider
+    onAction={(name,args)=>action(name)(args)}><InputItem config={datetime}/></UIContainer>)
+  .add('TimeBox', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><InputItem config={time}/></TemplateProvider>)
-  .add('NumberBox', () => <TemplateProvider
+    onAction={(name,args)=>action(name)(args)}><InputItem config={time}/></UIContainer>)
+  .add('NumberBox', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><InputItem config={number}/></TemplateProvider>)
-  .add('CheckBox', () => <TemplateProvider
+    onAction={(name,args)=>action(name)(args)}><InputItem config={number}/></UIContainer>)
+  .add('CheckBox', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><InputItem config={check}/></TemplateProvider>)
-  .add('Switch', () => <TemplateProvider
+    onAction={(name,args)=>action(name)(args)}><InputItem config={check}/></UIContainer>)
+  .add('Switch', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><InputItem config={switchbox}/></TemplateProvider>)
-  .add('Select', () => <TemplateProvider
+    onAction={(name,args)=>action(name)(args)}><InputItem config={switchbox}/></UIContainer>)
+  .add('Select', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><InputItem config={select}/></TemplateProvider>)
-  .add('TreeSelect', () => <TemplateProvider
+    onAction={(name,args)=>action(name)(args)}><InputItem config={select}/></UIContainer>)
+  .add('TreeSelect', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><InputItem config={treeselect}/></TemplateProvider>)
-  .add('RefList', () => <TemplateProvider
+    onAction={(name,args)=>action(name)(args)}><InputItem config={treeselect}/></UIContainer>)
+  .add('RefList', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><InputItem config={reflist}/></TemplateProvider>)
-  .add('RefTable', () => <TemplateProvider
+    onAction={(name,args)=>action(name)(args)}><InputItem config={reflist}/></UIContainer>)
+  .add('RefTable', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><InputItem config={reftable}/></TemplateProvider>)
-    .add('RefTreeTable', () => <TemplateProvider
+    onAction={(name,args)=>action(name)(args)}><InputItem config={reftable}/></UIContainer>)
+    .add('RefTreeTable', () => <UIContainer
       onEvent={(name,args)=>action(name)(args)}
-      onAction={(name,args)=>action(name)(args)}><InputItem config={reftreetable}/></TemplateProvider>)
-  .add('InputTable', () => <TemplateProvider
+      onAction={(name,args)=>action(name)(args)}><InputItem config={reftreetable}/></UIContainer>)
+  .add('InputTable', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><InputItem config={inputtable}/></TemplateProvider>)
-  .add('EditableTable', () => <TemplateProvider
+    onAction={(name,args)=>action(name)(args)}><InputItem config={inputtable}/></UIContainer>)
+  .add('EditableTable', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><EditableTable config={editabletable}/></TemplateProvider>)
+    onAction={(name,args)=>action(name)(args)}><EditableTable config={editabletable}/></UIContainer>)

@@ -5,55 +5,33 @@ import {
 import {
   action
 } from '@storybook/addon-actions';
-import ViewModel from '../src/viewmodel';
-import TemplateProvider from '../src/components/TemplateProvider';
-import TreeTable from '../src/components/TreeTable';
-import Chart from '../src/components/Chart';
-import Total from '../src/components/Total';
-import AssociateInfo from '../src/components/AssociateInfo';
+import {UIContainer,ViewStore} from 'saas-plat-metaui';
+import Chart from '../src/components/Chart'; 
+import Table from '../src/components/Table';
 
 const model = {}
 
-const total = ViewModel.create({
-  name: 'total',
-  type: 'total',
 
-}, model);
 
-const associateinfo = ViewModel.create({
-  name: 'associateinfo',
-  type: 'associateinfo',
-
-}, model);
-
-const table = ViewModel.create({
+const table = ViewStore.create({
+  name: 'table',
   type: 'table',
 
 }, model);
 
-const treetable = ViewModel.create({
-  type: 'treetable',
 
-}, model);
 
-const chart = ViewModel.create({
+
+const chart = ViewStore.create({
   type: 'bar',
 
 }, model);
 
 storiesOf('数据展示', module)
-  .add('Table', () => <TemplateProvider
+  .add('Table', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><TreeTable config={table}/></TemplateProvider>)
-  .add('TreeTable', () => <TemplateProvider
+    onAction={(name,args)=>action(name)(args)}><Table config={table}/></UIContainer>)
+
+  .add('Chart', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><TreeTable config={treetable}/></TemplateProvider>)
-  .add('Chart', () => <TemplateProvider
-    onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><Chart config={chart}/></TemplateProvider>)
-  .add('Total', () => <TemplateProvider
-      onEvent={(name,args)=>action(name)(args)}
-      onAction={(name,args)=>action(name)(args)}><Total config={total}/></TemplateProvider>)
-  .add('AssociateInfo', () => <TemplateProvider
-        onEvent={(name,args)=>action(name)(args)}
-        onAction={(name,args)=>action(name)(args)}><AssociateInfo config={associateinfo}/></TemplateProvider>)
+    onAction={(name,args)=>action(name)(args)}><Chart config={chart}/></UIContainer>)

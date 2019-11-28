@@ -7,7 +7,7 @@ import {
 } from 'antd';
 import PropTypes from 'prop-types';
 import './style';
-import BaseComponent from '../BaseComponent';
+import {UIComponent} from 'saas-plat-metaui';
 import {
   observer
 } from "mobx-react";
@@ -23,7 +23,7 @@ TextAndIcon.propTypes = {
 }
 
 @observer
-export class ButtonItem extends BaseComponent {
+export class ButtonItem extends UIComponent {
   static propTypes = {
     config: PropTypes.object,
   };

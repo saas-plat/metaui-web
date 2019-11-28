@@ -12,13 +12,13 @@ import './style';
 import {
   createComponent
 } from '../util';
-import BaseComponent from '../BaseComponent';
+import {UIComponent} from 'saas-plat-metaui';
 
 const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
 
 @Form.create()
-export default class Voucher extends BaseComponent {
+export default class Voucher extends UIComponent {
   static propTypes = {
     config: PropTypes.object.isRequired,
     form: PropTypes.object,

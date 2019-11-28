@@ -15,7 +15,7 @@ import {
 } from 'antd';
 import './style';
 import RcRefSelect from 'rc-ref-select';
-import BaseComponent from '../BaseComponent';
+import {UIComponent} from 'saas-plat-metaui';
 import InputTable from '../InputTable';
 import moment from 'moment';
 
@@ -27,7 +27,7 @@ const {
 } = DatePicker;
 
 @observer
-export default class InputItem extends BaseComponent {
+export default class InputItem extends UIComponent {
   static propTypes = {
     config: PropTypes.object.isRequired,
     autoFocus: PropTypes.bool,

@@ -1,7 +1,7 @@
 {
-  "name": "saas-plat-components-desktop",
+  "name": "saas-plat-metauiweb",
   "version": "1.1.15",
-  "description": "desktop components",
+  "description": "web components",
   "productName": "saas-plat",
   "main": "dist/index.js",
   "scripts": {
@@ -10,42 +10,42 @@
     "start": "start-storybook -p 9001 -c .storybook",
     "build": "node node_modules/saas-plat-clientTools/bin/build",
     "pub": "node node_modules/saas-plat-clientTools/bin/publish",
-    "test": "set DEBUG=saas-plat-clientfx:*,-not_this && mocha"
+    "test": "set DEBUG=saas-plat:*,-not_this && mocha"
   },
   "repository": {
     "type": "git",
-    "url": "https://git.saas-plat.com/saas-plat-components"
+    "url": "https://git.saas-plat.com/saas-plat-metauiweb"
   },
   "keywords": [
+    "web",
     "component",
     "input",
     "display",
-    "feedback",
-    "selector"
+    "feedback"
   ],
   "author": "saas-plat",
   "license": "ISC",
   "dependencies": {
-    "antd": "^3.19.8",
-    "async-validator": "^1.10.1",
-    "css-element-queries": "^1.2.0",
-    "echarts": "^4.2.0-rc.2",
-    "echarts-for-react": "^2.0.15-beta.0",
-    "less-to-json-loader": "^1.1.0",
-    "lodash": "^4.17.11",
+    "antd": "^3.25.3",
+    "async-validator": "^1.12.2",
+    "css-element-queries": "^1.2.2",
+    "echarts": "^4.5.0",
+    "echarts-for-react": "^2.0.15-beta.1",
+    "lodash": "^4.17.15",
     "mobx": "^3.3.3",
     "mobx-react": "^4.3.5",
     "prop-types": "^15.6.0",
     "rc-ref-select": "^1.0.1",
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0",
-    "react-i18next": "^8.4.0",
-    "saas-plat-expression": "^1.0.1"
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "saas-plat-expression": "^1.0.1",
+    "saas-plat-metaui": "^1.1.2"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^4.1.18",
     "@storybook/react": "^3.4.12",
     "eslint": "^4.13.1",
-    "saas-plat-clientTools": "^1.0.61"
+    "less-to-json-loader": "^1.1.0",
+    "saas-plat-clientTools": "^1.0.69"
   }
 }
