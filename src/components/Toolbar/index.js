@@ -6,111 +6,224 @@ import {
   Icon
 } from 'antd';
 import PropTypes from 'prop-types';
-import './style';
-import {UIComponent} from 'saas-plat-metaui';
+import {
+  UIComponent
+} from 'saas-plat-metaui';
 import {
   observer
 } from "mobx-react";
+import './style';
+const ButtonGroup = Button.Group;
+const {
+  SubMenu
+} = Menu;
+const MenuItem = Menu.Item;
+const MenuDivider = Menu.Divider;
 
-const TextAndIcon = observer(({
-  config
-}) => {
-  return <span>{config.icon?<Icon type={config.icon}/>:null}{config.text}</span>
-});
-
-TextAndIcon.propTypes = {
-  config: PropTypes.object,
+@observer
+class TextAndIcon extends UIComponent {
+  render() {
+    const {
+      config
+    } = this.props;
+    const {
+      t
+    } = this.context;
+    return <span>{config.icon?<Icon type={config.icon}/>:null}{config.text || t('未命名')}</span>
+  }
 }
 
 @observer
 export class ButtonItem extends UIComponent {
-  static propTypes = {
-    config: PropTypes.object,
-  };
 
-  handleMenuClick = () => {
-    const config = this.props.config;
-    if (config && config.onClick && !config.disabled) {
-      this.context.onEvent(config, 'click');
+  static childContextTypes = {
+    ...UIComponent.childContextTypes,
+    childType: PropTypes.string,
+  }
+
+  static contextTypes = {
+    ...UIComponent.contextTypes,
+    childType: PropTypes.string,
+  }
+
+  getChildContext() {
+    return {
+      childType: this.childType || this.context.childType,
+    };
+  }
+
+  handleClick = () => {
+    const item = this.props.config;
+    if (item && !item.disabled) {
+      this.context.onEvent(item, 'click');
     }
   }
 
-  render() {
-    const config = this.props.config;
-    return (
-      <Button disabled={config.disabled} type={config.type} onClick={this.handleMenuClick}>
-      <TextAndIcon config={config}/>
-    </Button>
-    );
+  findItem(key, items) {
+    return items.find(it => {
+      if (it.key === key) {
+        return it;
+      }
+      return this.findItem(key, it.items);
+    });
   }
-}
-
-@observer
-export class DropdownButton extends BaseComponent {
-  static propTypes = {
-    config: PropTypes.object,
-  };
 
   handleMenuClick = ({
     key
   }) => {
-    const item = this.props.config.items.find(it => it.key === key);
-    if (item && item.onClick) {
-      this.context.onEvent(this.props.config, 'click');
+    const item = this.findItem(key, this.props.config.items);
+    if (item && !item.disabled) {
+      this.context.onEvent(item, 'click');
     }
   }
 
   renderMenu(items) {
+    this.childType = 'menu';
     return (
       <Menu onClick={this.handleMenuClick}>
-        {items.map(it => (
-          <Menu.Item key={it.key}>
-            <Icon type={it.icon}/> {it.text}
-          </Menu.Item>
-        ))}
+        {items.map(this.renderItem)}
       </Menu>
     );
   }
 
   render() {
-    const config = this.props.config;
-    if (config.items.length <= 0) {
-      return <ButtonItem config={config}/>;
-    }
-    if (config.action) {
+    const {
+      config,
+      ...other
+    } = this.props;
+    const {
+      key,
+      items,
+      style,
+      disabled,
+      onClick
+    } = config;
+    const {
+      childType
+    } = this.context;
+    if (items.length <= 0) {
+      if (childType === 'menu') {
+        return (
+          <MenuItem {...other} key={key} className='menuitem' disabled={disabled}  >
+            <TextAndIcon config={this.props.config}/>
+          </MenuItem>
+        );
+      }
       return (
-        <Dropdown.Button
-          disabled={config.disabled}
-          onClick={()=>this.context.onEvent(config, 'click')}
-          overlay={this.renderMenu(config.items)}>
-          <TextAndIcon config={config}/>
+        <Button key={key} className='btn' disabled={disabled} type={style} onClick={this.handleClick}>
+          <TextAndIcon config={this.props.config}/>
+        </Button>
+      );
+    }
+    if (style === 'divider') {
+      if (childType === 'menu') {
+        return <MenuDivider key={key}/>
+      } else {
+        return <div key={key} className='btn divider'></div>
+      }
+    }
+    if (childType === 'menu') {
+      if (items.length > 0) {
+        const title = <TextAndIcon config={this.props.config}/>;
+        return (<SubMenu {...other} key={key} title={title}>
+             {items.map(this.renderItem)}
+          </SubMenu>)
+      } else {
+        return (<MenuItem {...other} key={key}>
+            {<TextAndIcon config={this.props.config}/>}
+          </MenuItem>)
+      }
+    }
+    if (onClick) {
+      return (
+        <Dropdown.Button key={key}
+          disabled={disabled}
+          onClick={()=>this.context.onEvent(this.props.config, 'click')}
+          overlay={this.renderMenu(items)}>
+          <TextAndIcon config={this.props.config}/>
         </Dropdown.Button>
       );
     } else {
       return (
-        <Dropdown overlay={this.renderMenu(config.items)}>
-          <ButtonItem config={config}/>
+        <Dropdown key={key} overlay={this.renderMenu(items)}>
+          <Button className='btn' type={style} disabled={disabled} onClick={this.handleClick}>
+            <TextAndIcon config={this.props.config}/>
+          </Button>
         </Dropdown>
       );
     }
   }
 }
 
-export default class Toolbar extends BaseComponent {
+export class Toolbar extends UIComponent {
   render() {
+    const {
+      text,
+      items
+    } = this.props.config;
     return (
       <div className='toolbar'>
-      {this.props.config.text?<h2 className='title'>{this.props.config.text}</h2>:null}
-      {(this.props.config.groups).map(g => ((g.items.length > 1 || (g.items.length === 1 && g.items[0].items.length <= 0))
-        ? <Button.Group
-            key={g.key}
-            className={['btn',g.pull]}>
-            {g.items.map(it => <DropdownButton key={it.key} config={it}/>)}
-          </Button.Group>
-        : (g.items.length === 1)
-          ? <DropdownButton key={g.items[0].key} config={g.items[0]}/>
-          : null))}
-        </div>
+      { text?<h2 className='title'>{text}</h2>:null}
+      {items.map(this.renderItem)}
+    </div>
+    );
+  }
+}
+
+export class ToolButtonGroup extends UIComponent {
+  static childContextTypes = {
+    childType: PropTypes.string,
+  }
+
+  static contextTypes = {
+    childType: PropTypes.string,
+  }
+
+  getChildContext() {
+    return {
+      childType: this.childType || this.context.childType,
+    };
+  }
+
+  render() {
+    const {
+      config,
+      ...other
+    } = this.props;
+    const {
+      childType
+    } = this.context;
+    const {
+      key,
+      text,
+      items
+    } = config;
+    if (childType === 'menu') {
+      return (<Menu.ItemGroup {...other} key={key} title={text}>
+         {items.map(this.renderItem)}
+        </Menu.ItemGroup>)
+    }
+    return (
+      <ButtonGroup key={key} className='toolgroup'>
+        { text?<h2 className='title'>{text}</h2>:null}
+        {items.map(this.renderItem)}
+      </ButtonGroup>
+    );
+  }
+}
+
+export class ToolButtons extends UIComponent {
+  render() {
+    const {
+      key,
+      text,
+      items
+    } = this.props.config;
+    return (
+      <div key={key} className='toolbtns'>
+        { text?<h2 className='title'>{text}</h2>:null}
+        {items.map(this.renderItem)}
+      </div>
     );
   }
 }

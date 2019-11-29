@@ -5,33 +5,31 @@ import {
 import {
   action
 } from '@storybook/addon-actions';
-import {UIContainer,ViewStore} from 'saas-plat-metaui';
-import Chart from '../src/components/Chart'; 
-import Table from '../src/components/Table';
+import {
+  UIContainer,
+  UIStore,
+  UIRender
+} from 'saas-plat-metaui';
+import '../src';
 
-const model = {}
+const data = {}
 
-
-
-const table = ViewStore.create({
+const table = UIStore.create({
   name: 'table',
   type: 'table',
 
-}, model);
+}, data).ui;
 
+const chart = UIStore.create({
+  type: 'chart',
 
+}, data).ui;
 
-
-const chart = ViewStore.create({
-  type: 'bar',
-
-}, model);
-
-storiesOf('数据展示', module)
+storiesOf('Display', module)
   .add('Table', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><Table config={table}/></UIContainer>)
+    onAction={(name,args)=>action(name)(args)}><UIRender ui={table}/></UIContainer>)
 
   .add('Chart', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><Chart config={chart}/></UIContainer>)
+    onAction={(name,args)=>action(name)(args)}><UIRender ui={chart}/></UIContainer>)

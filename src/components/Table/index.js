@@ -6,7 +6,7 @@ import {UIComponent} from 'saas-plat-metaui';
 import './style';
 
 @observer
-export class Table extends UIComponent {
+export default class Table extends UIComponent {
   static propTypes = {}
 
   state = {

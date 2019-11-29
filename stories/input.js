@@ -5,12 +5,14 @@ import {
 import {
   action
 } from '@storybook/addon-actions';
-import {UIContainer,ViewStore} from 'saas-plat-metaui';
-import InputItem from '../src/components/InputItem';
-import EditableTable from '../src/components/EditableTable';
-import Toolbar from '../src/components/Toolbar';
+import {
+  UIRender,
+  UIContainer,
+  UIStore
+} from 'saas-plat-metaui';
+import '../src';
 
-const model = {
+const data = {
   text: 'AAAAAAAAA',
   date: new Date(),
   time: new Date(),
@@ -49,64 +51,169 @@ const model = {
   }]
 };
 
+const simpletoolbar = UIStore.create({
+  name: 'toolbar',
+  type: 'buttongroup',
+  items: [{
+    type: 'button',
+    text: 'Button1',
+    style: 'primary'
+  }, {
+    type: 'button',
+    text: 'Button2'
+  }, {
+    type: 'button',
+    text: 'Button3'
+  }, {
+    type: 'button',
+    text: 'Button4'
+  }]
+}, data).ui;
 
-const toolbar = ViewStore.create({
+const toolbar = UIStore.create({
+  name: 'toolbar',
+  type: 'buttons',
+  items: [{
+    type: 'layout',
+    layout: 'left',
+    items: [{
+      type: 'button',
+      text: 'Button1',
+      style: 'primary'
+    }, {
+      type: 'button',
+      text: 'Button2',
+      style: 'link'
+    }]
+  }, {
+    type: 'layout',
+    layout: 'right',
+    items: [{
+      type: 'button',
+      text: 'Button3',
+      style: 'link'
+    }, {
+      type: 'button',
+      text: 'Button4',
+      style: 'link'
+    }]
+  }]
+}, data).ui;
+
+
+const bigtoolbar = UIStore.create({
   name: 'toolbar',
   type: 'toolbar',
+  items: [{
+    type: 'layout',
+    layout: 'left',
+    items: [{
+      type: 'button',
+      text: 'Button1',
+      items:[{
+        type: 'button',
+        text: 'DropdownButton1',
+        items: [{
+          type: 'buttongroup',
+          text: 'group1',
+          items: [{
+            type: 'button',
+            text: 'ChildDropdownButton1'
+          }, {
+            type: 'button',
+            text: 'ChildDropdownButton2'
+          }]
+        },{
+          type: 'buttongroup',
+          text: 'group2',
+          items: [{
+            type: 'button',
+            text: 'ChildDropdownButton5'
+          }, {
+            type: 'button',
+            text: 'ChildDropdownButton6'
+          }]
+        }]
+      }, {
+        type: 'button',
+        text: 'DropdownButton2',
+        items:[{
+          type: 'button',
+          text: '',
+          items: [{
+            type: 'button',
+            text: 'ChildDropdownButton3'
+          }, {
+            type: 'button',
+            text: 'ChildDropdownButton4'
+          }]
+        }]
+      }]
+    }, {
+      type: 'button',
+      text: 'Button2'
+    }]
+  }, {
+    type: 'layout',
+    layout: 'right',
+    items: [{
+      type: 'button',
+      text: 'Button3',
+      style: 'link'
+    }, {
+      type: 'button',
+      text: 'Button4',
+      style: 'link'
+    }]
+  }]
+}, data).ui;
 
-},model);
-
-const textbox = ViewStore.create({
-  type: 'text',
+const textbox = UIStore.create({
+  type: 'textbox',
   value: 'text',
   icon: 'form',
   tip: 'xxxxxxxxxxxxx',
   rules: [{
     required: true
   }]
-}, model);
+}, data).ui;
 
-const datetime = ViewStore.create({
-  type: 'datetime',
+const datetime = UIStore.create({
+  type: 'datepicker',
   value: 'date',
   required: true,
   extra: 'xxxxxxxxxxxxx'
-}, model);
+}, data).ui;
 
-const time = ViewStore.create({
-  type: 'time',
+const time = UIStore.create({
+  type: 'timepicker',
   value: 'date',
   text: 'time'
-}, model);
+}, data).ui;
 
-const number = ViewStore.create({
-  type: 'number',
+const number = UIStore.create({
+  type: 'numberinput',
   value: 'number',
   format: 'thousandth',
   text: 'number'
-}, model);
+}, data).ui;
 
-const check = ViewStore.create({
-  type: 'check',
+const check = UIStore.create({
+  type: 'checkbox',
   value: 'bool',
   text: 'check'
-}, model);
+}, data).ui;
 
-const switchbox = ViewStore.create({
-  type: 'switch',
-  value: 'bool',
-}, model);
-
-const select = ViewStore.create({
+const select = UIStore.create({
   type: 'select',
   value: 'number',
   dataSource: '$array',
   displayField: 'a',
   valueField: 'b',
   sortField: 'a',
-}, model);
+}, data).ui;
 
-const treeselect = ViewStore.create({
+const treeselect = UIStore.create({
   name: 'treesel',
   type: 'treeselect',
   value: 'number',
@@ -117,9 +224,9 @@ const treeselect = ViewStore.create({
   idField: 'id',
   pidField: 'pid',
   sortField: 'a',
-}, model);
+}, data).ui;
 
-const reflist = ViewStore.create({
+const reflist = UIStore.create({
   name: 'item2',
   text: 'item2',
   type: 'refselect',
@@ -136,9 +243,9 @@ const reflist = ViewStore.create({
   mapping: '={f1:$a,f2:$b,f3:$c}',
   setValue: 'obj',
   pageSize: 200
-}, model);
+}, data).ui;
 
-const reftable = ViewStore.create({
+const reftable = UIStore.create({
   name: 'item4',
   text: 'item4',
   type: 'refselect',
@@ -161,11 +268,11 @@ const reftable = ViewStore.create({
   }, {
     title: 'ccc',
     dataIndex: 'f3'
-  } ]
-}, model);
+  }]
+}, data).ui;
 
 // treetable和table带tree是不一样的，tree和table是不同的数据结构
-const reftreetable = ViewStore.create({
+const reftreetable = UIStore.create({
   name: 'item6',
   text: 'item6',
   type: 'reftreeselect',
@@ -195,87 +302,97 @@ const reftreetable = ViewStore.create({
   }],
   mapping: '={f1:$a,f2:$b,f3:$c}',
   setValue: 'objarr'
-}, model);
+}, data).ui;
 
-const inputtable = ViewStore.create({
+const inputtable = UIStore.create({
   name: 'inputtable',
   text: 'inputtable',
   type: 'inputtable',
   value: 'objarr',
   columns: [{
+    type: 'textbox',
     title: 'aaa',
     dataIndex: 'a'
   }, {
+    type: 'textbox',
     title: 'bbb',
     dataIndex: 'b'
   }, {
+    type: 'textbox',
     title: 'ccc',
     dataIndex: 'c'
   }, {
+    type: 'textbox',
     title: 'ddd',
     dataIndex: 'd'
   }],
-}, model);
+}, data).ui;
 
-const editabletable = ViewStore.create({
+const editabletable = UIStore.create({
   name: 'inputtable',
   type: 'editabletable',
   value: 'objarr',
   columns: [{
+    type: 'textbox',
     title: 'aaa',
     dataIndex: 'a'
   }, {
+    type: 'textbox',
     title: 'bbb',
     dataIndex: 'b'
   }, {
+    type: 'textbox',
     title: 'ccc',
     dataIndex: 'c'
   }, {
+    type: 'textbox',
     title: 'ddd',
     dataIndex: 'd'
   }],
-}, model);
+}, data).ui;
 
-storiesOf('数据输入', module)
+storiesOf('Input', module)
   .add('Toolbar', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><Toolbar config={toolbar}/></UIContainer>)
+    onAction={(name,args)=>action(name)(args)}>
+    <UIRender ui={simpletoolbar}/>
+    <UIRender ui={toolbar}/>
+    <UIRender ui={bigtoolbar}/>
+    </UIContainer>)
   .add('TextBox', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><InputItem config={textbox}/></UIContainer>)
+    onAction={(name,args)=>action(name)(args)}><UIRender ui={textbox}/></UIContainer>)
   .add('DatePicker', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><InputItem config={datetime}/></UIContainer>)
-  .add('TimeBox', () => <UIContainer
+    onAction={(name,args)=>action(name)(args)}><UIRender ui={datetime}/></UIContainer>)
+  .add('TimePicker', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><InputItem config={time}/></UIContainer>)
-  .add('NumberBox', () => <UIContainer
+    onAction={(name,args)=>action(name)(args)}><UIRender ui={time}/></UIContainer>)
+  .add('NumberInput', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><InputItem config={number}/></UIContainer>)
+    onAction={(name,args)=>action(name)(args)}><UIRender ui={number}/></UIContainer>)
   .add('CheckBox', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><InputItem config={check}/></UIContainer>)
-  .add('Switch', () => <UIContainer
-    onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><InputItem config={switchbox}/></UIContainer>)
+    onAction={(name,args)=>action(name)(args)}><UIRender ui={check}/></UIContainer>)
+
   .add('Select', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><InputItem config={select}/></UIContainer>)
+    onAction={(name,args)=>action(name)(args)}><UIRender ui={select}/></UIContainer>)
   .add('TreeSelect', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><InputItem config={treeselect}/></UIContainer>)
+    onAction={(name,args)=>action(name)(args)}><UIRender ui={treeselect}/></UIContainer>)
   .add('RefList', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><InputItem config={reflist}/></UIContainer>)
+    onAction={(name,args)=>action(name)(args)}><UIRender ui={reflist}/></UIContainer>)
   .add('RefTable', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><InputItem config={reftable}/></UIContainer>)
-    .add('RefTreeTable', () => <UIContainer
+    onAction={(name,args)=>action(name)(args)}><UIRender ui={reftable}/></UIContainer>)
+  .add('RefTreeTable', () => <UIContainer
       onEvent={(name,args)=>action(name)(args)}
-      onAction={(name,args)=>action(name)(args)}><InputItem config={reftreetable}/></UIContainer>)
+      onAction={(name,args)=>action(name)(args)}><UIRender ui={reftreetable}/></UIContainer>)
   .add('InputTable', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><InputItem config={inputtable}/></UIContainer>)
+    onAction={(name,args)=>action(name)(args)}><UIRender ui={inputtable}/></UIContainer>)
   .add('EditableTable', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><EditableTable config={editabletable}/></UIContainer>)
+    onAction={(name,args)=>action(name)(args)}><UIRender ui={editabletable}/></UIContainer>)

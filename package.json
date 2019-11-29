@@ -39,7 +39,7 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "saas-plat-expression": "^1.0.1",
-    "saas-plat-metaui": "^1.1.2"
+    "saas-plat-metaui": "^1.1.4"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^4.1.18",

@@ -1,35 +1,52 @@
-.toolbar {
-  display: 'block';
-  margin-bottom: 12px;
+@import '../style/vars.less';
+
+.basetools {
   min-height: 32px;
+  padding: 10px;
+
+  .layout {
+    display: inline-block;
+  }
+
+  .right {
+    float: right;
+  }
+
+  .divider {
+    content: '|';
+  }
+}
+
+.toolbar {
+  .basetools;
+  box-shadow: 2px 2px 4px #ddd;
 
   .title {
     display: inline-block;
   }
 
   .btn {
-    margin-right: 8px;
+    margin-right: @itemMargin;
 
     &:last-child {
       margin-right: 0;
     }
   }
-
-  .right {
-    float: right;
-  }
 }
 
+.toolgroup {
+  .basetools
+}
+
+.toolbtns {
+  .basetools
+}
 @media (max-width: 576px) {
   .toolbar {
     text-align: center;
 
     .title {
       display: block !important;
-    }
-
-    .right {
-      float: none !important;
     }
   }
 }

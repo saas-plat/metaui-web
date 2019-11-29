@@ -1,12 +1,21 @@
 .layout {
+  // 同时两个layout对不齐
+  vertical-align: middle;
+
   &.flow {
     .item {
       display: inline-block;
-      padding: 2px 5px; 
+      padding: 2px 5px;
     }
     @media (max-width: 576px) {
       .item {
         width: 100% !important;
+      }
+    }
+
+    &.right {
+      .item {
+        float: right;
       }
     }
   }

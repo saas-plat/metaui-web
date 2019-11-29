@@ -17,12 +17,22 @@ export default class FlowLayout extends React.Component {
     const {
       key,
       items,
-      state,
-      itemWidth
+      layout,
+      itemWidth = it.width || 'auto'
     } = this.props.config;
     let hasFocus = false;
-    return (<div className={['layout','flow',state].join(' ')}>
-      {items.filter(it=>it.visible).map(it=>{
+    let its = items.slice();
+    if (layout === 'right') {
+      its.reverse();
+    }
+    let style;
+    if (itemWidth && itemWidth !== 'auto') {
+      style = {
+        width: itemWidth
+      }
+    }
+    return (<div className={['layout','flow', layout].join(' ')}>
+      {its.map(it=>{
         // 自动选中第一个不是禁用的input
         let autoFocus = false;
         if (this.props.autoFocus && !it.disabled && !hasFocus)
@@ -30,7 +40,7 @@ export default class FlowLayout extends React.Component {
             autoFocus = true;
             hasFocus = true;
           }
-        return <div key={'FlowItem'+key+it.key} className='item' style={{width:it.width || itemWidth}}>
+        return <div key={'FlowItem'+key+it.key} className='item' style={style}>
           {this.props.renderItem(it,{autoFocus}, items)}
         </div>}
       )}
