@@ -26,10 +26,7 @@ class TextAndIcon extends UIComponent {
     const {
       config
     } = this.props;
-    const {
-      t
-    } = this.context;
-    return <span>{config.icon?<Icon type={config.icon}/>:null}{config.text || t('未命名')}</span>
+    return <span>{config.icon?<Icon type={config.icon}/>:null}{config.text || this.t('未命名')}</span>
   }
 }
 
@@ -55,7 +52,7 @@ export class ButtonItem extends UIComponent {
   handleClick = () => {
     const item = this.props.config;
     if (item && !item.disabled) {
-      this.context.onEvent(item, 'click');
+      this.onEvent(item, 'click');
     }
   }
 
@@ -73,7 +70,7 @@ export class ButtonItem extends UIComponent {
   }) => {
     const item = this.findItem(key, this.props.config.items);
     if (item && !item.disabled) {
-      this.context.onEvent(item, 'click');
+      this.onEvent(item, 'click');
     }
   }
 
@@ -138,7 +135,7 @@ export class ButtonItem extends UIComponent {
       return (
         <Dropdown.Button key={key}
           disabled={disabled}
-          onClick={()=>this.context.onEvent(this.props.config, 'click')}
+          onClick={()=>this.onEvent(this.props.config, 'click')}
           overlay={this.renderMenu(items)}>
           <TextAndIcon config={this.props.config}/>
         </Dropdown.Button>
