@@ -15,7 +15,9 @@ import {
 } from 'antd';
 import './style';
 import RcRefSelect from 'rc-ref-select';
-import {UIComponent} from 'saas-plat-metaui';
+import {
+  UIComponent
+} from 'saas-plat-metaui';
 import InputTable from '../InputTable';
 import moment from 'moment';
 
@@ -29,7 +31,7 @@ const {
 @observer
 export default class InputItem extends UIComponent {
   static propTypes = {
-    config: PropTypes.object.isRequired,
+    ...UIComponent.propTypes,
     autoFocus: PropTypes.bool,
     state: PropTypes.string,
     // for form item
@@ -76,7 +78,7 @@ export default class InputItem extends UIComponent {
       size={size}
       className='input'
       placeholder={placeholder} defaultValue={defaultValue}
-      disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
+      disabled={disabled}
       value={'value' in this.props?this.props.value:value}
       onChange={(e)=>{this.handleChange(e.target.value)}}
       onBlur={()=>this.context.onEvent(config, 'blur')}
@@ -112,7 +114,7 @@ export default class InputItem extends UIComponent {
         className='input'
         value={'value' in this.props?this.props.value:value}
         defaultValue={defaultValue}
-        disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
+        disabled={disabled}
         min={min}
         max={max}
         formatter={formatter}
@@ -153,7 +155,7 @@ export default class InputItem extends UIComponent {
       autoFocus={this.props.autoFocus}
       size={size}
       className='input'
-      placeholder={placeholder} defaultValue={defaultValue} disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
+      placeholder={placeholder} defaultValue={defaultValue} disabled={disabled}
       value={'value' in this.props?this.props.value:value}
       onChange={(value)=>{this.handleChange(value)}}
       onBlur={()=>this.context.onEvent(config, 'blur')}
@@ -201,7 +203,7 @@ export default class InputItem extends UIComponent {
     autoFocus={this.props.autoFocus}
     size={size}
     className='input'
-    allowClear={clear} showTime={showTime} disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
+    allowClear={clear} showTime={showTime} disabled={disabled}
     placeholder={placeholder} defaultValue={defaultValue}
     value={moment(value,format)}
     format={format}
@@ -225,7 +227,7 @@ export default class InputItem extends UIComponent {
     autoFocus={this.props.autoFocus}
     size={size}
     className='input'
-    allowEmpty={clear}  disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
+    allowEmpty={clear}  disabled={disabled}
     placeholder={placeholder} defaultValue={defaultValue}
     value={moment(value,format)}
     format={format}
@@ -247,7 +249,7 @@ export default class InputItem extends UIComponent {
       autoFocus={this.props.autoFocus}
       size={size}
       className='input'
-      disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
+      disabled={disabled}
       checked={!!value} defaultChecked={!!defaultValue}
       onChange={(e)=>{this.handleChange( {value:e.target.checked}, this.setValue),this.handleChange(e.target.checked)}}
       onBlur={()=>this.context.onEvent(config, 'blur')}
@@ -267,7 +269,7 @@ export default class InputItem extends UIComponent {
       autoFocus={this.props.autoFocus}
       size={size}
       className='input'
-      disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
+      disabled={disabled}
       checked={!!value} defaultChecked={!!defaultValue}
       onChange={(value)=>{this.handleChange(value)}}
       onBlur={()=>this.context.onEvent(config, 'blur')}
@@ -293,7 +295,7 @@ export default class InputItem extends UIComponent {
       size={size}
       showSearch
       mode={mode}
-      disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
+      disabled={disabled}
       value={'value' in this.props?this.props.value:value}
       defaultValue={defaultValue}
       placeholder={placeholder}
@@ -338,7 +340,7 @@ export default class InputItem extends UIComponent {
         treeData={dataSource}
         value={'value' in this.props?this.props.value:value}
         defaultValue={defaultValue}
-        disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
+        disabled={disabled}
         onChange={(value)=>{this.handleChange(value)}}
         onBlur={()=>this.context.onEvent(this.props.config, 'blur')}
         onFocus={()=>this.context.onEvent(this.props.config, 'focus')}>
@@ -388,14 +390,14 @@ export default class InputItem extends UIComponent {
         value={val}
         size={size}
         defaultValue={defaultValue}
-        disabled={disabled || (this.props.readonlyMode === 'disable'?config.state === 'READONLY':false)}
+        disabled={disabled}
         onChange={(value)=>{this.handleChange(value)}}
         onBlur={()=>this.context.onEvent(this.props.config, 'blur')}
         onFocus={()=>this.context.onEvent(this.props.config, 'focus')}/>
   }
 
   renderInputTable(config) {
-    return <InputTable config={config} disabled={this.props.readonlyMode === 'disable'?config.state === 'READONLY':false} autoFocus={this.props.autoFocus} onChange={this.handleChange}/>
+    return <InputTable config={config} disabled={config.disable} autoFocus={this.props.autoFocus} onChange={this.handleChange}/>
   }
 
   renderText(config) {
@@ -405,10 +407,9 @@ export default class InputItem extends UIComponent {
   render() {
     const {
       config,
-      readonlyMode = 'text'
     } = this.props;
     let element;
-    if (config.state === 'READONLY' && readonlyMode !== 'disable') {
+    if (config.readonly) {
       element = this.renderText(config);
     } else {
       switch (config.type) {
@@ -421,6 +422,7 @@ export default class InputItem extends UIComponent {
         element = this.renderTextArea(config);
         break;
       case 'number':
+      case 'numberinput':
         element = this.renderInputNumber(config);
         break;
       case 'check':
@@ -435,9 +437,11 @@ export default class InputItem extends UIComponent {
       case 'month':
       case 'daterange':
       case 'week':
+      case 'datepicker':
         element = this.renderDatePicker(config);
         break;
       case 'time':
+      case 'timepicker':
         element = this.renderTimePicker(config);
         break;
       case 'select':
@@ -460,7 +464,13 @@ export default class InputItem extends UIComponent {
         element = <span className='notsupport'></span>;
       }
     }
-    return (<div className={'inputitem '+config.type} style={{width:config.width}}>
+    let style;
+    if (config.width) {
+      style = {
+        width: config.width
+      };
+    }
+    return (<div className={'inputitem '+config.type} style={style}>
       {element}
     </div>);
   }

@@ -56,6 +56,11 @@ UIStore.register({
     component: InputItem,
     model: InputModel
   },
+  // 只读文本
+  readonly: {
+    component: InputItem,
+    model: InputModel
+  },
   decimalinput: {
     component: InputItem,
     model: InputModel
@@ -73,6 +78,10 @@ UIStore.register({
     model: InputModel
   },
   checkbox: {
+    component: InputItem,
+    model: InputModel
+  },
+  switch: {
     component: InputItem,
     model: InputModel
   },
