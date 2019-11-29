@@ -82,8 +82,7 @@ const toolbar = UIStore.create({
       style: 'primary'
     }, {
       type: 'button',
-      text: 'Button2',
-      style: 'link'
+      text: 'Button2'
     }]
   }, {
     type: 'layout',
@@ -110,6 +109,8 @@ const bigtoolbar = UIStore.create({
     items: [{
       type: 'button',
       text: 'Button1',
+      onClick: 'action1',
+      name: 'Button1',
       items:[{
         type: 'button',
         text: 'DropdownButton1',
@@ -151,7 +152,8 @@ const bigtoolbar = UIStore.create({
       }]
     }, {
       type: 'button',
-      text: 'Button2'
+      text: 'Button2',
+      style: 'link'
     }]
   }, {
     type: 'layout',
