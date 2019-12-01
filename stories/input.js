@@ -171,7 +171,7 @@ const bigtoolbar = UIStore.create({
 }, data).ui;
 
 const textbox = UIStore.create({
-  type: 'textbox',
+  type: 'text',
   value: 'text',
   icon: 'form',
   tip: 'xxxxxxxxxxxxx',
@@ -181,27 +181,27 @@ const textbox = UIStore.create({
 }, data).ui;
 
 const datetime = UIStore.create({
-  type: 'datepicker',
+  type: 'date',
   value: 'date',
   required: true,
   extra: 'xxxxxxxxxxxxx'
 }, data).ui;
 
 const time = UIStore.create({
-  type: 'timepicker',
+  type: 'time',
   value: 'date',
   text: 'time'
 }, data).ui;
 
 const number = UIStore.create({
-  type: 'numberinput',
+  type: 'number',
   value: 'number',
   format: 'thousandth',
   text: 'number'
 }, data).ui;
 
 const check = UIStore.create({
-  type: 'checkbox',
+  type: 'check',
   value: 'bool',
   text: 'check'
 }, data).ui;
@@ -306,48 +306,48 @@ const reftreetable = UIStore.create({
   setValue: 'objarr'
 }, data).ui;
 
-const inputtable = UIStore.create({
-  name: 'inputtable',
-  text: 'inputtable',
-  type: 'inputtable',
+const subtable = UIStore.create({
+  name: 'subtable',
+  text: 'subtable',
+  type: 'subtable',
   value: 'objarr',
   columns: [{
-    type: 'textbox',
+    type: 'text',
     title: 'aaa',
     dataIndex: 'a'
   }, {
-    type: 'textbox',
+    type: 'text',
     title: 'bbb',
     dataIndex: 'b'
   }, {
-    type: 'textbox',
+    type: 'text',
     title: 'ccc',
     dataIndex: 'c'
   }, {
-    type: 'textbox',
+    type: 'text',
     title: 'ddd',
     dataIndex: 'd'
   }],
 }, data).ui;
 
 const editabletable = UIStore.create({
-  name: 'inputtable',
+  name: 'subtable',
   type: 'editabletable',
   value: 'objarr',
   columns: [{
-    type: 'textbox',
+    type: 'text',
     title: 'aaa',
     dataIndex: 'a'
   }, {
-    type: 'textbox',
+    type: 'text',
     title: 'bbb',
     dataIndex: 'b'
   }, {
-    type: 'textbox',
+    type: 'text',
     title: 'ccc',
     dataIndex: 'c'
   }, {
-    type: 'textbox',
+    type: 'text',
     title: 'ddd',
     dataIndex: 'd'
   }],
@@ -394,7 +394,7 @@ storiesOf('Input', module)
       onAction={(name,args)=>action(name)(args)}><UIRender ui={reftreetable}/></UIContainer>)
   .add('InputTable', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><UIRender ui={inputtable}/></UIContainer>)
+    onAction={(name,args)=>action(name)(args)}><UIRender ui={subtable}/></UIContainer>)
   .add('EditableTable', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}><UIRender ui={editabletable}/></UIContainer>)

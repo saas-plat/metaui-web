@@ -52,7 +52,7 @@ UIStore.register({
   },
 
   //  input
-  input: {
+  text: {
     component: InputItem,
     model: InputModel
   },
@@ -61,15 +61,11 @@ UIStore.register({
     component: InputItem,
     model: InputModel
   },
-  decimalinput: {
+  decimal: {
     component: InputItem,
     model: InputModel
   },
-  numberinput: {
-    component: InputItem,
-    model: InputModel
-  },
-  textbox: {
+  number: {
     component: InputItem,
     model: InputModel
   },
@@ -77,7 +73,7 @@ UIStore.register({
     component: InputItem,
     model: InputModel
   },
-  checkbox: {
+  check: {
     component: InputItem,
     model: InputModel
   },
@@ -85,11 +81,11 @@ UIStore.register({
     component: InputItem,
     model: InputModel
   },
-  datepicker: {
+  date: {
     component: InputItem,
     model: InputModel
   },
-  monthpicker: {
+  month: {
     component: InputItem,
     model: InputModel
   },
@@ -97,11 +93,11 @@ UIStore.register({
     component: InputItem,
     model: InputModel
   },
-  weekpicker: {
+  week: {
     component: InputItem,
     model: InputModel
   },
-  timepicker: {
+  time: {
     component: InputItem,
     model: InputModel
   },
@@ -125,10 +121,12 @@ UIStore.register({
     component: InputItem,
     model: InputModel
   },
-  inputtable: {
+  // 子表
+  subtable: {
     component: InputItem,
     model: InputModel
   },
+  // 可编辑主表
   editabletable: {
     component: EditableTable,
     model: EditTableModel
