@@ -24,6 +24,8 @@ import EditableTable from './EditableTable';
 import Form from './Form';
 import Voucher from './Voucher';
 import ListGroup from './ListGroup';
+import VoucherOptions from './components/Options';
+import VoucherSelector from './components/Selector';
 // display
 import Table from './Table';
 import Chart from './Chart';
@@ -143,6 +145,14 @@ UIStore.register({
   },
   listgroup: {
     component: ListGroup,
+    model: FormModel
+  },
+  voucherOptions:{
+    component: VoucherOptions,
+    model: FormModel
+  },
+  voucherSelector:{
+    component: VoucherSelector,
     model: FormModel
   },
 
