@@ -1,12 +1,5 @@
 import {
-  UIStore,
-  ButtonModel,
-  InputModel,
-  FormModel,
-  ContainerModel,
-  EditTableModel,
-  TableModel,
-  ChartModel,
+  UIStore
 } from 'saas-plat-metaui';
 // common
 import Layout from './Layout';
@@ -32,141 +25,45 @@ import Chart from './Chart';
 
 UIStore.register({
   // common
-  layout: {
-    component: Layout,
-    model: ContainerModel
-  },
-  toolbar: {
-    component: Toolbar,
-    model: ContainerModel
-  },
-  buttongroup: {
-    component: ToolButtonGroup,
-    model: ContainerModel
-  },
-  buttons: {
-    component: ToolButtons,
-    model: ContainerModel
-  },
-  button: {
-    component: ButtonItem,
-    model: ButtonModel
-  },
+  layout: Layout,
+  toolbar: Toolbar,
+  buttongroup: ToolButtonGroup,
+  buttons: ToolButtons,
+  button: ButtonItem,
 
   //  input
-  text: {
-    component: InputItem,
-    model: InputModel
-  },
+  text: InputItem,
   // 只读文本
-  readonly: {
-    component: InputItem,
-    model: InputModel
-  },
-  decimal: {
-    component: InputItem,
-    model: InputModel
-  },
-  number: {
-    component: InputItem,
-    model: InputModel
-  },
-  textarea: {
-    component: InputItem,
-    model: InputModel
-  },
-  check: {
-    component: InputItem,
-    model: InputModel
-  },
-  switch: {
-    component: InputItem,
-    model: InputModel
-  },
-  date: {
-    component: InputItem,
-    model: InputModel
-  },
-  month: {
-    component: InputItem,
-    model: InputModel
-  },
-  daterange: {
-    component: InputItem,
-    model: InputModel
-  },
-  week: {
-    component: InputItem,
-    model: InputModel
-  },
-  time: {
-    component: InputItem,
-    model: InputModel
-  },
-  select: {
-    component: InputItem,
-    model: InputModel
-  },
-  listselect: {
-    component: InputItem,
-    model: InputModel
-  },
-  treeselect: {
-    component: InputItem,
-    model: InputModel
-  },
-  refselect: {
-    component: InputItem,
-    model: InputModel
-  },
-  reftreeselect: {
-    component: InputItem,
-    model: InputModel
-  },
+  readonly: InputItem,
+  decimal: InputItem,
+  number: InputItem,
+  textarea: InputItem,
+  check: InputItem,
+  switch: InputItem,
+  date: InputItem,
+  month: InputItem,
+  daterange: InputItem,
+  week: InputItem,
+  time: InputItem,
+  select: InputItem,
+  listselect: InputItem,
+  treeselect: InputItem,
+  refselect: InputItem,
+  reftreeselect: InputItem,
   // 子表
-  subtable: {
-    component: InputItem,
-    model: InputModel
-  },
+  subtable: InputItem,
   // 可编辑主表
-  editabletable: {
-    component: EditableTable,
-    model: EditTableModel
-  },
+  editabletable: EditableTable,
 
   // form
-  form: {
-    component: Form,
-    model: FormModel
-  },
-  voucher: {
-    component: Voucher,
-    model: FormModel
-  },
-  listgroup: {
-    component: ListGroup,
-    model: FormModel
-  },
-  voucherOptions:{
-    component: VoucherOptions,
-    model: FormModel
-  },
-  voucherSelector:{
-    component: VoucherSelector,
-    model: FormModel
-  },
+  form: Form,
+  voucher: Voucher,
+  listgroup: ListGroup,
+  voucherOptions:VoucherOptions,
+  voucherSelector:VoucherSelector,
 
   // display
-  table: {
-    component: Table,
-    model: TableModel
-  },
-  // treetable: {
-  //   component: TreeTable,
-  //   model: TreeModel
-  // },
-  chart: {
-    component: Chart,
-    model: ChartModel
-  },
+  table: Table,
+  // treetable: TreeTable,
+  chart: Chart,
 })
