@@ -46,10 +46,8 @@ UIStore.register({
   week: InputItem,
   time: InputItem,
   select: InputItem,
-  listselect: InputItem,
   treeselect: InputItem,
-  refselect: InputItem,
-  reftreeselect: InputItem,
+  refer: InputItem, 
   // 子表
   subtable: InputItem,
   // 可编辑主表

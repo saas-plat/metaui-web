@@ -21,18 +21,16 @@ export default class GridLayout extends React.Component {
     const {
       key,
       items,
-      state,
       columnCount
     } = this.props.config;
     let hasFocus = false;
     const rows = [];
-    const visItems = items.filter(it => it.visible);
     const span = parseInt(24/columnCount);
     const column = parseInt(24/span);
-    for (let i = 0, l = visItems.length; i < l; i += column) {
+    for (let i = 0, l = items.length; i < l; i += column) {
       const cols = [];
       for (let j = 0; j < column && i + j < l; j++) {
-        const it = visItems[i + j];
+        const it = items[i + j];
         // 自动选中第一个不是禁用的input
         let autoFocus = false;
         if (this.props.autoFocus && !it.disabled && !hasFocus) {
@@ -41,9 +39,9 @@ export default class GridLayout extends React.Component {
         }
         cols.push(<Col key={'Col'+key+it.key} span={span} className='item'>{this.props.renderItem(it,{autoFocus}, items)}</Col>);
       }
-      rows.push(<Row key={'Row'+key+i}>{cols}</Row>);
+      rows.push(<Row key={'Row'+key+i} className='row'>{cols}</Row>);
     }
-    return (<div className={['layout','grid',state].join(' ')}>
+    return (<div className={['layout','grid'].join(' ')}>
       {rows}
     </div>);
   }
