@@ -25,7 +25,7 @@ import Chart from './Chart';
 
 UIStore.register({
   // common
-  layout: Layout,
+  view: Layout,
   toolbar: Toolbar,
   buttongroup: ToolButtonGroup,
   buttons: ToolButtons,
@@ -47,7 +47,7 @@ UIStore.register({
   time: InputItem,
   select: InputItem,
   treeselect: InputItem,
-  refer: InputItem, 
+  refer: InputItem,
   // 子表
   subtable: InputItem,
   // 可编辑主表
