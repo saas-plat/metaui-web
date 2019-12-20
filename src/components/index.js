@@ -17,12 +17,9 @@ import {
 } from './Toolbar';
 import InputItem from './InputItem';
 import EditableTable from './EditableTable';
-// form
-import Form from './Form';
-import Voucher from './Voucher';
-import ListGroup from './ListGroup';
-import VoucherOptions from './components/Options';
-import VoucherSelector from './components/Selector';
+import EditableTree from './EditableTree';
+import Group from './Group';
+import Options from './Options';
 // display
 import Table from './Table';
 import Chart from './Chart';
@@ -30,6 +27,7 @@ import Chart from './Chart';
 UIStore.register({
   // common
   view: [Layout, ContainerModel],
+  group: [Group, ContainerModel],
   toolbar: [Toolbar, ContainerModel],
   buttongroup: [ToolButtonGroup, ContainerModel],
   buttons: [ToolButtons, ContainerModel],
@@ -52,17 +50,14 @@ UIStore.register({
   select: [InputItem, SimpleModel],
   treeselect: [InputItem, SimpleModel],
   refer: [InputItem, SimpleModel],
-  // 子表
-  subtable: [InputItem, SimpleModel],
+  // 子表编辑器
+  subtable: [InputItem, TableModel],
   // 可编辑主表
-  editabletable: [EditableTable, TableModel],
-
-  // form
-  form: [Form, ContainerModel],
-  voucher: [Voucher, ContainerModel],
-  listgroup: [ListGroup, ContainerModel],
-  voucherOptions: [VoucherOptions, ContainerModel],
-  voucherSelector: [VoucherSelector, ContainerModel],
+  edittable: [EditableTable, TableModel],
+  // 分类编辑器
+  edittree: [EditableTree, TableModel],
+  // 选项编辑器
+  options: [Options, TableModel],
 
   // display
   table: [Table, TableModel],
