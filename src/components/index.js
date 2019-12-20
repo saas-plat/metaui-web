@@ -1,5 +1,9 @@
 import {
-  UIStore
+  UIStore,
+  ContainerModel,
+  SimpleModel,
+  TableModel,
+  ReportModel
 } from 'saas-plat-metaui';
 // common
 import Layout from './Layout';
@@ -25,43 +29,43 @@ import Chart from './Chart';
 
 UIStore.register({
   // common
-  view: Layout,
-  toolbar: Toolbar,
-  buttongroup: ToolButtonGroup,
-  buttons: ToolButtons,
-  button: ButtonItem,
+  view: [Layout, ContainerModel],
+  toolbar: [Toolbar, ContainerModel],
+  buttongroup: [ToolButtonGroup, ContainerModel],
+  buttons: [ToolButtons, ContainerModel],
+  button: [ButtonItem, SimpleModel],
 
   //  input
-  text: InputItem,
+  text: [InputItem, SimpleModel],
   // 只读文本
-  readonly: InputItem,
-  decimal: InputItem,
-  number: InputItem,
-  textarea: InputItem,
-  check: InputItem,
-  switch: InputItem,
-  date: InputItem,
-  month: InputItem,
-  daterange: InputItem,
-  week: InputItem,
-  time: InputItem,
-  select: InputItem,
-  treeselect: InputItem,
-  refer: InputItem,
+  readonly: [InputItem, SimpleModel],
+  decimal: [InputItem, SimpleModel],
+  number: [InputItem, SimpleModel],
+  textarea: [InputItem, SimpleModel],
+  check: [InputItem, SimpleModel],
+  switch: [InputItem, SimpleModel],
+  date: [InputItem, SimpleModel],
+  month: [InputItem, SimpleModel],
+  daterange: [InputItem, SimpleModel],
+  week: [InputItem, SimpleModel],
+  time: [InputItem, SimpleModel],
+  select: [InputItem, SimpleModel],
+  treeselect: [InputItem, SimpleModel],
+  refer: [InputItem, SimpleModel],
   // 子表
-  subtable: InputItem,
+  subtable: [InputItem, SimpleModel],
   // 可编辑主表
-  editabletable: EditableTable,
+  editabletable: [EditableTable, TableModel],
 
   // form
-  form: Form,
-  voucher: Voucher,
-  listgroup: ListGroup,
-  voucherOptions:VoucherOptions,
-  voucherSelector:VoucherSelector,
+  form: [Form, ContainerModel],
+  voucher: [Voucher, ContainerModel],
+  listgroup: [ListGroup, ContainerModel],
+  voucherOptions: [VoucherOptions, ContainerModel],
+  voucherSelector: [VoucherSelector, ContainerModel],
 
   // display
-  table: Table,
-  // treetable: TreeTable,
-  chart: Chart,
+  table: [Table, TableModel],
+  // treetable: [TreeTable, ContainerModel],
+  chart: [Chart, ReportModel],
 })

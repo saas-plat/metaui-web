@@ -17,7 +17,7 @@ export default class Layout extends UIComponent {
     } = this.props;
     if (config.layout === 'left' || config.layout === 'right') {
       return <FlowLayout config={config} renderItem={this.renderItem}/>;
-    } else if (config.layout === 'topbottom' || config.layout === 'hscf' || config.layout === 'hcsf' || config.layout === 'shcf') {
+    } else if (config.layout === 'topbottom' || config.layout === 'sidercontent' || config.layout === 'contentsider' || config.layout === 'sidertopbottom') {
       return <PortalLayout config={config} renderItem={this.renderItem}/>;
     } else {
       return <GridLayout config={config} renderItem={this.renderItem}/>;
