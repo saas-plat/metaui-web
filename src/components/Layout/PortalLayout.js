@@ -25,88 +25,81 @@ export default class PortalLayout extends React.Component {
   render() {
     const {
       layout,
-      items,
+      items = [],
     } = this.props.config;
     let hasFocus = false;
     let contents = [];
-    for(let i=0,l=items.length;i<l;i++){
+    for (let i = 0, l = items.length; i < l; i++) {
       const it = items[i];
-        let autoFocus = false;
-        // 四种常用布局模式
-      if (layout === 'topbottom'){
-        if (i === 0){
+      let autoFocus = false;
+      // 四种常用布局模式
+      if (layout === 'topbottom') {
+        if (i === 0) {
           contents.push(<Header className='header' key={it.key}>
             {this.props.renderItem(it,{autoFocus}, items)}
           </Header>)
-        }else if (i === 1){
-          if (this.props.autoFocus && !it.disabled && !hasFocus)
-            {
-              autoFocus = true;
-              hasFocus = true;
-            }
+        } else if (i === 1) {
+          if (this.props.autoFocus && !it.disabled && !hasFocus) {
+            autoFocus = true;
+            hasFocus = true;
+          }
           contents.push(<Content className='content' key={it.key}>
             {this.props.renderItem(it,{autoFocus}, items)}
           </Content>)
-        }else if (i === 2){
+        } else if (i === 2) {
           contents.push(<Footer className='footer' key={it.key}>
             {this.props.renderItem(it,{autoFocus}, items)}
           </Footer>)
-        }else{
+        } else {
           console.warn('layout not render!', it);
         }
       }
-      if (layout === 'sidercontent'){
-        if (i === 0){
-            contents.push(<Sider className='sider' key={it.key}>
+      if (layout === 'sidercontent') {
+        if (i === 0) {
+          contents.push(<Sider className='sider' key={it.key}>
               {this.props.renderItem(it,{autoFocus}, items)}
             </Sider>)
+        } else if (i === 1) {
+          if (this.props.autoFocus && !it.disabled && !hasFocus) {
+            autoFocus = true;
+            hasFocus = true;
           }
-        else if (i === 1){
-            if (this.props.autoFocus && !it.disabled && !hasFocus)
-              {
-                autoFocus = true;
-                hasFocus = true;
-              }
-            contents.push(<Content className='content' key={it.key}>
+          contents.push(<Content className='content' key={it.key}>
               {this.props.renderItem(it,{autoFocus}, items)}
             </Content>)
-        }else{
+        } else {
           console.warn('layout not render!', it);
         }
       }
-      if (layout === 'contentsider'){
-        if (i === 0){
-          if (this.props.autoFocus && !it.disabled && !hasFocus)
-            {
-              autoFocus = true;
-              hasFocus = true;
-            }
+      if (layout === 'contentsider') {
+        if (i === 0) {
+          if (this.props.autoFocus && !it.disabled && !hasFocus) {
+            autoFocus = true;
+            hasFocus = true;
+          }
           contents.push(<Content className='content' key={it.key}>
             {this.props.renderItem(it,{autoFocus}, items)}
           </Content>)
 
-        }
-        else if (i === 1){
-            contents.push(<Sider className='sider' key={it.key}>
+        } else if (i === 1) {
+          contents.push(<Sider className='sider' key={it.key}>
               {this.props.renderItem(it,{autoFocus}, items)}
             </Sider>)
-        }else{
+        } else {
           console.warn('layout not render!', it);
         }
       }
 
-      if (layout === 'sidertopbottom'){
-        if (i === 0){
+      if (layout === 'sidertopbottom') {
+        if (i === 0) {
           contents.push(<Sider className='sider' key={it.key}>
             {this.props.renderItem(it,{autoFocus}, items)}
           </Sider>)
-        }
-        else if (i === 1){
-          if (this.props.autoFocus && !it.disabled && !hasFocus)
-            {
-              autoFocus = true;
-              hasFocus = true;
-            }
+        } else if (i === 1) {
+          if (this.props.autoFocus && !it.disabled && !hasFocus) {
+            autoFocus = true;
+            hasFocus = true;
+          }
           contents.push(<Layout key={it.key}>
             <Header className='header'>
               {this.props.renderItem(it,{autoFocus:false}, items)}
@@ -118,8 +111,8 @@ export default class PortalLayout extends React.Component {
               {this.props.renderItem(it,{autoFocus:false}, items)}
             </Footer>:null}
           </Layout>)
-          i+=2;
-        }else{
+          i += 2;
+        } else {
           console.warn('layout not render!', it);
         }
       }

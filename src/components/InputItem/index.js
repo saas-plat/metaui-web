@@ -451,6 +451,7 @@ export default class InputItem extends UIComponent {
       case 'treeselect':
         element = this.renderTreeSelect(config);
         break;
+      case 'refer':
       case 'refselect':
       case 'treetableselect':
         element = this.renderRefSelect(config);

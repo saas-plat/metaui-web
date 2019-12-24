@@ -90,9 +90,9 @@ export class ButtonItem extends UIComponent {
     } = this.props;
     const {
       key,
-      items,
+      items = [],
       style,
-      disabled,
+      disabled = false,
       onClick
     } = config;
     const {
@@ -156,7 +156,7 @@ export class Toolbar extends UIComponent {
   render() {
     const {
       text,
-      items
+      items = []
     } = this.props.config;
     return (
       <div className='toolbar'>
@@ -193,7 +193,7 @@ export class ToolButtonGroup extends UIComponent {
     const {
       key,
       text,
-      items
+      items = []
     } = config;
     if (childType === 'menu') {
       return (<Menu.ItemGroup {...other} key={key} title={text}>
@@ -214,7 +214,7 @@ export class ToolButtons extends UIComponent {
     const {
       key,
       text,
-      items
+      items = []
     } = this.props.config;
     return (
       <div key={key} className='toolbtns'>

@@ -10,15 +10,16 @@ export default class FlowLayout extends React.Component {
   static propTypes = {
     config: PropTypes.object,
     autoFocus: PropTypes.bool,
+    width: PropTypes.string,
     renderItem: PropTypes.func.isRequired,
   }
 
   render() {
     const {
       key,
-      items,
+      items = [],
       layout,
-      itemWidth = it.width || 'auto'
+      itemWidth = this.props.width || 'auto'
     } = this.props.config;
     let hasFocus = false;
     let its = items.slice();

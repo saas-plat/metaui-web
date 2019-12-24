@@ -3,11 +3,14 @@ import {
   ContainerModel,
   SimpleModel,
   TableModel,
-  ReportModel
+  ReportModel,
+  ReferModel,
+  FilterModel
 } from 'saas-plat-metaui';
-// common
+// layout
 import Layout from './Layout';
-
+import TabGroup from './TabGroup';
+import TitleGroup from './TitleGroup';
 // input
 import {
   Toolbar,
@@ -18,25 +21,23 @@ import {
 import InputItem from './InputItem';
 import EditableTable from './EditableTable';
 import EditableTree from './EditableTree';
-import Group from './Group';
 import Options from './Options';
 // display
 import Table from './Table';
 import Chart from './Chart';
 
 UIStore.register({
-  // common
+  // layout
   view: [Layout, ContainerModel],
-  group: [Group, ContainerModel],
+  tab: [TabGroup, ContainerModel],
+  group: [TitleGroup, ContainerModel],
   toolbar: [Toolbar, ContainerModel],
   buttongroup: [ToolButtonGroup, ContainerModel],
   buttons: [ToolButtons, ContainerModel],
-  button: [ButtonItem, SimpleModel],
 
-  //  input
+  // input
+  button: [ButtonItem, SimpleModel],
   text: [InputItem, SimpleModel],
-  // 只读文本
-  readonly: [InputItem, SimpleModel],
   decimal: [InputItem, SimpleModel],
   number: [InputItem, SimpleModel],
   textarea: [InputItem, SimpleModel],
@@ -49,7 +50,8 @@ UIStore.register({
   time: [InputItem, SimpleModel],
   select: [InputItem, SimpleModel],
   treeselect: [InputItem, SimpleModel],
-  refer: [InputItem, SimpleModel],
+  // 对象引用
+  refer: [InputItem, ReferModel],
   // 子表编辑器
   subtable: [InputItem, TableModel],
   // 可编辑主表
@@ -58,6 +60,7 @@ UIStore.register({
   edittree: [EditableTree, TableModel],
   // 选项编辑器
   options: [Options, TableModel],
+  search: [Options, FilterModel],
 
   // display
   table: [Table, TableModel],

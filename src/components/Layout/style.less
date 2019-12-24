@@ -30,6 +30,38 @@
   }
 
   &.portal{
-    
+
+  }
+
+  &.list {
+    // 这里hidden不能去掉，解决套在scrollbar内宽度计算问题
+    // Row gutter={16} 会导致宽度+8
+    overflow: hidden;
+
+    .group {
+      .description {
+        color: fade(#000,45%);
+      }
+    }
+
+    .list {
+      .ant-list-vertical {
+        .ant-list-item-extra {
+          .inputitem {
+            &:not(.switch) {
+              width: 150px;
+            }
+          }
+        }
+
+        .ant-list-item-meta {
+          margin-bottom: 0;
+        }
+
+        .ant-list-item-meta-title {
+          margin-bottom: 0;
+        }
+      }
+    }
   }
 }

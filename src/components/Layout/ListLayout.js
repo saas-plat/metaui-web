@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {
   Row,
   Col,
@@ -12,7 +11,6 @@ import {
   observer
 } from "mobx-react";
 import {UIComponent} from 'saas-plat-metaui';
-import InputItem from '../InputItem';
 import './style.less';
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 const Panel = Collapse.Panel;
@@ -20,22 +18,11 @@ const Panel = Collapse.Panel;
 const ObserverList = observer(List);
 
 @observer
-export default class ListGroup extends UIComponent {
-
-  handleChangeTimer = (it,value)=>{
-    this.changeValues = {...this.changeValues,[it.name]:value};
-    if (this.timer){
-      return;
-    }
-    this.timer = setTimeout(()=>{
-      this.context.onEvent(this.props.config, 'change', this.changeValues);
-      this.timer = null;
-    },400);
-  }
+export default class ListLayout extends UIComponent {
 
   componentDidMount(){
     this.calcWidth();
-    this.resizer = new ResizeSensor(document.querySelector('.listgroup'), ()=>{
+    this.resizer = new ResizeSensor(document.querySelector('.listlayout'), ()=>{
       if (this.resizeTimer){
         clearTimeout(this.resizeTimer);
         this.resizeTimer = null;
@@ -49,13 +36,13 @@ export default class ListGroup extends UIComponent {
 
   componentWillUnmount(){
     if (this.resizer){
-      this.resizer.detach(document.querySelector('.listgroup'));
+      this.resizer.detach(document.querySelector('.listlayout'));
       this.resizer = null;
     }
   }
 
   calcWidth(){
-    const width = document.querySelector('.listgroup').offsetWidth;
+    const width = document.querySelector('.listlayout').offsetWidth;
     if (width<576){
       this.setState({
         colSpan: 24
@@ -82,8 +69,9 @@ export default class ListGroup extends UIComponent {
          itemLayout="vertical"
          dataSource={group.items.slice()}
          renderItem={item => (
-           <List.Item extra={<Tooltip placement="top" title={item.tip}><span><InputItem key={item.key} config={item.inputItem} readonlyMode='disable'
-            onChange={(value)=>this.handleChangeTimer(item,value)}/></span></Tooltip>}>
+           <List.Item extra={<Tooltip placement="top" title={item.tip}><span>
+              {this.renderItem(item)}
+            </span></Tooltip>}>
              <List.Item.Meta
                title={item.text}
                description={<div key={'txt_'+item.key}>{item.description} {item.btns.map(it=>(
@@ -115,7 +103,7 @@ export default class ListGroup extends UIComponent {
         const group = groups[ k];
         cols.push(<Col key={group.key} sm={this.state.colSpan} xs={24}>{this.renderGroup(group)}</Col>);
       }
-    return (<div className='listgroup'>
+    return (<div className='layout list'>
       <Row gutter={16}>
         {cols}
       </Row>

@@ -74,7 +74,7 @@ const toolbar = UIStore.create({
   name: 'toolbar',
   type: 'buttons',
   items: [{
-    type: 'layout',
+    type: 'view',
     layout: 'left',
     items: [{
       type: 'button',
@@ -85,7 +85,7 @@ const toolbar = UIStore.create({
       text: 'Button2'
     }]
   }, {
-    type: 'layout',
+    type: 'view',
     layout: 'right',
     items: [{
       type: 'button',
@@ -104,7 +104,7 @@ const bigtoolbar = UIStore.create({
   name: 'toolbar',
   type: 'toolbar',
   items: [{
-    type: 'layout',
+    type: 'view',
     layout: 'left',
     items: [{
       type: 'button',
@@ -156,7 +156,7 @@ const bigtoolbar = UIStore.create({
       style: 'link'
     }]
   }, {
-    type: 'layout',
+    type: 'view',
     layout: 'right',
     items: [{
       type: 'button',
@@ -217,7 +217,8 @@ const select = UIStore.create({
 
 const treeselect = UIStore.create({
   name: 'treesel',
-  type: 'treeselect',
+  type: 'select',
+  dropdownStyle: 'tree',
   value: 'number',
   dataSource: '$tree',
   multiple: true,
@@ -231,7 +232,7 @@ const treeselect = UIStore.create({
 const reflist = UIStore.create({
   name: 'item2',
   text: 'item2',
-  type: 'refselect',
+  type: 'refer',
   value: 'obj.f1',
   dropdownStyle: 'list',
   multiple: false,
@@ -250,7 +251,7 @@ const reflist = UIStore.create({
 const reftable = UIStore.create({
   name: 'item4',
   text: 'item4',
-  type: 'refselect',
+  type: 'refer',
   dropdownStyle: 'table',
   multiple: true,
   value: 'obj',
@@ -277,7 +278,8 @@ const reftable = UIStore.create({
 const reftreetable = UIStore.create({
   name: 'item6',
   text: 'item6',
-  type: 'reftreeselect',
+  type: 'refer',
+  dropdownStyle: 'treetable',
   value: 'Aggs.sum(objarr,"a")',
   multiple: false,
   treeQuery: '=tree{id,pid,a,b,c,d,e}',
@@ -330,9 +332,9 @@ const subtable = UIStore.create({
   }],
 }, data).ui;
 
-const editabletable = UIStore.create({
+const edittable = UIStore.create({
   name: 'subtable',
-  type: 'editabletable',
+  type: 'edittable',
   value: 'objarr',
   columns: [{
     type: 'text',
@@ -353,7 +355,7 @@ const editabletable = UIStore.create({
   }],
 }, data).ui;
 
-storiesOf('Input', module)
+storiesOf('输入类', module)
   .add('Toolbar', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}>
@@ -395,6 +397,6 @@ storiesOf('Input', module)
   .add('InputTable', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}><UIRender ui={subtable}/></UIContainer>)
-  .add('EditableTable', () => <UIContainer
+  .add('EditTable', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><UIRender ui={editabletable}/></UIContainer>)
+    onAction={(name,args)=>action(name)(args)}><UIRender ui={edittable}/></UIContainer>)

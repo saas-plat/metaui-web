@@ -20,13 +20,13 @@ export default class GridLayout extends React.Component {
   render() {
     const {
       key,
-      items,
+      items = [],
       columnCount
     } = this.props.config;
     let hasFocus = false;
     const rows = [];
-    const span = parseInt(24/columnCount);
-    const column = parseInt(24/span);
+    const span = parseInt(24 / columnCount);
+    const column = parseInt(24 / span);
     for (let i = 0, l = items.length; i < l; i += column) {
       const cols = [];
       for (let j = 0; j < column && i + j < l; j++) {
