@@ -10,9 +10,12 @@ import {
   UIContainer,
   UIStore
 } from 'saas-plat-metaui';
+import {
+  observable
+} from "mobx";
 import '../src';
 
-const data = {
+const data = observable({
   text: 'AAAAAAAAA',
   date: new Date(),
   time: new Date(),
@@ -49,7 +52,7 @@ const data = {
     a: 'a-2',
     b: 200
   }]
-};
+});
 
 const simpletoolbar = UIStore.create({
   name: 'toolbar',
@@ -99,7 +102,6 @@ const toolbar = UIStore.create({
   }]
 }, data).ui;
 
-
 const bigtoolbar = UIStore.create({
   name: 'toolbar',
   type: 'toolbar',
@@ -111,7 +113,7 @@ const bigtoolbar = UIStore.create({
       text: 'Button1',
       onClick: 'action1',
       name: 'Button1',
-      items:[{
+      items: [{
         type: 'button',
         text: 'DropdownButton1',
         items: [{
@@ -124,7 +126,7 @@ const bigtoolbar = UIStore.create({
             type: 'button',
             text: 'ChildDropdownButton2'
           }]
-        },{
+        }, {
           type: 'buttongroup',
           text: 'group2',
           items: [{
@@ -138,7 +140,7 @@ const bigtoolbar = UIStore.create({
       }, {
         type: 'button',
         text: 'DropdownButton2',
-        items:[{
+        items: [{
           type: 'button',
           text: '',
           items: [{
@@ -172,7 +174,7 @@ const bigtoolbar = UIStore.create({
 
 const textbox = UIStore.create({
   type: 'text',
-  value: 'text',
+  value: '$text',
   icon: 'form',
   tip: 'xxxxxxxxxxxxx',
   rules: [{
@@ -182,33 +184,33 @@ const textbox = UIStore.create({
 
 const datetime = UIStore.create({
   type: 'date',
-  value: 'date',
+  value: '$date',
   required: true,
   extra: 'xxxxxxxxxxxxx'
 }, data).ui;
 
 const time = UIStore.create({
   type: 'time',
-  value: 'date',
+  value: '$date',
   text: 'time'
 }, data).ui;
 
 const number = UIStore.create({
   type: 'number',
-  value: 'number',
+  value: '$number',
   format: 'thousandth',
   text: 'number'
 }, data).ui;
 
 const check = UIStore.create({
   type: 'check',
-  value: 'bool',
+  value: '$bool',
   text: 'check'
 }, data).ui;
 
 const select = UIStore.create({
   type: 'select',
-  value: 'number',
+  value: '$number',
   dataSource: '$array',
   displayField: 'a',
   valueField: 'b',
@@ -219,7 +221,7 @@ const treeselect = UIStore.create({
   name: 'treesel',
   type: 'select',
   dropdownStyle: 'tree',
-  value: 'number',
+  value: '$number',
   dataSource: '$tree',
   multiple: true,
   displayField: 'a',
@@ -233,7 +235,7 @@ const reflist = UIStore.create({
   name: 'item2',
   text: 'item2',
   type: 'refer',
-  value: 'obj.f1',
+  value: '$obj.f1',
   dropdownStyle: 'list',
   multiple: false,
   showSearch: true,
@@ -254,7 +256,7 @@ const reftable = UIStore.create({
   type: 'refer',
   dropdownStyle: 'table',
   multiple: true,
-  value: 'obj',
+  value: '$obj',
   displayField: 'f1',
   query: '=obj1{id,pid,a,b,c,d,e}',
   variables: '{pid:$id}',
@@ -280,7 +282,7 @@ const reftreetable = UIStore.create({
   text: 'item6',
   type: 'refer',
   dropdownStyle: 'treetable',
-  value: 'Aggs.sum(objarr,"a")',
+  value: 'Aggs.sum($objarr,"a")',
   multiple: false,
   treeQuery: '=tree{id,pid,a,b,c,d,e}',
   treeVariables: '{pid:$tree.id}',
@@ -312,7 +314,7 @@ const subtable = UIStore.create({
   name: 'subtable',
   text: 'subtable',
   type: 'subtable',
-  value: 'objarr',
+  value: '$objarr',
   columns: [{
     type: 'text',
     title: 'aaa',
@@ -335,7 +337,7 @@ const subtable = UIStore.create({
 const edittable = UIStore.create({
   name: 'subtable',
   type: 'edittable',
-  value: 'objarr',
+  value: '$objarr',
   columns: [{
     type: 'text',
     title: 'aaa',
@@ -356,6 +358,7 @@ const edittable = UIStore.create({
 }, data).ui;
 
 storiesOf('输入类', module)
+  .addParameters({ data })
   .add('Toolbar', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}>

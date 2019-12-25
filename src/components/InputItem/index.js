@@ -203,9 +203,9 @@ export default class InputItem extends UIComponent {
     autoFocus={this.props.autoFocus}
     size={size}
     className='input'
-    allowClear={clear} showTime={showTime} disabled={disabled}
-    placeholder={placeholder} defaultValue={defaultValue}
-    value={moment(value,format)}
+    allowClear={clear} showTime={showTime} disabled={disabled} 
+    placeholder={placeholder} defaultValue={defaultValue ? moment(defaultValue): null}
+    value={value ? moment(value): null}
     format={format}
     onChange={(moment,value)=>{this.handleChange(value)}}
     onBlur={()=>this.context.onEvent(config, 'blur')}
