@@ -3,8 +3,11 @@ import {
   useParameter,
   useAddonState
 } from '@storybook/api';
+import {
+  observer
+} from "mobx-react";
 
-export default () => {
+export default observer(() => {
   const state = useParameter('data', '');
   // if (!value){
   //   return null;
@@ -23,6 +26,7 @@ export default () => {
   //   }
   // }
   //   onChange={saveChagne} onBlur={updateData}
-  return <textarea style={{width:'100%',height:'100%',border: 'none'}}
-    value={JSON.stringify(state, null,2)}></textarea>
-}
+  return <div style={{width:'100%',height:'100%'}}>
+      <textarea style={{width:'100%',height:'100%',border: 'none',padding:0}} value={JSON.stringify(state, null, 4)}></textarea>
+    </div>
+})

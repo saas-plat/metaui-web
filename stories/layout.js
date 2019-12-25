@@ -59,6 +59,9 @@ const voucher = UIStore.create({
 }, data)
 
 storiesOf('布局类', module)
+  .addParameters({
+    data
+  })
   .add('Form', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}><UIRender ui={form}/></UIContainer>)

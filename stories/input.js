@@ -358,7 +358,9 @@ const edittable = UIStore.create({
 }, data).ui;
 
 storiesOf('输入类', module)
-  .addParameters({ data })
+  .addParameters({
+    data
+  })
   .add('Toolbar', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}>

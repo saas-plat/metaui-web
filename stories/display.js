@@ -26,6 +26,9 @@ const chart = UIStore.create({
 }, data).ui;
 
 storiesOf('展示类', module)
+  .addParameters({
+    data
+  })
   .add('Table', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}><UIRender ui={table}/></UIContainer>)
