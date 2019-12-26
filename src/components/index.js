@@ -26,6 +26,10 @@ import Options from './Options';
 import Table from './Table';
 import Chart from './Chart';
 
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
+
 UIStore.register({
   // layout
   view: [Layout, ContainerModel],
@@ -43,6 +47,7 @@ UIStore.register({
   textarea: [InputItem, SimpleModel],
   check: [InputItem, SimpleModel],
   switch: [InputItem, SimpleModel],
+  datetime: [InputItem, SimpleModel],
   date: [InputItem, SimpleModel],
   month: [InputItem, SimpleModel],
   daterange: [InputItem, SimpleModel],

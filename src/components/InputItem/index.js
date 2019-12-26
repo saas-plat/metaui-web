@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   observer
-} from "mobx-react";
+} from 'mobx-react';
 import PropTypes from 'prop-types';
 import {
   Input,
@@ -51,11 +51,10 @@ export default class InputItem extends UIComponent {
         fetching: false,
       });
       this.props.onChange(value);
-    } else {
-      this.context.onEvent(this.props.config, 'change', {
-        value
-      }, this.setValue);
     }
+    this.context.onEvent(this.props.config, 'change', {
+      value
+    }, this.setValue);
   }
 
   setValue = async ({
@@ -164,52 +163,94 @@ export default class InputItem extends UIComponent {
   }
 
   renderDatePicker(config) {
-    const {
+    let {
       key,
       type,
       value,
       clear,
       format,
+      showTime = false,
       defaultValue,
       placeholder,
+      defaultPickerValue,
       disabled,
-      size
+      showToday = true,
+      size,
+      mode, // time|date|month|year|decade
     } = config;
     let Component;
-    let showTime = false;
+    if (Array.isArray(value)) {
+      value = value.map(it => moment(it));
+    } else {
+      value = value ? moment(value) : value;
+    }
+    if (Array.isArray(defaultValue)) {
+      defaultValue = defaultValue.map(it => moment(it));
+    } else {
+      defaultValue = defaultValue ? moment(defaultValue) : defaultValue;
+    }
+    if (Array.isArray(defaultPickerValue)) {
+      defaultPickerValue = defaultPickerValue.map(it => moment(it));
+    } else {
+      defaultPickerValue = defaultPickerValue ? moment(defaultPickerValue) : defaultPickerValue;
+    }
     switch (type) {
     case 'date':
+      format = format || 'YYYY-MM-DD';
       Component = DatePicker;
       break;
     case 'datetime':
-      showTime = true;
+      showTime = showTime || {
+        format: 'HH:mm:ss'
+      };
+      format = format || 'YYYY-MM-DD HH:mm:ss';
       Component = DatePicker;
       break;
     case 'month':
+      format = format || 'YYYY-MM';
       Component = MonthPicker;
       break;
     case 'daterange':
+      format = format || 'YYYY-MM-DD';
       Component = RangePicker;
+      if (!Array.isArray(value)) {
+        value = [value, value];
+      }
+      if (!Array.isArray(mode)) {
+        mode = [mode, mode];
+      }
       break;
     case 'week':
+      format = format || 'YYYY-wo';
       Component = WeekPicker;
       break;
     default:
-      showTime = true;
+      format = format || 'YYYY-MM-DD';
       Component = DatePicker;
       break;
     }
     return <Component id={key}
     autoFocus={this.props.autoFocus}
+    mode={mode}
     size={size}
     className='input'
-    allowClear={clear} showTime={showTime} disabled={disabled} 
-    placeholder={placeholder} defaultValue={defaultValue ? moment(defaultValue): null}
-    value={value ? moment(value): null}
+    showToday={showToday}
+    allowClear={clear} showTime={showTime} disabled={disabled}
+    placeholder={placeholder}
     format={format}
-    onChange={(moment,value)=>{this.handleChange(value)}}
+    value={value}
+    defaultValue={defaultValue}
+    defaultPickerValue={defaultPickerValue}
+    onChange={(dates)=>{
+      if (Array.isArray(dates)){
+        this.handleChange(dates.map(date=>date.toDate()));
+      }else{
+        this.handleChange(dates.toDate());
+      }
+    }}
     onBlur={()=>this.context.onEvent(config, 'blur')}
-    onFocus={()=>this.context.onEvent(config, 'focus')}/>
+    onFocus={()=>this.context.onEvent(config, 'focus')}
+    />
   }
 
   renderTimePicker(config) {
@@ -227,7 +268,7 @@ export default class InputItem extends UIComponent {
     autoFocus={this.props.autoFocus}
     size={size}
     className='input'
-    allowEmpty={clear}  disabled={disabled}
+    allowClear={clear}  disabled={disabled}
     placeholder={placeholder} defaultValue={defaultValue}
     value={moment(value,format)}
     format={format}
@@ -299,7 +340,7 @@ export default class InputItem extends UIComponent {
       value={'value' in this.props?this.props.value:value}
       defaultValue={defaultValue}
       placeholder={placeholder}
-      optionFilterProp="children"
+      optionFilterProp='children'
       filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
       onChange={(value)=>{this.handleChange(value)}}
       onBlur={()=>this.context.onEvent(this.props.config, 'blur')}
