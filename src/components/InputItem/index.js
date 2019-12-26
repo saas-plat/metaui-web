@@ -42,9 +42,16 @@ export default class InputItem extends UIComponent {
   state = {
     data: [],
     fetching: false,
+    focus: false
   }
 
   handleChange = (value) => {
+    const {
+      maxLength = 8
+    } = this.props.config;
+    if (value && value.toString().length > maxLength) {
+      return;
+    }
     if (this.props.onChange) {
       this.setState({
         data: [],
@@ -57,6 +64,20 @@ export default class InputItem extends UIComponent {
     }, this.setValue);
   }
 
+  handleBlur = () => {
+    this.setState({
+      focus: false
+    })
+    this.context.onEvent(this.props.config, 'blur');
+  }
+
+  handleFocus = () => {
+    this.setState({
+      focus: true
+    })
+    this.context.onEvent(this.props.config, 'focus');
+  }
+
   setValue = async ({
     value
   }) => {
@@ -64,7 +85,7 @@ export default class InputItem extends UIComponent {
   }
 
   renderInput(config) {
-    const {
+    let {
       key,
       value,
       defaultValue,
@@ -72,38 +93,41 @@ export default class InputItem extends UIComponent {
       disabled,
       size
     } = config;
+    value = 'value' in this.props ? this.props.value : value;
     return (<Input id={key}
       autoFocus={this.props.autoFocus}
       size={size}
       className='input'
       placeholder={placeholder} defaultValue={defaultValue}
       disabled={disabled}
-      value={'value' in this.props?this.props.value:value}
+      value={value}
       onChange={(e)=>{this.handleChange(e.target.value)}}
       onBlur={()=>this.context.onEvent(config, 'blur')}
       onFocus={()=>this.context.onEvent(config, 'focus')}/>);
   }
 
   renderInputNumber(config) {
-    const {
+    let {
       key,
       value,
       defaultValue,
       disabled,
       min,
       max,
-      format,
-      size
+      format = '',
+      size,
+      precision = 2,
     } = config;
+    value = 'value' in this.props ? this.props.value : value;
     let formatter, parser;
 
-    if (format.toLowerCase() === 'thousandth') {
-      formatter = value => `${'value' in this.props?this.props.value:value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-      parser = value => value.replace(/\$(,*)/g, '');
+    if (format.toLowerCase() === 'thousandth' && !this.state.focus) {
+      formatter = value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      parser = value => Math.round(Number(value.replace(/(,*)/g, '')).toFixed(precision));
     }
-    if (format.toLowerCase() === 'percentage') {
-      formatter = value => `${'value' in this.props?this.props.value:value}%`;
-      parser = value => value.replace('%', '');
+    if (format.toLowerCase() === 'percentage' && !this.state.focus) {
+      formatter = value => `${Math.round(Number(value*100).toFixed(precision-2))}%`;
+      parser = value => Math.round(Number(value.replace('%', '') * 100).toFixed(precision));
     }
 
     return <InputNumber
@@ -111,21 +135,21 @@ export default class InputItem extends UIComponent {
         autoFocus={this.props.autoFocus}
         size={size}
         className='input'
-        value={'value' in this.props?this.props.value:value}
+        value={value}
         defaultValue={defaultValue}
         disabled={disabled}
         min={min}
         max={max}
         formatter={formatter}
         parser={parser}
-        onChange={(value)=>{this.handleChange(value)}}
-        onBlur={()=>this.context.onEvent(config, 'blur')}
-        onFocus={()=>this.context.onEvent(config, 'focus')}
+        onChange={this.handleChange}
+        onBlur={this.handleBlur}
+        onFocus={this.handleFocus}
       />
   }
 
   renderTextArea(config) {
-    const {
+    let {
       key,
       value,
       defaultValue,
@@ -134,6 +158,7 @@ export default class InputItem extends UIComponent {
       size
     } = config;
     let autosize = true;
+    value = 'value' in this.props ? this.props.value : value;
     if (size === 'large') {
       autosize = {
         minRows: 10
@@ -155,7 +180,7 @@ export default class InputItem extends UIComponent {
       size={size}
       className='input'
       placeholder={placeholder} defaultValue={defaultValue} disabled={disabled}
-      value={'value' in this.props?this.props.value:value}
+      value={value}
       onChange={(value)=>{this.handleChange(value)}}
       onBlur={()=>this.context.onEvent(config, 'blur')}
       onFocus={()=>this.context.onEvent(config, 'focus')}
@@ -319,7 +344,7 @@ export default class InputItem extends UIComponent {
   }
 
   renderSelect(config) {
-    const {
+    let {
       key,
       value,
       defaultValue,
@@ -329,6 +354,7 @@ export default class InputItem extends UIComponent {
       mode,
       dataSource,
     } = config;
+    value = 'value' in this.props ? this.props.value : value;
     return <Select
       id={key}
       className='input'
@@ -337,7 +363,7 @@ export default class InputItem extends UIComponent {
       showSearch
       mode={mode}
       disabled={disabled}
-      value={'value' in this.props?this.props.value:value}
+      value={value}
       defaultValue={defaultValue}
       placeholder={placeholder}
       optionFilterProp='children'
@@ -350,7 +376,7 @@ export default class InputItem extends UIComponent {
   }
 
   renderTreeSelect(config) {
-    const {
+    let {
       key,
       value,
       defaultValue,
@@ -366,6 +392,7 @@ export default class InputItem extends UIComponent {
       treeDefaultExpandAll = true,
       maxHeight = 400
     } = config;
+    value = 'value' in this.props ? this.props.value : value;
     return <TreeSelect id={key}
         autoFocus={this.props.autoFocus}
         size={size}
@@ -379,7 +406,7 @@ export default class InputItem extends UIComponent {
         dropdownStyle={{ maxHeight: maxHeight, overflow: 'auto' }}
         className='input'
         treeData={dataSource}
-        value={'value' in this.props?this.props.value:value}
+        value={value}
         defaultValue={defaultValue}
         disabled={disabled}
         onChange={(value)=>{this.handleChange(value)}}

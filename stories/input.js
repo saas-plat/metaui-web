@@ -234,7 +234,22 @@ const number = UIStore.create({
   type: 'number',
   value: '$number',
   setValue: 'number',
+  text: 'number'
+}, data).ui;
+
+const thousandth = UIStore.create({
+  type: 'number',
+  value: '$number',
+  setValue: 'number',
   format: 'thousandth',
+  text: 'number'
+}, data).ui;
+
+const percentage = UIStore.create({
+  type: 'number',
+  value: '$number',
+  setValue: 'number',
+  format: 'percentage',
   text: 'number'
 }, data).ui;
 
@@ -427,7 +442,11 @@ storiesOf('输入类', module)
 
   .add('NumberInput', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><UIRender ui={number}/></UIContainer>)
+    onAction={(name,args)=>action(name)(args)}>
+    <UIRender ui={number}/>
+    <UIRender ui={thousandth}/>
+    <UIRender ui={percentage}/>
+    </UIContainer>)
   .add('CheckBox', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}><UIRender ui={check}/></UIContainer>)
