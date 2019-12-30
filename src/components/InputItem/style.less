@@ -6,20 +6,51 @@
   }
 
   .input {
-    width: 100% !important;
-      border-top-style: none;
-      border-right-style: none;
-      border-left-style: none;
-      border-bottom-style: solid;
+    width: 100%;
+    box-shadow: none;
 
     &.ant-switch {
       width: auto !important;
     }
   }
 
+  input {
+    border-top-style: none;
+    border-right-style: none;
+    border-left-style: none;
+    border-bottom-style: solid;
+
+    &:focus {
+      border-width: 2px;
+      box-shadow: none;
+    }
+  }
+
   .notsupport {
     &::after {
       content: '--';
+    }
+  }
+
+  &.number {
+    .input {
+      border-top-style: none;
+      border-right-style: none;
+      border-left-style: none;
+      border-bottom-style: solid;
+
+      &.ant-input-number-focused {
+        border-width: 2px; 
+      }
+    }
+
+    input {
+      border-top-style: none;
+      border-right-style: none;
+      border-left-style: none;
+      border-bottom-style: none;
+
+
     }
   }
 }

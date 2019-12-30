@@ -41,7 +41,8 @@ module.exports = {
               'link-color': '#1DA57A',
               'border-radius-base': '2px',
               'border-radius-base': '0px',
-              'border-radius-sm': '0px', 
+              'border-radius-sm': '0px',
+              //'border-width-base': '2px',
             },
             javascriptEnabled: true,
           }
