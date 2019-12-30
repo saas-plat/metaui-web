@@ -352,7 +352,7 @@ export default class InputItem extends UIComponent {
       placeholder,
       size,
       mode,
-      dataSource,
+      data,
     } = config;
     value = 'value' in this.props ? this.props.value : value;
     return <Select
@@ -371,7 +371,7 @@ export default class InputItem extends UIComponent {
       onChange={(value)=>{this.handleChange(value)}}
       onBlur={()=>this.context.onEvent(this.props.config, 'blur')}
       onFocus={()=>this.context.onEvent(this.props.config, 'focus')}>
-      {dataSource.map(d => <Select.Option key={d.value}>{d.text}</Select.Option>)}
+      {data.map(d => <Select.Option key={d.value}>{d.text}</Select.Option>)}
     </Select>
   }
 
@@ -384,7 +384,7 @@ export default class InputItem extends UIComponent {
       placeholder,
       size,
 
-      dataSource,
+      data,
       showSearch = false,
       allowClear = true,
       multiple = false,
@@ -405,7 +405,7 @@ export default class InputItem extends UIComponent {
         treeDefaultExpandAll={treeDefaultExpandAll}
         dropdownStyle={{ maxHeight: maxHeight, overflow: 'auto' }}
         className='input'
-        treeData={dataSource}
+        treeData={data}
         value={value}
         defaultValue={defaultValue}
         disabled={disabled}
@@ -423,7 +423,7 @@ export default class InputItem extends UIComponent {
       disabled,
       size,
 
-      dataSource,
+      data,
       showHeader = true,
       showSearch = true,
       allowClear = true,
@@ -450,7 +450,7 @@ export default class InputItem extends UIComponent {
         allowClear={allowClear}
         showSearch={showSearch}
         multiple={multiple}
-        dataSource={dataSource}
+        data={data}
         defaultExpandAll={defaultExpandAll}
         defaultExpandKeys={defaultExpandKeys}
         showHeader={showHeader}
