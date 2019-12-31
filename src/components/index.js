@@ -6,7 +6,8 @@ import {
   ReportModel,
   ReferModel,
   FilterModel,
-  ListModel
+  ListModel,
+  TreeModel
 } from 'saas-plat-metaui';
 // layout
 import Layout from './Layout';
@@ -54,8 +55,7 @@ UIStore.register({
   daterange: [InputItem, SimpleModel],
   week: [InputItem, SimpleModel],
   time: [InputItem, SimpleModel],
-  select: [InputItem, ListModel],
-  treeselect: [InputItem, ListModel],
+  select: [InputItem, ListModel], 
   // 对象引用
   refer: [InputItem, ReferModel],
   // 子表编辑器

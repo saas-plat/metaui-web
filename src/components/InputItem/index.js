@@ -47,7 +47,7 @@ export default class InputItem extends UIComponent {
 
   handleChange = (value) => {
     const {
-      maxLength = 8
+      maxLength = 255
     } = this.props.config;
     if (value && value.toString().length > maxLength) {
       return;
@@ -84,6 +84,33 @@ export default class InputItem extends UIComponent {
     this.props.config.value = value;
   }
 
+  formatTitle = ({
+    title,
+    maxLength = 255,
+    precision
+  }) => {
+    if (!title) {
+      if (maxLength) {
+        if (precision) {
+          title = this.t('整数{{integer}}位, 小数{{precision}}位', {
+            integer: maxLength - precision - 1,
+            precision
+          });
+        } else {
+          title = this.t('最大长度{{maxLength}}位', {
+            maxLength
+          });
+        }
+      }
+    }
+    return title;
+  }
+
+  checkInt = (txt) => {
+    // 保证可以清空
+    return !txt || txt.match(/^\d+$/) !== null;
+  }
+
   renderInput(config) {
     let {
       key,
@@ -91,7 +118,8 @@ export default class InputItem extends UIComponent {
       defaultValue,
       placeholder,
       disabled,
-      size
+      size,
+      format
     } = config;
     value = 'value' in this.props ? this.props.value : value;
     return (<Input id={key}
@@ -101,7 +129,15 @@ export default class InputItem extends UIComponent {
       placeholder={placeholder} defaultValue={defaultValue}
       disabled={disabled}
       value={value}
-      onChange={(e)=>{this.handleChange(e.target.value)}}
+      title={this.formatTitle(config)}
+      onChange={(e)=>{
+        let val = e.target.value;
+        // 只能输入0-9和空格
+        if (format === 'intstring' && ! this.checkInt(val)){
+           return
+        }
+        this.handleChange(val)
+      }}
       onBlur={()=>this.context.onEvent(config, 'blur')}
       onFocus={()=>this.context.onEvent(config, 'focus')}/>);
   }
@@ -117,6 +153,7 @@ export default class InputItem extends UIComponent {
       format = '',
       size,
       precision = 2,
+      maxLength = 255,
     } = config;
     value = 'value' in this.props ? this.props.value : value;
     let formatter, parser;
@@ -132,6 +169,7 @@ export default class InputItem extends UIComponent {
 
     return <InputNumber
         id={key}
+        title={this.formatTitle({...config,maxLength,precision})}
         autoFocus={this.props.autoFocus}
         size={size}
         className='input'
@@ -157,21 +195,21 @@ export default class InputItem extends UIComponent {
       disabled,
       size
     } = config;
-    let autosize = true;
+    let autoSize = true;
     value = 'value' in this.props ? this.props.value : value;
     if (size === 'large') {
-      autosize = {
+      autoSize = {
         minRows: 10
       };
     }
     if (size === 'small') {
-      autosize = {
+      autoSize = {
         minRows: 1
       };
     }
     if (typeof (size) === 'number') {
       // 支持自定义行数
-      autosize = {
+      autoSize = {
         minRows: parseInt(size)
       };
     }
@@ -179,12 +217,13 @@ export default class InputItem extends UIComponent {
       autoFocus={this.props.autoFocus}
       size={size}
       className='input'
+      title={this.formatTitle(config)}
       placeholder={placeholder} defaultValue={defaultValue} disabled={disabled}
       value={value}
-      onChange={(value)=>{this.handleChange(value)}}
+      onChange={(e)=>{this.handleChange(e.target.value)}}
       onBlur={()=>this.context.onEvent(config, 'blur')}
       onFocus={()=>this.context.onEvent(config, 'focus')}
-      autosize={autosize} />
+      autoSize ={autoSize } />
   }
 
   renderDatePicker(config) {
@@ -371,7 +410,7 @@ export default class InputItem extends UIComponent {
       onChange={(value)=>{this.handleChange(value)}}
       onBlur={()=>this.context.onEvent(this.props.config, 'blur')}
       onFocus={()=>this.context.onEvent(this.props.config, 'focus')}>
-      {data.map(d => <Select.Option key={d.value}>{d.text}</Select.Option>)}
+      {data.map(d => <Select.Option key={d.key} value={d.value}>{d.title || d.text}</Select.Option>)}
     </Select>
   }
 
@@ -383,7 +422,6 @@ export default class InputItem extends UIComponent {
       disabled,
       placeholder,
       size,
-
       data,
       showSearch = false,
       allowClear = true,
@@ -514,10 +552,11 @@ export default class InputItem extends UIComponent {
         break;
       case 'select':
       case 'listselect':
-        element = this.renderSelect(config);
-        break;
-      case 'treeselect':
-        element = this.renderTreeSelect(config);
+        if (config.dropdownStyle === 'tree') {
+          element = this.renderTreeSelect(config);
+        } else {
+          element = this.renderSelect(config);
+        }
         break;
       case 'refer':
       case 'refselect':

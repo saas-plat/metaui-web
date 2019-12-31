@@ -14,7 +14,8 @@
     }
   }
 
-  input {
+  input,
+  textarea {
     border-top-style: none;
     border-right-style: none;
     border-left-style: none;
@@ -32,6 +33,36 @@
     }
   }
 
+  &.daterange {
+    .input {
+      &:focus {
+        > span {
+          border-width: 2px;
+          box-shadow: none;
+        }
+      }
+
+      > span {
+        border-top-style: none;
+        border-right-style: none;
+        border-left-style: none;
+        border-bottom-style: solid;
+
+        input {
+          border-top-style: none;
+          border-right-style: none;
+          border-left-style: none;
+          border-bottom-style: none;
+
+          &:focus {
+            border-width: 0;
+            box-shadow: none;
+          }
+        }
+      }
+    }
+  }
+
   &.number {
     .input {
       border-top-style: none;
@@ -40,7 +71,7 @@
       border-bottom-style: solid;
 
       &.ant-input-number-focused {
-        border-width: 2px; 
+        border-width: 2px;
       }
     }
 
@@ -49,8 +80,35 @@
       border-right-style: none;
       border-left-style: none;
       border-bottom-style: none;
+    }
+  }
 
+  &.select {
+    .input {
+      > div {
+        border-top-style: none;
+        border-right-style: none;
+        border-left-style: none;
+        border-bottom-style: solid;
+        box-shadow: none;
+      }
 
+      &.ant-select-focused {
+        > div {
+          border-width: 2px;
+        }
+      }
+
+      input {
+        border-top-style: none;
+        border-right-style: none;
+        border-left-style: none;
+        border-bottom-style: none;
+
+        &:focus {
+          border-width: 0;
+        }
+      }
     }
   }
 }

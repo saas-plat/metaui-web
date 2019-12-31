@@ -40,26 +40,20 @@ const data = observable({
     value: v,
     text: '"' + v.toString() + '"'
   })),
-  tree: [{
-    id: 'a',
-    a: 'Root',
-    b: 100
-  }, {
-    id: 'a-1',
-    pid: 'a',
-    a: 'a-1',
-    b: 10
-  }, {
-    id: 'a-1-1',
-    pid: 'a-1',
-    a: 'a-1-1',
-    b: 90
-  }, {
-    id: 'a-2',
-    pid: 'a',
-    a: 'a-2',
-    b: 200
-  }]
+  tree: [new SimpleModel(store, {
+    title: 'Root',
+    value: 100,
+    children: [new SimpleModel(store, {
+      title: 'a-1',
+      value: 10
+    }), new SimpleModel(store, {
+      title: 'a-2',
+      b: 200
+    }), new SimpleModel(store, {
+      title: 'a-1-1',
+      value: 90
+    })]
+  })]
 });
 store.setModel(data);
 const simpletoolbar = store.build(UIStore.createSchema({
@@ -185,6 +179,17 @@ const textbox = store.build(UIStore.createSchema({
   value: '$text',
   setValue: 'text',
   icon: 'form',
+  tip: 'xxxxxxxxxxxxx',
+  rules: [{
+    required: true
+  }]
+}));
+const intstring = store.build(UIStore.createSchema({
+  type: 'text',
+  value: '$text',
+  setValue: 'text',
+  icon: 'form',
+  format: 'intstring',
   tip: 'xxxxxxxxxxxxx',
   rules: [{
     required: true
@@ -451,6 +456,7 @@ storiesOf('输入类', module)
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}>
     <UIRender ui={textbox}/>
+    <UIRender ui={intstring}/>
     <UIRender ui={textarea}/>
     </UIContainer>)
   .add('DatePicker', () => <UIContainer
