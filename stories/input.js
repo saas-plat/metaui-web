@@ -9,7 +9,6 @@ import {
   UIRender,
   UIContainer,
   UIStore,
-  SimpleModel
 } from 'saas-plat-metaui';
 import {
   observable
@@ -31,29 +30,31 @@ const data = observable({
     date: new Date(),
     f3: 1000000.55,
   },
-  objarr: [{
+  objs: [],
+  refobjs: [{
     a: 1
   }, {
     a: 20.11
   }],
-  array: [1, 2, 3, 4, 100, 1000000.11].map(v => new SimpleModel(store, {
+  selectes: [1, 2, 3, 4, 100, 1000000.11].map(v => ({
     value: v,
-    text: '"' + v.toString() + '"'
+    text:  v.toString()
   })),
-  tree: [new SimpleModel(store, {
+  tree: [{
     title: 'Root',
     value: 100,
-    children: [new SimpleModel(store, {
+    children: [{
       title: 'a-1',
-      value: 10
-    }), new SimpleModel(store, {
+      value: 10,
+      children: [{
+        title: 'a-1-1',
+        value: 90
+      }]
+    }, {
       title: 'a-2',
       b: 200
-    }), new SimpleModel(store, {
-      title: 'a-1-1',
-      value: 90
-    })]
-  })]
+    }]
+  }]
 });
 store.setModel(data);
 const simpletoolbar = store.build(UIStore.createSchema({
@@ -290,10 +291,8 @@ const select = store.build(UIStore.createSchema({
   type: 'select',
   value: '$number',
   setValue: 'number',
-  data: '$array',
-  displayField: 'a',
-  valueField: 'b',
-  sortField: 'a',
+  dataSource: '$selectes',
+
 }));
 
 const treeselect = store.build(UIStore.createSchema({
@@ -302,48 +301,50 @@ const treeselect = store.build(UIStore.createSchema({
   dropdownStyle: 'tree',
   value: '$number',
   setValue: 'number',
-  data: '$tree',
+  dataSource: '$tree',
   multiple: true,
-  displayField: 'a',
-  valueField: 'b',
-  idField: 'id',
-  pidField: 'pid',
-  sortField: 'a',
+
 }));
 
 const reflist = store.build(UIStore.createSchema({
   name: 'item2',
-  text: 'item2',
   type: 'refer',
-  value: '$obj.f1',
+  displayField: 'f3',
+  value: '$obj',
   setValue: 'obj',
   dropdownStyle: 'list',
   multiple: false,
   showSearch: true,
-  query: '=obj1{a,b,c,d,e}',
-  variables: '{pid:$id}', // 去掉查询变量一次取出全部
-  idField: 'id',
-  pidField: 'pid',
-  displayField: 'f1',
-  sortField: 'f1', // 树形全部取回来需要按照树结构排序
-  mapping: '={f1:$a,f2:$b,f3:$c}',
-  pageSize: 200
+  dataSource: '$refobjs',
+  onFocus: {
+    name: 'query',
+    query: '=obj1{a,b,c,d,e}',
+    variables: '{pid:$id}', // 去掉查询变量一次取出全部
+    idField: 'id',
+    pidField: 'pid',
+    sortField: 'f1', // 树形全部取回来需要按照树结构排序
+    mapping: '={f1:$a,f2:$b,f3:$c}',
+    pageSize: 200
+  }
 }));
 
 const reftable = store.build(UIStore.createSchema({
   name: 'item4',
-  text: 'item4',
   type: 'refer',
   dropdownStyle: 'table',
+  text: 'Aggs.sum($objs,"a")',   // 要是有text没有displayField，就显示一个text
+  value: '$objs',     // multiple: true,   是一个数组
+  setValue: 'objs',
   multiple: true,
-  value: '$obj',
-  setValue: 'obj',
-  displayField: 'f1',
-  query: '=obj1{id,pid,a,b,c,d,e}',
-  variables: '{pid:$id}',
-  mapping: '={f1:$a,f2:$b,f3:$c}',
-  idField: 'id',
-  pidField: 'pid',
+  dataSource: '$refobjs',
+  onFocus: {
+    name: 'query',
+    query: '=obj1{id,pid,a,b,c,d,e}',
+    variables: '{pid:$id}',
+    mapping: '={f1:$a,f2:$b,f3:$c}',
+    idField: 'id',
+    pidField: 'pid'
+  },
   //leafField: 'leaf',
   columns: [{
     title: 'aaa',
@@ -360,21 +361,29 @@ const reftable = store.build(UIStore.createSchema({
 // treetable和table带tree是不一样的，tree和table是不同的数据结构
 const reftreetable = store.build(UIStore.createSchema({
   name: 'item6',
-  text: 'item6',
   type: 'refer',
   dropdownStyle: 'treetable',
-  value: 'Aggs.sum($objarr,"a")',
-  setValue: 'objarr',
+  displayField: 'f1',
+  value: '$obj',
+  setValue: 'obj',
   multiple: false,
-  treeQuery: '=tree{id,pid,a,b,c,d,e}',
-  treeVariables: '{pid:$tree.id}',
-  treeIdField: 'id',
-  treePidField: 'pid',
+  dataSource: '$refobjs',
+  onFocus: {
+    name: 'query',
+    query: '=tree{id,pid,a,b,c,d,e}',
+    dariables: '{pid:$tree.id}',
+    idField: 'id',
+    pidField: 'pid',
+    sortField: 'a',
+  },
   treeDisplayField: 'a',
-  treeSortField: 'a',
   treeSelectable: 'leaf', // leaf parent all
-  query: '=obj{a,b,c,d,e}',
-  variables: '{tid:$tree.id}',
+  onTreeChange: {
+    name: 'query',
+    query: '=obj{a,b,c,d,e}',
+    variables: '{tid:$tree.id}',
+    mapping: '={f1:$a,f2:$b,f3:$c}',
+  },
   columns: [{
     title: 'aaa',
     dataIndex: 'a'
@@ -388,15 +397,14 @@ const reftreetable = store.build(UIStore.createSchema({
     title: 'ddd',
     value: 'd'
   }],
-  mapping: '={f1:$a,f2:$b,f3:$c}',
 }));
 
 const subtable = store.build(UIStore.createSchema({
   name: 'subtable',
   text: 'subtable',
   type: 'subtable',
-  value: '$objarr',
-  setValue: 'objarr',
+  value: '$refobjs',
+  setValue: 'refobjs',
   columns: [{
     type: 'text',
     title: 'aaa',
@@ -419,8 +427,8 @@ const subtable = store.build(UIStore.createSchema({
 const edittable = store.build(UIStore.createSchema({
   name: 'subtable',
   type: 'edittable',
-  value: '$objarr',
-  setValue: 'objarr',
+  value: '$refobjs',
+  setValue: 'refobjs',
   columns: [{
     type: 'text',
     title: 'aaa',

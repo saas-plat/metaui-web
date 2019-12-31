@@ -46,6 +46,7 @@ export default class InputItem extends UIComponent {
   }
 
   handleChange = (value) => {
+    debugger;
     const {
       maxLength = 255
     } = this.props.config;
@@ -391,7 +392,7 @@ export default class InputItem extends UIComponent {
       placeholder,
       size,
       mode,
-      data,
+      dataSource,
     } = config;
     value = 'value' in this.props ? this.props.value : value;
     return <Select
@@ -410,7 +411,7 @@ export default class InputItem extends UIComponent {
       onChange={(value)=>{this.handleChange(value)}}
       onBlur={()=>this.context.onEvent(this.props.config, 'blur')}
       onFocus={()=>this.context.onEvent(this.props.config, 'focus')}>
-      {data.map(d => <Select.Option key={d.key} value={d.value}>{d.title || d.text}</Select.Option>)}
+      {dataSource.map((d,key) => <Select.Option key={key} value={d.value}>{d.title || d.text}</Select.Option>)}
     </Select>
   }
 
@@ -422,7 +423,7 @@ export default class InputItem extends UIComponent {
       disabled,
       placeholder,
       size,
-      data,
+      dataSource,
       showSearch = false,
       allowClear = true,
       multiple = false,
@@ -443,7 +444,7 @@ export default class InputItem extends UIComponent {
         treeDefaultExpandAll={treeDefaultExpandAll}
         dropdownStyle={{ maxHeight: maxHeight, overflow: 'auto' }}
         className='input'
-        treeData={data}
+        treeData={dataSource}
         value={value}
         defaultValue={defaultValue}
         disabled={disabled}
@@ -456,12 +457,11 @@ export default class InputItem extends UIComponent {
   renderRefSelect(config) {
     const {
       key,
-      value,
+      displayValue,
       defaultValue,
       disabled,
       size,
-
-      data,
+      dataSource,
       showHeader = true,
       showSearch = true,
       allowClear = true,
@@ -470,15 +470,6 @@ export default class InputItem extends UIComponent {
       defaultExpandKeys = [],
       columns,
     } = config;
-    let val;
-    if (!value || !Array.isArray(value.slice())) {
-      val = value ? [value] : [];
-    } else {
-      val = value.slice();
-    }
-    val = val.map(it => ({
-      value: it.toString()
-    }));
     // labelInValue 用于格式化显示
     return <RcRefSelect id={key}
         className='input'
@@ -488,12 +479,12 @@ export default class InputItem extends UIComponent {
         allowClear={allowClear}
         showSearch={showSearch}
         multiple={multiple}
-        data={data}
+        dataSource={dataSource}
         defaultExpandAll={defaultExpandAll}
         defaultExpandKeys={defaultExpandKeys}
         showHeader={showHeader}
         columns={columns}
-        value={val}
+        value={displayValue}
         size={size}
         defaultValue={defaultValue}
         disabled={disabled}

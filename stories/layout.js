@@ -28,7 +28,7 @@ const data = {
   array1: [1, 2, 3, 4, 100, 1000000.11]
 };
 
-const form = UIStore.create({
+const list = UIStore.create({
   type: 'view',
   layout: 'vertical',
   items: [{
@@ -43,37 +43,28 @@ const form = UIStore.create({
   }]
 }, data)
 
-const voucher = UIStore.create({
-  type: 'view',
-  layout: 'vertical',
-  items: [{
-    type: 'text',
-    value: 'code',
-    text: 'code',
-    icon: 'form',
-    tip: 'xxxxxxxxxxxxx',
-    rules: [{
-      required: true
-    }]
-  }]
-}, data)
 
 storiesOf('布局类', module)
   .addParameters({
     data
   })
-  .add('Form', () => <UIContainer
+  .add('FlowLayout', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><UIRender ui={form}/></UIContainer>)
-  .add('Voucher', () => <UIContainer
+    onAction={(name,args)=>action(name)(args)}>
+    <UIRender ui={list}/>
+    </UIContainer>)
+    .add('ListLayout', () => <UIContainer
       onEvent={(name,args)=>action(name)(args)}
-      onAction={(name,args)=>action(name)(args)}><UIRender ui={voucher}/></UIContainer>)
-  .add('Archive', () => <UIContainer
+      onAction={(name,args)=>action(name)(args)}>
+      <UIRender ui={list}/>
+      </UIContainer>)
+    .add('GridLayout', () => <UIContainer
       onEvent={(name,args)=>action(name)(args)}
-      onAction={(name,args)=>action(name)(args)}><UIRender ui={voucher}/></UIContainer>)
-  .add('List', () => <UIContainer
+      onAction={(name,args)=>action(name)(args)}>
+      <UIRender ui={list}/>
+      </UIContainer>)
+      .add('PortalLayout', () => <UIContainer
         onEvent={(name,args)=>action(name)(args)}
-        onAction={(name,args)=>action(name)(args)}><UIRender ui={voucher}/></UIContainer>)
-  .add('TreeList', () => <UIContainer
-      onEvent={(name,args)=>action(name)(args)}
-      onAction={(name,args)=>action(name)(args)}><UIRender ui={voucher}/></UIContainer>)
+        onAction={(name,args)=>action(name)(args)}>
+        <UIRender ui={list}/>
+        </UIContainer>)

@@ -55,7 +55,7 @@ UIStore.register({
   daterange: [InputItem, SimpleModel],
   week: [InputItem, SimpleModel],
   time: [InputItem, SimpleModel],
-  select: [InputItem, ListModel], 
+  select: [InputItem, SimpleModel], 
   // 对象引用
   refer: [InputItem, ReferModel],
   // 子表编辑器
