@@ -332,7 +332,7 @@ const reflist = store.build(UIStore.createSchema({
   }
 }));
 
-const reftable = store.build(UIStore.createSchema({
+const reftablemultiple = store.build(UIStore.createSchema({
   name: 'item4',
   type: 'refer',
   displayField: 'b',
@@ -364,10 +364,10 @@ const reftable = store.build(UIStore.createSchema({
 }));
 
 // treetable和table带tree是不一样的，tree和table是不同的数据结构
-const reftreetable = store.build(UIStore.createSchema({
+const reftable = store.build(UIStore.createSchema({
   name: 'item6',
   type: 'refer',
-  dropdownStyle: 'treetable',
+  dropdownStyle: 'treetable',    // TODO 暂时未支持
   displayField: 'b',
   value: '$obj',
   setValue: 'obj',
@@ -508,8 +508,8 @@ storiesOf('输入类', module)
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}>
       <UIRender ui={reflist}/>
-      <UIRender ui={reftreetable}/>
       <UIRender ui={reftable}/>
+      <UIRender ui={reftablemultiple}/>
     </UIContainer>)
 
   .add('InputTable', () => <UIContainer

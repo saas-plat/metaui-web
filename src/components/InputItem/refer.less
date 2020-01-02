@@ -32,8 +32,8 @@
     background-color: @component-background;
   }
 
-  // arrow
- &-arrow {
+  // refer
+ &-refer {
    .iconfont-mixin();
 
    position: absolute;
@@ -48,6 +48,8 @@
    & &-icon svg {
      transition: transform 0.3s;
    }
+
+
  }
 
   &-selection {
@@ -90,7 +92,7 @@
     }
   }
 
-  &-no-arrow &-selection-selected-value {
+  &-no-refer &-selection-selected-value {
     padding-right: 0;
   }
 
@@ -134,7 +136,7 @@
     }
   }
 
-  &-no-arrow {
+  &-no-refer {
     .@{refer-prefix-cls}-selection__rendered {
       margin-right: @control-padding-horizontal - 1px;
     }
@@ -173,7 +175,7 @@
         }
       }
       .@{refer-prefix-cls}-selection__clear,
-      .@{refer-prefix-cls}-arrow {
+      .@{refer-prefix-cls}-refer {
         top: @input-height-lg / 2;
       }
     }
@@ -196,12 +198,12 @@
         }
       }
       .@{refer-prefix-cls}-selection__clear,
-      .@{refer-prefix-cls}-arrow {
+      .@{refer-prefix-cls}-refer {
         top: @input-height-sm / 2;
       }
     }
     .@{refer-prefix-cls}-selection__clear,
-    .@{refer-prefix-cls}-arrow {
+    .@{refer-prefix-cls}-refer {
       right: @control-padding-horizontal-sm;
     }
   }
@@ -358,29 +360,24 @@
     }
 
     .@{refer-prefix-cls}-selection__clear,
-    .@{refer-prefix-cls}-arrow {
+    .@{refer-prefix-cls}-refer {
       top: @input-height-base / 2;
     }
   }
 
   &-allow-clear &-selection--multiple &-selection__rendered,
-  &-show-arrow &-selection--multiple &-selection__rendered {
+  &-show-refer &-selection--multiple &-selection__rendered {
     margin-right: 20px; // In case that clear button will overlap content
   }
 
-  &-open {
-    .@{refer-prefix-cls}-arrow {
-      &-icon svg {
-        transform: rotate(180deg);
-      }
-    }
+  &-open { 
     .@{refer-prefix-cls}-selection {
       .active();
     }
   }
 
   &-combobox {
-    .@{refer-prefix-cls}-arrow {
+    .@{refer-prefix-cls}-refer {
       display: none;
     }
     .@{refer-prefix-cls}-search--inline {
@@ -402,7 +399,7 @@
     }
   }
   &-combobox&-allow-clear &-selection:hover &-selection__rendered,
-  &-combobox&-show-arrow &-selection:hover &-selection__rendered {
+  &-combobox&-show-refer &-selection:hover &-selection__rendered {
     margin-right: 20px; // In case that clear button will overlap content
   }
 

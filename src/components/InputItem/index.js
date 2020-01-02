@@ -490,11 +490,13 @@ export default class InputItem extends UIComponent {
         showHeader={displayShowHeader}
         columns={renderColumns(displayColumns)}
         removeIcon={<Icon type="close" className={`${prefixCls}-remove-icon`} />}
+        referIcon={<Icon type="search" className={`${prefixCls}-refer-icon`} />}
         value={displayValue}
         size={size}
         //defaultValue={defaultValue}
         disabled={disabled}
-        onChange={(value)=>{multiple?this.handleChange(value.map(it=>it.value)):this.handleChange(value.value)}}
+        onRefer={()=>this.context.onEvent(this.props.config, 'refer')}
+        onChange={(value)=>{multiple?this.handleChange(Array.from(new Set(value.map(it=>it.value)))):this.handleChange(value.value)}}
         onBlur={()=>this.context.onEvent(this.props.config, 'blur')}
         onFocus={()=>this.context.onEvent(this.props.config, 'focus')}/>
   }
