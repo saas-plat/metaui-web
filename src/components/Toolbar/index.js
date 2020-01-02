@@ -13,6 +13,7 @@ import {
   observer
 } from "mobx-react";
 import './style';
+import classNames from 'classnames';
 const ButtonGroup = Button.Group;
 const {
   SubMenu
@@ -158,11 +159,12 @@ export class Toolbar extends UIComponent {
       text,
       items = []
     } = this.props.config;
+    const {className} = this.props;
     return (
-      <div className='toolbar'>
-      { text?<h2 className='title'>{text}</h2>:null}
-      {items.map(this.renderItem)}
-    </div>
+      <div className={classNames('toolbar',className)}>
+        { text?<h2 className='title'>{text}</h2>:null}
+        {items.map(this.renderItem)}
+      </div>
     );
   }
 }
@@ -184,6 +186,7 @@ export class ToolButtonGroup extends UIComponent {
 
   render() {
     const {
+      className,
       config,
       ...other
     } = this.props;
@@ -201,7 +204,7 @@ export class ToolButtonGroup extends UIComponent {
         </Menu.ItemGroup>)
     }
     return (
-      <ButtonGroup key={key} className='toolgroup'>
+      <ButtonGroup key={key} className={classNames('toolgroup',className)}>
         { text?<h2 className='title'>{text}</h2>:null}
         {items.map(this.renderItem)}
       </ButtonGroup>
@@ -216,9 +219,10 @@ export class ToolButtons extends UIComponent {
       text,
       items = []
     } = this.props.config;
+    const {className} = this.props;
     return (
-      <div key={key} className='toolbtns'>
-        { text?<h2 className='title'>{text}</h2>:null}
+      <div key={key} className={classNames('toolbtns',className)}>
+        {text?<h2 className='title'>{text}</h2>:null}
         {items.map(this.renderItem)}
       </div>
     );

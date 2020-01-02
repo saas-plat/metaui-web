@@ -8,9 +8,12 @@ import {
   Popconfirm
 } from 'antd';
 import InputItem from '../InputItem';
-import Toolbar from '../Toolbar';
+import {ToolButtons} from '../Toolbar';
 import {UIComponent} from 'saas-plat-metaui';
 import './style';
+import {
+  renderColumns
+} from '../util';
 
 @observer
 class EditableCell extends UIComponent {
@@ -123,7 +126,8 @@ export default class EditableTable extends UIComponent {
       title: it.title,
       width: it.width,
       children: this.createColumns(it.children),
-      render: it.children.length > 0 ? null : (text, record, index) => (<EditableCell value={text} onChange={this.onCellChange(index, it.key)}/>)
+      render: it.children.length > 0 ? null : (text, record, index) => (
+        <EditableCell value={text} onChange={this.onCellChange(index, it.key)}/>)
     }));
   }
   render() {
@@ -133,21 +137,19 @@ export default class EditableTable extends UIComponent {
       bordered,
       showHeader,
       size,
-      title
+      title,
+      buttons
     } = this.props.config;
-    const columnItems = this.createColumns(columns).concat([{
+    const columnItems = this.createColumns(renderColumns(columns)).concat([{
       key: 'column_Operation',
       title: '',
       fixed: 'right',
       width: 60,
       render: this.renderOperation
     }]);
-    const toolbar = {
-      groups: []
-    };
     return (
       <div className='editableTable'>
-        <Toolbar config={toolbar} />
+        {buttons?<ToolButtons config={{items:buttons}} />:null}
         <Table
           bordered={bordered}
           showHeader={showHeader}

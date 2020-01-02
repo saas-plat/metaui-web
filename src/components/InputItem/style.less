@@ -88,8 +88,8 @@
   &.refer,
   &.select {
     .input {
-      > span,
-      > div {
+      > div,
+      > span {
         border-top-style: none;
         border-right-style: none;
         border-left-style: none;
@@ -99,8 +99,8 @@
 
       &.ant-select-focused,
       &.ref-select-focused {
-        > span,
-        > div {
+        > div,
+        > span {
           border-width: 2px;
         }
       }
@@ -116,5 +116,11 @@
         }
       }
     }
+  }
+}
+
+.ref-select {
+  &-footer-buttons {
+    padding:  0px;
   }
 }

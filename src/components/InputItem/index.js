@@ -20,6 +20,7 @@ import {
   UIComponent
 } from 'saas-plat-metaui';
 import InputTable from '../InputTable';
+import {ToolButtons} from '../Toolbar';
 import moment from 'moment';
 import {
   renderColumns,
@@ -469,6 +470,7 @@ export default class InputItem extends UIComponent {
       multiple,
       defaultExpandAll,
       defaultExpandKeys = [],
+      buttons = [],
       // 计算属性
       displayValue,
       displayColumns,
@@ -493,6 +495,7 @@ export default class InputItem extends UIComponent {
         referIcon={<Icon type="search" className={`${prefixCls}-refer-icon`} />}
         value={displayValue}
         size={size}
+        tableFooter={buttons?()=><ToolButtons className={`${prefixCls}-footer-buttons`} config={{items:buttons}} />:null}
         //defaultValue={defaultValue}
         disabled={disabled}
         onRefer={()=>this.context.onEvent(this.props.config, 'refer')}
@@ -562,7 +565,7 @@ export default class InputItem extends UIComponent {
       case 'treetableselect':
         element = this.renderRefSelect(config);
         break;
-      case 'table':
+      case 'subtable':
       case 'inputtable':
         element = this.renderInputTable(config);
         break;

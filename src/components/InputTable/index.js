@@ -70,11 +70,10 @@ export default class InputTable extends UIComponent {
     const {
       key,
       value,
-      defaultValue,
+      //defaultValue,
       placeholder,
       disabled,
       size,
-      table
     } = this.props.config;
     const {
       visible,
@@ -88,9 +87,13 @@ export default class InputTable extends UIComponent {
         autoFocus={this.props.autoFocus}
         size={size}
         className={'input'+(disabled || this.props.disabled?' disabled':'')}
-        placeholder={placeholder} defaultValue={defaultValue} disabled={disabled || this.props.disabled}
+        placeholder={placeholder}
+        //defaultValue={defaultValue}
+        readOnly
+        disabled={disabled || this.props.disabled}
         value={value}
-        onChange={this.handleDefaultRowChange}
+        onClick={this.showModal}
+        onChange={()=>this.context.onEvent(this.props.config, 'change')}
         onBlur={()=>this.context.onEvent(this.props.config, 'blur')}
         onFocus={()=>this.context.onEvent(this.props.config, 'focus')}
       />
@@ -106,7 +109,7 @@ export default class InputTable extends UIComponent {
               {this.context.t('关闭')}
             </Button>
           ]}>
-          <EditableTable config={table} onChange={this.handleChange} />
+          <EditableTable config={this.props.config} onChange={this.handleChange} />
         </Modal>
     </div>);
   }

@@ -67,7 +67,7 @@ export const renderColumns = (columns) => {
       ...it,
       // 需要toString要不react报错
       render: value => renderElement(value, createFormatter(it).formatter),
-      children: it.children ? renderColumns(it.children) : null
+      children: it.children ? renderColumns(it.children) : []
     }
   })
 }

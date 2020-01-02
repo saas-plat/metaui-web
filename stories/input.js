@@ -32,10 +32,12 @@ const data = observable({
   },
   objs: [],
   refobjs: [{
+    key:1,
     a: 1,
     b: '1111111111',
     c: new Date()
   }, {
+    key:2,
     a: 20.11,
     b: '222222',
     c: new Date()
@@ -329,7 +331,21 @@ const reflist = store.build(UIStore.createSchema({
     sortField: 'f1', // 树形全部取回来需要按照树结构排序
     mapping: '={f1:$a,f2:$b,f3:$c}',
     pageSize: 200
-  }
+  },
+  buttons:[{
+    type: 'button',
+    text: 'Button1',
+    style: 'primary'
+  }, {
+    type: 'button',
+    text: 'Button2'
+  }, {
+    type: 'button',
+    text: 'Button3'
+  }, {
+    type: 'button',
+    text: 'Button4'
+  }]
 }));
 
 const reftablemultiple = store.build(UIStore.createSchema({
@@ -406,10 +422,9 @@ const reftable = store.build(UIStore.createSchema({
 
 const subtable = store.build(UIStore.createSchema({
   name: 'subtable',
-  text: 'subtable',
+  text: 'Aggs.sum($refobjs,"a")',
   type: 'subtable',
-  value: '$refobjs',
-  setValue: 'refobjs',
+  dataSouce: '$refobjs',
   columns: [{
     type: 'text',
     title: 'aaa',
@@ -427,13 +442,26 @@ const subtable = store.build(UIStore.createSchema({
     title: 'ddd',
     dataIndex: 'd'
   }],
+  buttons:[{
+    type: 'button',
+    text: 'Button1',
+    style: 'primary'
+  }, {
+    type: 'button',
+    text: 'Button2'
+  }, {
+    type: 'button',
+    text: 'Button3'
+  }, {
+    type: 'button',
+    text: 'Button4'
+  }]
 }));
 
 const edittable = store.build(UIStore.createSchema({
   name: 'subtable',
   type: 'edittable',
-  value: '$refobjs',
-  setValue: 'refobjs',
+  dataSouce: '$refobjs',
   columns: [{
     type: 'text',
     title: 'aaa',
@@ -451,6 +479,20 @@ const edittable = store.build(UIStore.createSchema({
     title: 'ddd',
     dataIndex: 'd'
   }],
+  buttons:[{
+    type: 'button',
+    text: 'Button1',
+    style: 'primary'
+  }, {
+    type: 'button',
+    text: 'Button2'
+  }, {
+    type: 'button',
+    text: 'Button3'
+  }, {
+    type: 'button',
+    text: 'Button4'
+  }]
 }));
 
 storiesOf('输入类', module)
