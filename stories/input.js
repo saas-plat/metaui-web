@@ -26,15 +26,19 @@ const data = observable({
   number: 10000.33,
   bool: true,
   obj: {
-    f1: 'BBBBBBBB',
-    date: new Date(),
-    f3: 1000000.55,
+    b: 'BBBBBBBB',
+    c: new Date(),
+    a: 1000000.55,
   },
   objs: [],
   refobjs: [{
-    a: 1
+    a: 1,
+    b: '1111111111',
+    c: new Date()
   }, {
-    a: 20.11
+    a: 20.11,
+    b: '222222',
+    c: new Date()
   }],
   selectes: [1, 2, 3, 4, 100, 1000000.11].map(v => ({
     value: v,
@@ -309,12 +313,12 @@ const treeselect = store.build(UIStore.createSchema({
 const reflist = store.build(UIStore.createSchema({
   name: 'item2',
   type: 'refer',
-  displayField: 'f3',
+  displayField: 'b',
   value: '$obj',
   setValue: 'obj',
   dropdownStyle: 'list',
   multiple: false,
-  showSearch: true,
+  showSearch: false,
   dataSource: '$refobjs',
   onFocus: {
     name: 'query',
@@ -331,8 +335,9 @@ const reflist = store.build(UIStore.createSchema({
 const reftable = store.build(UIStore.createSchema({
   name: 'item4',
   type: 'refer',
+  displayField: 'b',
   dropdownStyle: 'table',
-  text: 'Aggs.sum($objs,"a")',   // 要是有text没有displayField，就显示一个text
+  //text: 'Aggs.sum($objs,"a")',   // 要是有text没有displayField，就显示一个text
   value: '$objs',     // multiple: true,   是一个数组
   setValue: 'objs',
   multiple: true,
@@ -348,13 +353,13 @@ const reftable = store.build(UIStore.createSchema({
   //leafField: 'leaf',
   columns: [{
     title: 'aaa',
-    dataIndex: 'f1'
+    dataIndex: 'a'
   }, {
     title: 'bbb',
-    dataIndex: 'f2'
+    dataIndex: 'b'
   }, {
     title: 'ccc',
-    dataIndex: 'f3'
+    dataIndex: 'c'
   }]
 }));
 
@@ -363,7 +368,7 @@ const reftreetable = store.build(UIStore.createSchema({
   name: 'item6',
   type: 'refer',
   dropdownStyle: 'treetable',
-  displayField: 'f1',
+  displayField: 'b',
   value: '$obj',
   setValue: 'obj',
   multiple: false,
@@ -395,7 +400,7 @@ const reftreetable = store.build(UIStore.createSchema({
     dataIndex: 'c'
   }, {
     title: 'ddd',
-    value: 'd'
+    dataIndex: 'd'
   }],
 }));
 
@@ -456,40 +461,40 @@ storiesOf('输入类', module)
   .add('Toolbar', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}>
-    <UIRender ui={simpletoolbar}/>
-    <UIRender ui={toolbar}/>
-    <UIRender ui={bigtoolbar}/>
+      <UIRender ui={simpletoolbar}/>
+      <UIRender ui={toolbar}/>
+      <UIRender ui={bigtoolbar}/>
     </UIContainer>)
   .add('TextBox', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}>
-    <UIRender ui={textbox}/>
-    <UIRender ui={intstring}/>
-    <UIRender ui={textarea}/>
+      <UIRender ui={textbox}/>
+      <UIRender ui={intstring}/>
+      <UIRender ui={textarea}/>
     </UIContainer>)
   .add('DatePicker', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}>
-    <UIRender ui={datetime}/>
-    <UIRender ui={time}/>
-    <UIRender ui={date}/>
-    <UIRender ui={month}/>
-    <UIRender ui={week}/>
-    <UIRender ui={daterange}/>
+      <UIRender ui={datetime}/>
+      <UIRender ui={time}/>
+      <UIRender ui={date}/>
+      <UIRender ui={month}/>
+      <UIRender ui={week}/>
+      <UIRender ui={daterange}/>
     </UIContainer>)
 
   .add('NumberInput', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}>
-    <UIRender ui={number}/>
-    <UIRender ui={thousandth}/>
-    <UIRender ui={percentage}/>
+      <UIRender ui={number}/>
+      <UIRender ui={thousandth}/>
+      <UIRender ui={percentage}/>
     </UIContainer>)
   .add('CheckBox', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}>
-    <UIRender ui={check}/>
-    <UIRender ui={switch1}/>
+      <UIRender ui={check}/>
+      <UIRender ui={switch1}/>
     </UIContainer>)
 
   .add('Select', () => <UIContainer
@@ -502,14 +507,19 @@ storiesOf('输入类', module)
   .add('Refer', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}>
-    <UIRender ui={reflist}/>
-    <UIRender ui={reftable}/>
-    <UIRender ui={reftreetable}/>
+      <UIRender ui={reflist}/>
+      <UIRender ui={reftreetable}/>
+      <UIRender ui={reftable}/>
     </UIContainer>)
 
   .add('InputTable', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><UIRender ui={subtable}/></UIContainer>)
+    onAction={(name,args)=>action(name)(args)}>
+      <UIRender ui={subtable}/>
+    </UIContainer>)
+
   .add('EditTable', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}><UIRender ui={edittable}/></UIContainer>)
+    onAction={(name,args)=>action(name)(args)}>
+      <UIRender ui={edittable}/>
+    </UIContainer>)

@@ -12,6 +12,7 @@ import {
   TimePicker,
   TreeSelect,
   Select,
+  Icon
 } from 'antd';
 import './style';
 import RcRefSelect from 'rc-ref-select';
@@ -20,6 +21,10 @@ import {
 } from 'saas-plat-metaui';
 import InputTable from '../InputTable';
 import moment from 'moment';
+import {
+  renderColumns,
+  createFormater
+} from '../util';
 
 const TextArea = Input.TextArea;
 const {
@@ -46,7 +51,6 @@ export default class InputItem extends UIComponent {
   }
 
   handleChange = (value) => {
-    debugger;
     const {
       maxLength = 255
     } = this.props.config;
@@ -116,7 +120,7 @@ export default class InputItem extends UIComponent {
     let {
       key,
       value,
-      defaultValue,
+      //defaultValue,
       placeholder,
       disabled,
       size,
@@ -127,7 +131,8 @@ export default class InputItem extends UIComponent {
       autoFocus={this.props.autoFocus}
       size={size}
       className='input'
-      placeholder={placeholder} defaultValue={defaultValue}
+      placeholder={placeholder}
+      //defaultValue={defaultValue}
       disabled={disabled}
       value={value}
       title={this.formatTitle(config)}
@@ -147,11 +152,10 @@ export default class InputItem extends UIComponent {
     let {
       key,
       value,
-      defaultValue,
+      //defaultValue,
       disabled,
       min,
       max,
-      format = '',
       size,
       precision = 2,
       maxLength = 255,
@@ -159,15 +163,11 @@ export default class InputItem extends UIComponent {
     value = 'value' in this.props ? this.props.value : value;
     let formatter, parser;
 
-    if (format.toLowerCase() === 'thousandth' && !this.state.focus) {
-      formatter = value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-      parser = value => Math.round(Number(value.replace(/(,*)/g, '')).toFixed(precision));
+    if (!this.state.focus) {
+      const format = createFormater(config);
+      formatter = format.formatter;
+      parser = format.parser;
     }
-    if (format.toLowerCase() === 'percentage' && !this.state.focus) {
-      formatter = value => `${Math.round(Number(value*100).toFixed(precision-2))}%`;
-      parser = value => Math.round(Number(value.replace('%', '') * 100).toFixed(precision));
-    }
-
     return <InputNumber
         id={key}
         title={this.formatTitle({...config,maxLength,precision})}
@@ -175,7 +175,7 @@ export default class InputItem extends UIComponent {
         size={size}
         className='input'
         value={value}
-        defaultValue={defaultValue}
+        //defaultValue={defaultValue}
         disabled={disabled}
         min={min}
         max={max}
@@ -191,7 +191,7 @@ export default class InputItem extends UIComponent {
     let {
       key,
       value,
-      defaultValue,
+      //defaultValue,
       placeholder,
       disabled,
       size
@@ -219,7 +219,9 @@ export default class InputItem extends UIComponent {
       size={size}
       className='input'
       title={this.formatTitle(config)}
-      placeholder={placeholder} defaultValue={defaultValue} disabled={disabled}
+      placeholder={placeholder}
+      //defaultValue={defaultValue}
+      disabled={disabled}
       value={value}
       onChange={(e)=>{this.handleChange(e.target.value)}}
       onBlur={()=>this.context.onEvent(config, 'blur')}
@@ -235,7 +237,7 @@ export default class InputItem extends UIComponent {
       clear,
       format,
       showTime = false,
-      defaultValue,
+      //defaultValue,
       placeholder,
       defaultPickerValue,
       disabled,
@@ -249,11 +251,11 @@ export default class InputItem extends UIComponent {
     } else {
       value = value ? moment(value) : value;
     }
-    if (Array.isArray(defaultValue)) {
-      defaultValue = defaultValue.map(it => moment(it));
-    } else {
-      defaultValue = defaultValue ? moment(defaultValue) : defaultValue;
-    }
+    // if (Array.isArray(defaultValue)) {
+    //   defaultValue = defaultValue.map(it => moment(it));
+    // } else {
+    //   defaultValue = defaultValue ? moment(defaultValue) : defaultValue;
+    // }
     if (Array.isArray(defaultPickerValue)) {
       defaultPickerValue = defaultPickerValue.map(it => moment(it));
     } else {
@@ -304,7 +306,7 @@ export default class InputItem extends UIComponent {
     placeholder={placeholder}
     format={format}
     value={value}
-    defaultValue={defaultValue}
+    //defaultValue={defaultValue}
     defaultPickerValue={defaultPickerValue}
     onChange={(dates)=>{
       if (Array.isArray(dates)){
@@ -324,7 +326,7 @@ export default class InputItem extends UIComponent {
       value,
       clear,
       format,
-      defaultValue,
+      //defaultValue,
       placeholder,
       disabled,
       size
@@ -334,7 +336,8 @@ export default class InputItem extends UIComponent {
     size={size}
     className='input'
     allowClear={clear}  disabled={disabled}
-    placeholder={placeholder} defaultValue={defaultValue}
+    placeholder={placeholder}
+    //defaultValue={defaultValue}
     value={moment(value,format)}
     format={format}
     onChange={(value)=>{this.handleChange(value)}}
@@ -387,7 +390,7 @@ export default class InputItem extends UIComponent {
     let {
       key,
       value,
-      defaultValue,
+      //defaultValue,
       disabled,
       placeholder,
       size,
@@ -404,7 +407,7 @@ export default class InputItem extends UIComponent {
       mode={mode}
       disabled={disabled}
       value={value}
-      defaultValue={defaultValue}
+      //defaultValue={defaultValue}
       placeholder={placeholder}
       optionFilterProp='children'
       filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
@@ -419,7 +422,7 @@ export default class InputItem extends UIComponent {
     let {
       key,
       value,
-      defaultValue,
+      //defaultValue,
       disabled,
       placeholder,
       size,
@@ -446,7 +449,7 @@ export default class InputItem extends UIComponent {
         className='input'
         treeData={dataSource}
         value={value}
-        defaultValue={defaultValue}
+        //defaultValue={defaultValue}
         disabled={disabled}
         onChange={(value)=>{this.handleChange(value)}}
         onBlur={()=>this.context.onEvent(this.props.config, 'blur')}
@@ -457,23 +460,25 @@ export default class InputItem extends UIComponent {
   renderRefSelect(config) {
     const {
       key,
-      displayValue,
-      defaultValue,
+      //defaultValue,
       disabled,
       size,
       dataSource,
-      showHeader = true,
-      showSearch = true,
-      allowClear = true,
-      multiple = false,
-      defaultExpandAll = false,
+      showSearch,
+      allowClear,
+      multiple,
+      defaultExpandAll,
       defaultExpandKeys = [],
-      columns,
+      // 计算属性
+      displayValue,
+      displayColumns,
+      displayShowHeader
     } = config;
+    const prefixCls = 'ref-select';
     // labelInValue 用于格式化显示
     return <RcRefSelect id={key}
         className='input'
-        prefixCls='ant-select'
+        prefixCls={prefixCls}
         autoFocus={this.props.autoFocus}
         labelInValue={true}
         allowClear={allowClear}
@@ -482,13 +487,14 @@ export default class InputItem extends UIComponent {
         dataSource={dataSource}
         defaultExpandAll={defaultExpandAll}
         defaultExpandKeys={defaultExpandKeys}
-        showHeader={showHeader}
-        columns={columns}
+        showHeader={displayShowHeader}
+        columns={renderColumns(displayColumns)}
+        removeIcon={<Icon type="close" className={`${prefixCls}-remove-icon`} />}
         value={displayValue}
         size={size}
-        defaultValue={defaultValue}
+        //defaultValue={defaultValue}
         disabled={disabled}
-        onChange={(value)=>{this.handleChange(value)}}
+        onChange={(value)=>{multiple?this.handleChange(value.map(it=>it.value)):this.handleChange(value.value)}}
         onBlur={()=>this.context.onEvent(this.props.config, 'blur')}
         onFocus={()=>this.context.onEvent(this.props.config, 'focus')}/>
   }

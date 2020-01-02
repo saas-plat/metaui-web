@@ -1,3 +1,5 @@
+@import 'refer.less';
+
 .inputitem {
   width: 100%;
 
@@ -83,8 +85,10 @@
     }
   }
 
+  &.refer,
   &.select {
     .input {
+      > span,
       > div {
         border-top-style: none;
         border-right-style: none;
@@ -93,7 +97,9 @@
         box-shadow: none;
       }
 
-      &.ant-select-focused {
+      &.ant-select-focused,
+      &.ref-select-focused {
+        > span,
         > div {
           border-width: 2px;
         }
