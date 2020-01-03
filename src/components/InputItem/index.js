@@ -396,7 +396,7 @@ export default class InputItem extends UIComponent {
       placeholder,
       size,
       mode,
-      dataSource,
+      dataSource = [],
     } = config;
     value = 'value' in this.props ? this.props.value : value;
     return <Select
@@ -458,6 +458,14 @@ export default class InputItem extends UIComponent {
         </TreeSelect>
   }
 
+  closePopup = (e)=>{
+    this.props.config.open = false;
+  }
+
+  handlePopup = open=>{
+      this.props.config.open = open;
+  }
+
   renderRefSelect(config) {
     const {
       key,
@@ -470,7 +478,8 @@ export default class InputItem extends UIComponent {
       multiple,
       defaultExpandAll,
       defaultExpandKeys = [],
-      buttons = [],
+      buttons,
+      open,
       // 计算属性
       displayValue,
       displayColumns,
@@ -493,11 +502,13 @@ export default class InputItem extends UIComponent {
         columns={renderColumns(displayColumns)}
         removeIcon={<Icon type="close" className={`${prefixCls}-remove-icon`} />}
         referIcon={<Icon type="search" className={`${prefixCls}-refer-icon`} />}
+        open={open}
         value={displayValue}
         size={size}
-        tableFooter={buttons?()=><ToolButtons className={`${prefixCls}-footer-buttons`} config={{items:buttons}} />:null}
+        tableFooter={buttons?()=><ToolButtons className={`${prefixCls}-footer-buttons`} config={{items:buttons}} onClick={this.closePopup} />:undefined}
         //defaultValue={defaultValue}
         disabled={disabled}
+        onDropdownVisibleChange={this.handlePopup}
         onRefer={()=>this.context.onEvent(this.props.config, 'refer')}
         onChange={(value)=>{multiple?this.handleChange(Array.from(new Set(value.map(it=>it.value)))):this.handleChange(value.value)}}
         onBlur={()=>this.context.onEvent(this.props.config, 'blur')}

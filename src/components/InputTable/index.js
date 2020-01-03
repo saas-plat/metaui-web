@@ -73,7 +73,7 @@ export default class InputTable extends UIComponent {
       //defaultValue,
       placeholder,
       disabled,
-      size,
+      size
     } = this.props.config;
     const {
       visible,

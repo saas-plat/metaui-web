@@ -50,8 +50,11 @@ export class ButtonItem extends UIComponent {
     };
   }
 
-  handleClick = () => {
+  handleClick = (e) => {
     const item = this.props.config;
+    if (this.props.onClick){
+      this.props.onClick(e);
+    }
     if (item && !item.disabled) {
       this.onEvent(item, 'click');
     }
@@ -108,16 +111,16 @@ export class ButtonItem extends UIComponent {
         );
       }
       return (
-        <Button key={key} className='btn' disabled={disabled} type={style} onClick={this.handleClick}>
+        <Button key={key} className='btn' disabled={disabled} type={style} {...other} onClick={this.handleClick}>
           <TextAndIcon config={this.props.config}/>
         </Button>
       );
     }
     if (style === 'divider') {
       if (childType === 'menu') {
-        return <MenuDivider key={key}/>
+        return <MenuDivider key={key} {...other}/>
       } else {
-        return <div key={key} className='btn divider'></div>
+        return <div key={key} className='btn divider' {...other}></div>
       }
     }
     if (childType === 'menu') {
@@ -137,13 +140,13 @@ export class ButtonItem extends UIComponent {
         <Dropdown.Button key={key}
           disabled={disabled}
           onClick={()=>this.onEvent(this.props.config, 'click')}
-          overlay={this.renderMenu(items)}>
+          overlay={this.renderMenu(items)} {...other}>
           <TextAndIcon config={this.props.config}/>
         </Dropdown.Button>
       );
     } else {
       return (
-        <Dropdown key={key} overlay={this.renderMenu(items)}>
+        <Dropdown key={key} overlay={this.renderMenu(items)} {...other}>
           <Button className='btn' type={style} disabled={disabled} onClick={this.handleClick}>
             <TextAndIcon config={this.props.config}/>
           </Button>
@@ -156,14 +159,19 @@ export class ButtonItem extends UIComponent {
 export class Toolbar extends UIComponent {
   render() {
     const {
+      className,
+      config,
+      onClick,
+      ...other
+    } = this.props;
+    const {
       text,
       items = []
-    } = this.props.config;
-    const {className} = this.props;
+    } = config;
     return (
-      <div className={classNames('toolbar',className)}>
+      <div className={classNames('toolbar',className)} {...other}>
         { text?<h2 className='title'>{text}</h2>:null}
-        {items.map(this.renderItem)}
+        {items.map(it=>this.renderItem(it,{onClick}))}
       </div>
     );
   }
@@ -188,6 +196,7 @@ export class ToolButtonGroup extends UIComponent {
     const {
       className,
       config,
+      onClick,
       ...other
     } = this.props;
     const {
@@ -200,13 +209,13 @@ export class ToolButtonGroup extends UIComponent {
     } = config;
     if (childType === 'menu') {
       return (<Menu.ItemGroup {...other} key={key} title={text}>
-         {items.map(this.renderItem)}
+         {items.map(it=>this.renderItem(it, {onClick}))}
         </Menu.ItemGroup>)
     }
     return (
       <ButtonGroup key={key} className={classNames('toolgroup',className)}>
         { text?<h2 className='title'>{text}</h2>:null}
-        {items.map(this.renderItem)}
+        {items.map(it=>this.renderItem(it, {onClick}))}
       </ButtonGroup>
     );
   }
@@ -215,15 +224,20 @@ export class ToolButtonGroup extends UIComponent {
 export class ToolButtons extends UIComponent {
   render() {
     const {
+      className,
+      config,
+      onClick,
+      ...other
+    } = this.props;
+    const {
       key,
       text,
       items = []
-    } = this.props.config;
-    const {className} = this.props;
+    } = config;
     return (
-      <div key={key} className={classNames('toolbtns',className)}>
+      <div key={key} className={classNames('toolbtns',className)} {...other}>
         {text?<h2 className='title'>{text}</h2>:null}
-        {items.map(this.renderItem)}
+        {items.map(it=>this.renderItem(it,{onClick}))}
       </div>
     );
   }

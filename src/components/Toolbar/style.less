@@ -15,6 +15,19 @@
   .divider {
     content: '|';
   }
+
+  .inputitem {
+    width: auto;
+    display: inline-block;
+    min-width: 100px;
+
+    &.refer .input > div,
+    &.refer .input > span,
+    &.select .input > div,
+    &.select .input > span {
+      border-style: solid;
+    }
+  }
 }
 
 .toolbar {

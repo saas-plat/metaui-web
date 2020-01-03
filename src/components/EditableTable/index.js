@@ -125,14 +125,14 @@ export default class EditableTable extends UIComponent {
       fixed: it.fixed,
       title: it.title,
       width: it.width,
-      children: this.createColumns(it.children),
-      render: it.children.length > 0 ? null : (text, record, index) => (
+      children: it.children && this.createColumns(it.children),
+      render: it.children && it.children.length > 0 ? null : (text, record, index) => (
         <EditableCell value={text} onChange={this.onCellChange(index, it.key)}/>)
     }));
   }
   render() {
     const {
-      data,
+      dataSource,
       columns,
       bordered,
       showHeader,
@@ -156,7 +156,7 @@ export default class EditableTable extends UIComponent {
           size={size}
           title={title}
           pagination={false}
-          dataSource={data}
+          dataSource={dataSource}
           columns={columnItems} />
       </div>
     );

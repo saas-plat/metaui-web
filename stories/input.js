@@ -32,19 +32,17 @@ const data = observable({
   },
   objs: [],
   refobjs: [{
-    key:1,
     a: 1,
     b: '1111111111',
     c: new Date()
   }, {
-    key:2,
     a: 20.11,
     b: '222222',
     c: new Date()
   }],
   selectes: [1, 2, 3, 4, 100, 1000000.11].map(v => ({
     value: v,
-    text:  v.toString()
+    text: v.toString()
   })),
   tree: [{
     title: 'Root',
@@ -332,19 +330,10 @@ const reflist = store.build(UIStore.createSchema({
     mapping: '={f1:$a,f2:$b,f3:$c}',
     pageSize: 200
   },
-  buttons:[{
+  buttons: [{
     type: 'button',
-    text: 'Button1',
+    text: 'add',
     style: 'primary'
-  }, {
-    type: 'button',
-    text: 'Button2'
-  }, {
-    type: 'button',
-    text: 'Button3'
-  }, {
-    type: 'button',
-    text: 'Button4'
   }]
 }));
 
@@ -354,7 +343,7 @@ const reftablemultiple = store.build(UIStore.createSchema({
   displayField: 'b',
   dropdownStyle: 'table',
   //text: 'Aggs.sum($objs,"a")',   // 要是有text没有displayField，就显示一个text
-  value: '$objs',     // multiple: true,   是一个数组
+  value: '$objs', // multiple: true,   是一个数组
   setValue: 'objs',
   multiple: true,
   dataSource: '$refobjs',
@@ -383,7 +372,7 @@ const reftablemultiple = store.build(UIStore.createSchema({
 const reftable = store.build(UIStore.createSchema({
   name: 'item6',
   type: 'refer',
-  dropdownStyle: 'treetable',    // TODO 暂时未支持
+  dropdownStyle: 'treetable', // TODO 暂时未支持
   displayField: 'b',
   value: '$obj',
   setValue: 'obj',
@@ -418,6 +407,21 @@ const reftable = store.build(UIStore.createSchema({
     title: 'ddd',
     dataIndex: 'd'
   }],
+  buttons: [{
+    type: 'button',
+    text: 'add',
+    style: 'primary'
+  }, {
+    type: 'select',
+    value: '左模糊匹配',
+    dataSource: [{
+      value: 'let',
+      text: '左模糊匹配'
+    }, {
+      value: 'right',
+      text: '右模糊匹配'
+    }]
+  }]
 }));
 
 const subtable = store.build(UIStore.createSchema({
@@ -442,7 +446,7 @@ const subtable = store.build(UIStore.createSchema({
     title: 'ddd',
     dataIndex: 'd'
   }],
-  buttons:[{
+  buttons: [{
     type: 'button',
     text: 'Button1',
     style: 'primary'
@@ -479,13 +483,13 @@ const edittable = store.build(UIStore.createSchema({
     title: 'ddd',
     dataIndex: 'd'
   }],
-  buttons:[{
+  buttons: [{
     type: 'button',
-    text: 'Button1',
+    text: 'add',
     style: 'primary'
   }, {
     type: 'button',
-    text: 'Button2'
+    text: 'delete'
   }, {
     type: 'button',
     text: 'Button3'
