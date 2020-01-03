@@ -467,7 +467,7 @@ const edittable = store.build(UIStore.createSchema({
   type: 'edittable',
   dataSouce: '$refobjs',
   columns: [{
-    type: 'text',
+    type: 'number',
     title: 'aaa',
     dataIndex: 'a'
   }, {
@@ -475,7 +475,7 @@ const edittable = store.build(UIStore.createSchema({
     title: 'bbb',
     dataIndex: 'b'
   }, {
-    type: 'text',
+    type: 'date',
     title: 'ccc',
     dataIndex: 'c'
   }, {
