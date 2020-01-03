@@ -2,68 +2,36 @@ import React from 'react';
 import {
   observer
 } from "mobx-react";
-import PropTypes from 'prop-types';
 import {
   Table,
-  Popconfirm
 } from 'antd';
-import InputItem from '../InputItem';
-import {ToolButtons} from '../Toolbar';
-import {UIComponent} from 'saas-plat-metaui';
-import './style';
 import {
-  renderColumns
-} from '../util';
+  ToolButtons
+} from '../Toolbar';
+import {
+  UIComponent
+} from 'saas-plat-metaui';
+import './style';
 
 @observer
 class EditableCell extends UIComponent {
-  static propTypes = {
-    value: PropTypes.any,
-    onChange: PropTypes.func
-  }
-  state = {
-    value: this.props.value,
-    editable: false
-  }
-  handleChange = (e) => {
-    const value = e.target.value;
-    this.setState({
-      value
-    });
-  }
-  check = () => {
-    this.setState({
-      editable: false
-    });
-    if (this.props.onChange) {
-      this.props.onChange(this.state.value);
-    }
-  }
-  edit = () => {
-    this.setState({
-      editable: true
-    });
-  }
-  render() {
-    const {
-      value,
-      editable
-    } = this.state;
+   render() {
+    const {value,config,column,rowIndex,columnIndex} = this.props;
+    // 支持行按钮，行按钮一直显示
     return (
       <div className="editable-cell">
-        {editable
+        {config.isCellEditable(rowIndex,columnIndex) || ['buttons', 'buttongroup', 'toolbar'].indexOf(column.type)>-1
           ? <div className="editable-cell-input-wrapper">
-              <InputItem
-                config={{type:'text'}}
-                autoFocus
-                onChange={this.handleChange}
-                onPressEnter={this.check}
-                onBlur={this.check}/>
+              {this.renderItem(column,{
+                  autoFocus: true,
+                  onChange: (value)=>this.context.onEvent(config, 'setCell', value, ()=>config.setCell(rowIndex,columnIndex,value)),
+                  onPressEnter:()=>config.endEdit(),
+                  onBlur:()=>config.endEdit()
+                })}
             </div>
-          : <div className="editable-cell-text-wrapper" onClick={this.edit}>
-            {value || ' '}
-          </div>
-}
+          : <div className="editable-cell-text-wrapper" onClick={()=>config.startEdit(rowIndex,columnIndex)}>
+            {value}
+          </div>}
       </div>
     );
   }
@@ -72,81 +40,37 @@ class EditableCell extends UIComponent {
 @observer
 export default class EditableTable extends UIComponent {
 
-  onCellChange = (index, key) => {
-    return (value) => {
-      const dataSource = [...this.state.dataSource];
-      dataSource[index][key] = value;
-      this.setState({
-        dataSource
-      });
-    };
-  }
-  onDelete = (index) => {
-    const dataSource = [...this.state.dataSource];
-    dataSource.splice(index, 1);
-    this.setState({
-      dataSource
-    });
-  }
-  handleAdd = () => {
-    const {
-      count,
-      dataSource
-    } = this.state;
-    const newData = {
-      key: count,
-      name: `Edward King ${count}`,
-      age: 32,
-      address: `London, Park Lane no. ${count}`
-    };
-    this.setState({
-      dataSource: [
-        ...dataSource,
-        newData
-      ],
-      count: count + 1
-    });
-  }
-  renderOperation = (text, record, index) => {
-    return (this.state.dataSource.length > 1 ?
-      (
-        <Popconfirm title="Sure to delete?" onConfirm={() => this.onDelete(index)}>
-          <a href="#">Delete</a>
-        </Popconfirm>
-      ) :
-      null);
-  }
-  createColumns(columns) {
+  createColumns = (columns, counter={i:0}) => {
     return columns.map(it => ({
-      key: it.key,
-      align: it.align,
-      colSpan: it.colSpan,
-      dataIndex: it.dataIndex,
-      fixed: it.fixed,
-      title: it.title,
-      width: it.width,
-      children: it.children && this.createColumns(it.children),
+      ...it,
+      children: it.children && this.createColumns(it.children, counter.i),
       render: it.children && it.children.length > 0 ? null : (text, record, index) => (
-        <EditableCell value={text} onChange={this.onCellChange(index, it.key)}/>)
+        <EditableCell config={this.props.config} row={record} value={record[it.dataIndex]} column={it} rowIndex={index} columnIndex={counter.i++} />)
     }));
   }
+
   render() {
+    const config = this.props.config;
     const {
-      dataSource,
+      data,
       columns,
+      showCheck,
       bordered,
       showHeader,
       size,
       title,
-      buttons
-    } = this.props.config;
-    const columnItems = this.createColumns(renderColumns(columns)).concat([{
-      key: 'column_Operation',
-      title: '',
-      fixed: 'right',
-      width: 60,
-      render: this.renderOperation
-    }]);
+      buttons,
+    } = config;
+    const columnItems = this.createColumns(columns);
+    const rowSelection = showCheck? {
+      onChange: (selectedRowKeys, selectedRows) => {
+         this.context.onEvent(this.props.config, 'selectRow', {keys:selectedRowKeys, rows:selectedRows},()=> config.selectRows(selectedRowKeys))
+      },
+      getCheckboxProps: (record, index) => ({
+        disabled: config.isRowCheckable(index) // Column configuration not to be checked
+        //name: record.name,
+      }),
+    }: null;
     return (
       <div className='editableTable'>
         {buttons?<ToolButtons config={{items:buttons}} />:null}
@@ -156,8 +80,26 @@ export default class EditableTable extends UIComponent {
           size={size}
           title={title}
           pagination={false}
-          dataSource={dataSource}
-          columns={columnItems} />
+          dataSource={data}
+          columns={columnItems}
+          onChange={config.handleChange}
+          // onExpand={handleExpand}
+          // onExpandedRowsChange={handleExpandedRowsChange}
+          onHeaderRow={(column, index)=>({
+            onClick: ()=>{
+              this.context.onEvent(this.props.config, 'selectColumn',{column, index}, ()=>config.selectColumn(index))
+            }
+          })}
+          rowSelection={rowSelection}
+          onRow={(row, index)=>({
+                onClick: () => {
+                  this.context.onEvent(this.props.config, 'enterRow', {row, index}, ()=>config.enterRow(index))
+                }, // 点击行
+                // onDoubleClick: event => {},
+                // onContextMenu: event => {},
+                // onMouseEnter: event => {}, // 鼠标移入行
+                // onMouseLeave: event => {},
+          })} />
       </div>
     );
   }

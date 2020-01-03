@@ -30,6 +30,6 @@ export default () => {
   // }
   //   onChange={saveChagne} onBlur={updateData}
   return <div style={{width:'100%',height:'100%'}}>
-      <textarea style={{width:'100%',height:'100%',border: 'none',padding:0}} value={JSON.stringify(state, null, 4)}></textarea>
+      <textarea style={{width:'100%',height:'100%',border: 'none',padding:0}} readOnly value={JSON.stringify(state, null, 4)}></textarea>
     </div>
 }

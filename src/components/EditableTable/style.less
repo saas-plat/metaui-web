@@ -1,17 +1,27 @@
+@cellHeight: 34px;
+
 .editableTable {
   width: 100%;
 
-  .ant-table-tbody > tr > td,
-  .ant-table-thead > tr > th {
+  .ant-table-tbody > tr > td {
     padding: 0;
+    margin: 0;
+  }
+
+  .editable-cell-input-wrapper {
+    min-height: @cellHeight;
   }
 
   .editable-cell-text-wrapper {
     padding: 4px 11px;
-    line-height: 24px;
+    line-height: @cellHeight;
+    min-height: @cellHeight;
   }
 
   .inputitem {
+    margin: 0;
+    border: solid 1px #999;
+
     .input {
       border: none;
       outline: none;

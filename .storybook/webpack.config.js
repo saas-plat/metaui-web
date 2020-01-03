@@ -10,6 +10,9 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.less', '.json']
   },
+  watchOptions: {
+    ignored: /node_modules\/(?!saas-plat)/
+  },
   module: {
     rules: [{
         test: /\.js$/,

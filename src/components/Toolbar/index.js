@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Popconfirm,
   Button,
   Dropdown,
   Menu,
@@ -52,7 +53,7 @@ export class ButtonItem extends UIComponent {
 
   handleClick = (e) => {
     const item = this.props.config;
-    if (this.props.onClick){
+    if (this.props.onClick) {
       this.props.onClick(e);
     }
     if (item && !item.disabled) {
@@ -87,6 +88,26 @@ export class ButtonItem extends UIComponent {
     );
   }
 
+  renderConfirm(btn){
+    const {
+      config,
+    } = this.props;
+    const {
+      popTitle,
+      okText,
+      okType,
+      cancelText
+    } = config;
+    // 支持确认
+    if (popTitle) {
+      return (<Popconfirm title={popTitle} cancelText={cancelText} okText={okText} okType={okType}
+        onConfirm={this.handleClick} onCancel={this.onEvent(this.props.config, 'cancel')}>
+        {btn}
+      </Popconfirm>)
+    }
+    return btn;
+  }
+
   render() {
     const {
       config,
@@ -97,7 +118,7 @@ export class ButtonItem extends UIComponent {
       items = [],
       style,
       disabled = false,
-      onClick
+      onClick,
     } = config;
     const {
       childType
@@ -110,11 +131,9 @@ export class ButtonItem extends UIComponent {
           </MenuItem>
         );
       }
-      return (
-        <Button key={key} className='btn' disabled={disabled} type={style} {...other} onClick={this.handleClick}>
-          <TextAndIcon config={this.props.config}/>
-        </Button>
-      );
+      return this.renderConfirm(<Button key={key} className='btn' disabled={disabled} type={style} {...other} onClick={this.handleClick}>
+        <TextAndIcon config={this.props.config}/>
+      </Button>);
     }
     if (style === 'divider') {
       if (childType === 'menu') {
@@ -136,7 +155,7 @@ export class ButtonItem extends UIComponent {
       }
     }
     if (onClick) {
-      return (
+      return this.renderConfirm(
         <Dropdown.Button key={key}
           disabled={disabled}
           onClick={()=>this.onEvent(this.props.config, 'click')}
@@ -147,9 +166,9 @@ export class ButtonItem extends UIComponent {
     } else {
       return (
         <Dropdown key={key} overlay={this.renderMenu(items)} {...other}>
-          <Button className='btn' type={style} disabled={disabled} onClick={this.handleClick}>
+          {this.renderConfirm(<Button className='btn' type={style} disabled={disabled} onClick={this.handleClick}>
             <TextAndIcon config={this.props.config}/>
-          </Button>
+          </Button>)}
         </Dropdown>
       );
     }
