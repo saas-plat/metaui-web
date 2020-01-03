@@ -24,7 +24,7 @@ import {ToolButtons} from '../Toolbar';
 import moment from 'moment';
 import {
   renderColumns,
-  createFormater
+  createFormatter
 } from '../util';
 
 const TextArea = Input.TextArea;
@@ -165,7 +165,7 @@ export default class InputItem extends UIComponent {
     let formatter, parser;
 
     if (!this.state.focus) {
-      const format = createFormater(config);
+      const format = createFormatter(config);
       formatter = format.formatter;
       parser = format.parser;
     }
