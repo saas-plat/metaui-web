@@ -40,14 +40,13 @@ export default class InputItem extends UIComponent {
     ...UIComponent.propTypes,
     autoFocus: PropTypes.bool,
     state: PropTypes.string,
-    // for form item
     onChange: PropTypes.func,
+    onFocus: PropTypes.func,
+    onBlur: PropTypes.func,
     value: PropTypes.any,
   }
 
   state = {
-    data: [],
-    fetching: false,
     focus: false
   }
 
@@ -58,30 +57,21 @@ export default class InputItem extends UIComponent {
     if (value && value.toString().length > maxLength) {
       return;
     }
-    if (this.props.onChange) {
-      this.setState({
-        data: [],
-        fetching: false,
-      });
-      this.props.onChange(value);
-    }
-    this.context.onEvent(this.props.config, 'change', {
-      value
-    }, this.setValue);
+    this.context.onEvent(this.props.config, 'change', {value}, this.props.onChange || this.setValue);
   }
 
   handleBlur = () => {
     this.setState({
       focus: false
     })
-    this.context.onEvent(this.props.config, 'blur');
+    this.context.onEvent(this.props.config, 'blur', undefined, this.props.onBlur);
   }
 
   handleFocus = () => {
     this.setState({
       focus: true
     })
-    this.context.onEvent(this.props.config, 'focus');
+    this.context.onEvent(this.props.config, 'focus', undefined, this.props.onFocus);
   }
 
   setValue = async ({
@@ -145,8 +135,9 @@ export default class InputItem extends UIComponent {
         }
         this.handleChange(val)
       }}
-      onBlur={()=>this.context.onEvent(config, 'blur')}
-      onFocus={()=>this.context.onEvent(config, 'focus')}/>);
+      onBlur={this.handleBlur}
+      onFocus={this.handleFocus}
+      />);
   }
 
   renderInputNumber(config) {
@@ -225,8 +216,8 @@ export default class InputItem extends UIComponent {
       disabled={disabled}
       value={value}
       onChange={(e)=>{this.handleChange(e.target.value)}}
-      onBlur={()=>this.context.onEvent(config, 'blur')}
-      onFocus={()=>this.context.onEvent(config, 'focus')}
+      onBlur={this.handleBlur}
+      onFocus={this.handleFocus}
       autoSize ={autoSize } />
   }
 
@@ -316,8 +307,8 @@ export default class InputItem extends UIComponent {
         this.handleChange(dates.toDate());
       }
     }}
-    onBlur={()=>this.context.onEvent(config, 'blur')}
-    onFocus={()=>this.context.onEvent(config, 'focus')}
+    onBlur={this.handleBlur}
+    onFocus={this.handleFocus}
     />
   }
 
@@ -342,8 +333,9 @@ export default class InputItem extends UIComponent {
     value={moment(value,format)}
     format={format}
     onChange={(value)=>{this.handleChange(value)}}
-    onBlur={()=>this.context.onEvent(config, 'blur')}
-    onFocus={()=>this.context.onEvent(config, 'focus')}/>
+    onBlur={this.handleBlur}
+    onFocus={this.handleFocus}
+    />
   }
 
   renderCheckBox(config) {
@@ -362,8 +354,8 @@ export default class InputItem extends UIComponent {
       disabled={disabled}
       checked={!!value} defaultChecked={!!defaultValue}
       onChange={(e)=>{this.handleChange( {value:e.target.checked}, this.setValue),this.handleChange(e.target.checked)}}
-      onBlur={()=>this.context.onEvent(config, 'blur')}
-      onFocus={()=>this.context.onEvent(config, 'focus')}
+      onBlur={this.handleBlur}
+      onFocus={this.handleFocus}
       >{text}</Checkbox>
   }
 
@@ -382,8 +374,8 @@ export default class InputItem extends UIComponent {
       disabled={disabled}
       checked={!!value} defaultChecked={!!defaultValue}
       onChange={(value)=>{this.handleChange(value)}}
-      onBlur={()=>this.context.onEvent(config, 'blur')}
-      onFocus={()=>this.context.onEvent(config, 'focus')}
+      onBlur={this.handleBlur}
+      onFocus={this.handleFocus}
       ></Switch>
   }
 
@@ -413,8 +405,9 @@ export default class InputItem extends UIComponent {
       optionFilterProp='children'
       filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
       onChange={(value)=>{this.handleChange(value)}}
-      onBlur={()=>this.context.onEvent(this.props.config, 'blur')}
-      onFocus={()=>this.context.onEvent(this.props.config, 'focus')}>
+      onBlur={this.handleBlur}
+      onFocus={this.handleFocus}
+      >
       {dataSource.map((d,key) => <Select.Option key={key} value={d.value}>{d.title || d.text}</Select.Option>)}
     </Select>
   }
@@ -453,8 +446,8 @@ export default class InputItem extends UIComponent {
         //defaultValue={defaultValue}
         disabled={disabled}
         onChange={(value)=>{this.handleChange(value)}}
-        onBlur={()=>this.context.onEvent(this.props.config, 'blur')}
-        onFocus={()=>this.context.onEvent(this.props.config, 'focus')}>
+        onBlur={this.handleBlur}
+        onFocus={this.handleFocus}>
         </TreeSelect>
   }
 
@@ -511,8 +504,8 @@ export default class InputItem extends UIComponent {
         onDropdownVisibleChange={this.handlePopup}
         onRefer={()=>this.context.onEvent(this.props.config, 'refer')}
         onChange={(value)=>{multiple?this.handleChange(Array.from(new Set(value.map(it=>it.value)))):this.handleChange(value.value)}}
-        onBlur={()=>this.context.onEvent(this.props.config, 'blur')}
-        onFocus={()=>this.context.onEvent(this.props.config, 'focus')}/>
+        oonBlur={this.handleBlur}
+        onFocus={this.handleFocus}/>
   }
 
   renderInputTable(config) {
@@ -524,10 +517,15 @@ export default class InputItem extends UIComponent {
   }
 
   render() {
-    const {
+    let {
       config,
+      ...other
     } = this.props;
     let element;
+    config = {
+      ...config,
+      ...other
+    }
     if (config.readonly) {
       element = this.renderText(config);
     } else {

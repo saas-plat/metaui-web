@@ -428,7 +428,7 @@ const subtable = store.build(UIStore.createSchema({
   name: 'subtable',
   text: 'Aggs.sum($refobjs,"a")',
   type: 'subtable',
-  dataSouce: '$refobjs',
+  dataSource: '$refobjs',
   columns: [{
     type: 'text',
     title: 'aaa',
@@ -465,19 +465,22 @@ const subtable = store.build(UIStore.createSchema({
 const edittable = store.build(UIStore.createSchema({
   name: 'subtable',
   type: 'edittable',
-  dataSouce: '$refobjs',
+  dataSource: '$refobjs',
   columns: [{
     type: 'number',
     title: 'aaa',
-    dataIndex: 'a'
+    dataIndex: 'a',
+    width: 200
   }, {
     type: 'text',
     title: 'bbb',
-    dataIndex: 'b'
+    dataIndex: 'b',
+    width: 200
   }, {
     type: 'date',
     title: 'ccc',
-    dataIndex: 'c'
+    dataIndex: 'c',
+    width: 300
   }, {
     type: 'text',
     title: 'ddd',

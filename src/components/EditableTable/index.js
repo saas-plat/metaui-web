@@ -14,6 +14,10 @@ import {
 import {
   Resizable
 } from 'react-resizable';
+import {
+  renderElement,
+  createFormatter
+} from '../util';
 import './style';
 
 const ResizeableTitle = props => {
@@ -41,14 +45,20 @@ const ResizeableTitle = props => {
 
 @observer
 class EditableCell extends UIComponent {
+  constructor(){
+    super();
+    // endEdit 需要触发，包括直接改tablemodel
+  }
+
   render() {
     const {
-      value,
+      cell,
       config,
       column,
       rowIndex,
       columnIndex
     } = this.props;
+    const {value, cellProps} = cell;
     // 支持行按钮，行按钮一直显示
     return (
       <div className="editable-cell">
@@ -56,13 +66,15 @@ class EditableCell extends UIComponent {
           ? <div className="editable-cell-input-wrapper">
               {this.renderItem(column,{
                   autoFocus: true,
-                  onChange: (value)=>this.context.onEvent(config, 'setCell', value, ()=>config.setCell(rowIndex,columnIndex,{value})),
-                  onPressEnter:()=>config.endEdit(),
-                  onBlur:()=>config.endEdit()
+                  ...cellProps,
+                  value,
+                  onChange: (value)=>this.context.onEvent(config, 'setCell', value, ()=>config.setCell(rowIndex,columnIndex,value)),
+                  onPressEnter:()=>this.context.onEvent(config, 'endEdit', undefined, ()=>config.endEdit()),
+                  onBlur:()=>this.context.onEvent(config, 'endEdit', undefined, ()=>config.endEdit())
                 })}
             </div>
-          : <div className="editable-cell-text-wrapper" onClick={()=>config.startEdit(rowIndex,columnIndex)}>
-            {value}
+          : <div className="editable-cell-text-wrapper" onClick={()=>this.context.onEvent(config, 'startEdit', undefined, ()=>config.startEdit(rowIndex,columnIndex))}>
+            {renderElement(value, createFormatter(column).formatter)}
           </div>}
       </div>
     );
@@ -100,7 +112,7 @@ export default class EditableTable extends UIComponent {
         }),
         children: it.children && this.createColumns(it.children, counter.i),
         render: it.children && it.children.length > 0 ? null : (text, row, rowIndex) => (
-          <EditableCell config={this.props.config} row={row} value={(row[it.dataIndex] || {}).value}
+          <EditableCell config={this.props.config} row={row} cell={row.value[it.dataIndex] || {}}
             column={it} rowIndex={rowIndex} columnIndex={columnIndex} />)
       }
     });
