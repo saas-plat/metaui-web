@@ -27,7 +27,8 @@ import {
 import moment from 'moment';
 import {
   renderColumns,
-  createFormatter
+  createFormatter,
+  renderElement
 } from '../util';
 
 const TextArea = Input.TextArea;
@@ -80,8 +81,8 @@ export default class InputItem extends UIComponent {
       (this.ref instanceof MonthPicker) ||
       (this.ref instanceof WeekPicker) ||
       (this.ref instanceof RangePicker)) {
-        return;
-      }
+      return;
+    }
     let node = ReactDOM.findDOMNode(this.ref);
     if (node && node.tagName !== 'INPUT' && node.tagName !== 'TEXTAREA') {
       node = node.querySelector('input');
@@ -93,9 +94,9 @@ export default class InputItem extends UIComponent {
 
   handleFocus = () => {
     if (this.props.config.selectAll !== false) {
-        // inputnumber focus重新设置value会导致select取消，延迟一下
-        // EditTable在startedit时会再次赋值，导致select无效，也需要延迟一下
-        setTimeout(this.selectAll, 0);
+      // inputnumber focus重新设置value会导致select取消，延迟一下
+      // EditTable在startedit时会再次赋值，导致select无效，也需要延迟一下
+      setTimeout(this.selectAll, 0);
     }
     this.setState({
       focus: true
@@ -147,6 +148,10 @@ export default class InputItem extends UIComponent {
       format
     } = config;
     value = 'value' in this.props ? this.props.value : value;
+    const {
+      formatter
+    } = createFormatter(config);
+    value = renderElement(value, formatter);
     return (<Input id={key}
       ref={ref=>this.ref = ref}
       autoFocus={this.props.autoFocus}
@@ -217,7 +222,8 @@ export default class InputItem extends UIComponent {
       //defaultValue,
       placeholder,
       disabled,
-      size
+      size,
+      format
     } = config;
     let autoSize = true;
     value = 'value' in this.props ? this.props.value : value;
@@ -236,6 +242,14 @@ export default class InputItem extends UIComponent {
       autoSize = {
         minRows: parseInt(size)
       };
+    }
+    if (format) {
+      const {
+        formatter
+      } = createFormatter(config);
+      if (formatter) {
+        value = formatter(value);
+      }
     }
     return <TextArea id={key}
       ref={ref=>this.ref = ref}
