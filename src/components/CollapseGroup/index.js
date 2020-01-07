@@ -7,7 +7,7 @@ import {UIComponent} from 'saas-plat-metaui';
 
 const Panel = Collapse.Panel;
 
-export default class TitleGroup extends UIComponent {
+export default class CollapseGroup extends UIComponent {
 
   render() {
     const {
@@ -17,10 +17,10 @@ export default class TitleGroup extends UIComponent {
     if (items.length == 1) {
       return this.renderItem(items[0]);
     }
-    return (<div className="groups" bordered={false} defaultActiveKey={activeKey}>
+    return (<Collapse className="collgroups" bordered={false} defaultActiveKey={activeKey}>
       {items.map(it=><Panel className="group" header={it.text} key={it.key}>
         {this.renderItem(it)}
       </Panel>:null)}
-    </div>)
+    </Collapse>)
   }
 }

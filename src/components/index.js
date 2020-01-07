@@ -13,6 +13,7 @@ import {
 import Layout from './Layout';
 import TabGroup from './TabGroup';
 import TitleGroup from './TitleGroup';
+import CollapseGroup from './CollapseGroup';
 // input
 import {
   Toolbar,
@@ -37,6 +38,7 @@ UIStore.register({
   view: [Layout, ContainerModel],
   tab: [TabGroup, ContainerModel],
   group: [TitleGroup, ContainerModel],
+  collapse: [CollapseGroup, ContainerModel],
   toolbar: [Toolbar, ContainerModel],
   buttongroup: [ToolButtonGroup, ContainerModel],
   buttons: [ToolButtons, ContainerModel],
@@ -55,7 +57,7 @@ UIStore.register({
   daterange: [InputItem, SimpleModel],
   week: [InputItem, SimpleModel],
   time: [InputItem, SimpleModel],
-  select: [InputItem, SimpleModel], 
+  select: [InputItem, SimpleModel],
   // 对象引用
   refer: [InputItem, ReferModel],
   // 子表编辑器

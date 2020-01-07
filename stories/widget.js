@@ -41,26 +41,18 @@ const line = UIStore.create({
 
 }, data).ui;
 
-storiesOf('展示类', module)
+storiesOf('其他', module)
   .addParameters({
     data
   })
-  .add('Big Data', () => <UIContainer
+  .add('Options', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}>
       <UIRender ui={bigdata}/>
     </UIContainer>)
 
-  .add('Sub Total', () => <UIContainer
+  .add('Search Planel', () => <UIContainer
       onEvent={(name,args)=>action(name)(args)}
       onAction={(name,args)=>action(name)(args)}>
         <UIRender ui={subtotal}/>
       </UIContainer>)
-
-  .add('Chart', () => <UIContainer
-    onEvent={(name,args)=>action(name)(args)}
-    onAction={(name,args)=>action(name)(args)}>
-      <UIRender ui={bar}/>
-      <UIRender ui={pie}/>
-      <UIRender ui={line}/>
-    </UIContainer>)

@@ -3,8 +3,14 @@
 .inputitem {
   width: 100%;
 
-  .text {
+  .readonly {
     width: 100%;
+  }
+
+  .label{
+    &::after{
+      content: ':'
+    }
   }
 
   .input {

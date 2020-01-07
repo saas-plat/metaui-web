@@ -48,6 +48,11 @@ export default class InputItem extends UIComponent {
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
     value: PropTypes.any,
+    showLabel: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    showLabel: true
   }
 
   state = {
@@ -561,7 +566,7 @@ export default class InputItem extends UIComponent {
       displayColumns,
       displayShowHeader
     } = config;
-    const prefixCls = 'ref-select'; 
+    const prefixCls = 'ref-select';
     const suffix = this.state.hover ?<Icon type="close-circle" className={`${prefixCls}-refer-icon`} onClick={()=>{
       this.handleChange(null)
     }} theme="filled" onMouseEnter={this.handleHover} onMouseLeave={this.handleHoverOut}/> :
@@ -637,14 +642,23 @@ export default class InputItem extends UIComponent {
   }
 
   renderText(config) {
-    return <span className='text'>{config.value}</span>;
+    return <span className='readonly'>{config.value}</span>;
+  }
+
+  renderLabel(config) {
+    return <span className='label'>{config.label}</span>;
   }
 
   render() {
     const {
-      config
+      config,
+      showLabel
     } = this.props;
+    let label;
     let element;
+    if (showLabel && config.label){
+      label = this.renderLabel(config);
+    }
     if (config.readonly) {
       element = this.renderText(config);
     } else {
@@ -709,7 +723,9 @@ export default class InputItem extends UIComponent {
     //     width: config.width
     //   };
     // }
+
     return (<div className={'inputitem '+config.type} style={style}>
+        {label}
         {element}
       </div>);
   }
