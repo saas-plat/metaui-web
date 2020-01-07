@@ -65,7 +65,6 @@ class EditableCell extends UIComponent {
         {config.isCellEditable(rowIndex,columnIndex) || ['buttons', 'buttongroup', 'toolbar'].indexOf(column.type)>-1
           ? <div className="editable-cell-input-wrapper">
               {this.renderItem(column,{
-                  autoFocus: true,
                   ...cellProps,
                   value,
                   onChange: (value)=>this.context.onEvent(config, 'setCell', value, ()=>config.setCell(rowIndex,columnIndex,value)),

@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import {
   observer
 } from 'mobx-react';
@@ -67,10 +68,24 @@ export default class InputItem extends UIComponent {
     this.context.onEvent(this.props.config, 'blur', undefined, this.props.onBlur);
   }
 
+  selectAll = () => {
+    let node = ReactDOM.findDOMNode(this.ref);
+    if (node && node.tagName !== 'INPUT' && node.tagName !== 'TEXTAREA'){
+      node = node.querySelector('input');
+    }
+    if (node && (node.tagName === 'INPUT' || node.tagName === 'TEXTAREA')){
+      node.select();
+    }
+  }
+
   handleFocus = () => {
+    if (this.props.config.selectAll !== false){
+      // inputnumber focus重新设置value会导致select取消，延迟一下
+      setTimeout(this.selectAll,0)
+    }
     this.setState({
       focus: true
-    })
+    });
     this.context.onEvent(this.props.config, 'focus', undefined, this.props.onFocus);
   }
 
@@ -119,6 +134,7 @@ export default class InputItem extends UIComponent {
     } = config;
     value = 'value' in this.props ? this.props.value : value;
     return (<Input id={key}
+      ref={ref=>this.ref = ref}
       autoFocus={this.props.autoFocus}
       size={size}
       className='input'
@@ -162,6 +178,7 @@ export default class InputItem extends UIComponent {
     }
     return <InputNumber
         id={key}
+        ref={ref=>this.ref = ref}
         title={this.formatTitle({...config,maxLength,precision})}
         autoFocus={this.props.autoFocus}
         size={size}
@@ -207,6 +224,7 @@ export default class InputItem extends UIComponent {
       };
     }
     return <TextArea id={key}
+      ref={ref=>this.ref = ref}
       autoFocus={this.props.autoFocus}
       size={size}
       className='input'
@@ -238,6 +256,7 @@ export default class InputItem extends UIComponent {
       mode, // time|date|month|year|decade
     } = config;
     let Component;
+    value = 'value' in this.props ? this.props.value : value;
     if (Array.isArray(value)) {
       value = value.map(it => moment(it));
     } else {
@@ -289,6 +308,7 @@ export default class InputItem extends UIComponent {
       break;
     }
     return <Component id={key}
+    ref={ref=>this.ref = ref}
     autoFocus={this.props.autoFocus}
     mode={mode}
     size={size}
@@ -313,7 +333,7 @@ export default class InputItem extends UIComponent {
   }
 
   renderTimePicker(config) {
-    const {
+    let {
       key,
       value,
       clear,
@@ -323,14 +343,16 @@ export default class InputItem extends UIComponent {
       disabled,
       size
     } = config;
+     value = 'value' in this.props ? this.props.value : value;
     return <TimePicker  id={key}
+    ref={ref=>this.ref = ref}
     autoFocus={this.props.autoFocus}
     size={size}
     className='input'
     allowClear={clear}  disabled={disabled}
     placeholder={placeholder}
     //defaultValue={defaultValue}
-    value={moment(value,format)}
+    value={value?moment(value):null}
     format={format}
     onChange={(value)=>{this.handleChange(value)}}
     onBlur={this.handleBlur}
@@ -339,20 +361,23 @@ export default class InputItem extends UIComponent {
   }
 
   renderCheckBox(config) {
-    const {
+    let {
       key,
       value,
-      defaultValue,
+      //defaultValue,
       disabled,
       text,
       size
     } = config;
+    value = 'value' in this.props ? this.props.value : value;
     return <Checkbox id={key}
+      ref={ref=>this.ref = ref}
       autoFocus={this.props.autoFocus}
       size={size}
       className='input'
       disabled={disabled}
-      checked={!!value} defaultChecked={!!defaultValue}
+      checked={!!value}
+      //defaultChecked={!!defaultValue}
       onChange={(e)=>{this.handleChange( {value:e.target.checked}, this.setValue),this.handleChange(e.target.checked)}}
       onBlur={this.handleBlur}
       onFocus={this.handleFocus}
@@ -360,19 +385,22 @@ export default class InputItem extends UIComponent {
   }
 
   renderSwitch(config) {
-    const {
+    let {
       key,
       value,
-      defaultValue,
+      //defaultValue,
       disabled,
       size
     } = config;
+    value = 'value' in this.props ? this.props.value : value;
     return <Switch id={key}
+      ref={ref=>this.ref = ref}
       autoFocus={this.props.autoFocus}
       size={size}
       className='input'
       disabled={disabled}
-      checked={!!value} defaultChecked={!!defaultValue}
+      checked={!!value}
+      // defaultChecked={!!defaultValue}
       onChange={(value)=>{this.handleChange(value)}}
       onBlur={this.handleBlur}
       onFocus={this.handleFocus}
@@ -393,6 +421,7 @@ export default class InputItem extends UIComponent {
     value = 'value' in this.props ? this.props.value : value;
     return <Select
       id={key}
+      ref={ref=>this.ref = ref}
       className='input'
       autoFocus={this.props.autoFocus}
       size={size}
@@ -430,6 +459,7 @@ export default class InputItem extends UIComponent {
     } = config;
     value = 'value' in this.props ? this.props.value : value;
     return <TreeSelect id={key}
+        ref={ref=>this.ref = ref}
         autoFocus={this.props.autoFocus}
         size={size}
         allowClear={allowClear}
@@ -492,7 +522,7 @@ export default class InputItem extends UIComponent {
         defaultExpandAll={defaultExpandAll}
         defaultExpandKeys={defaultExpandKeys}
         showHeader={displayShowHeader}
-        columns={renderColumns(displayColumns)}
+        columns={displayColumns?renderColumns(displayColumns):[]}
         removeIcon={<Icon type="close" className={`${prefixCls}-remove-icon`} />}
         referIcon={<Icon type="search" className={`${prefixCls}-refer-icon`} />}
         open={open}
@@ -517,15 +547,10 @@ export default class InputItem extends UIComponent {
   }
 
   render() {
-    let {
-      config,
-      ...other
+    const {
+      config
     } = this.props;
     let element;
-    config = {
-      ...config,
-      ...other
-    }
     if (config.readonly) {
       element = this.renderText(config);
     } else {
