@@ -2,20 +2,46 @@
 
 .inputitem {
   width: 100%;
+  display: flex;
+  flex-direction: row;
 
   .readonly {
     width: 100%;
+    flex: 1;
   }
 
-  .label{
-    &::after{
-      content: ':'
+  .label {
+    min-width: 100px;
+    text-align: right;
+    line-height: @input-height-base;
+    padding-right: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &::after {
+      content: ' :';
+    }
+
+    &.link {}
+
+    .erricon {
+      padding-left: 4px;
+      color: @error-color;
+    }
+
+    &.required {
+      &::before {
+        content: '* ';
+        color: @highlight-color;
+      }
     }
   }
 
   .input {
     width: 100%;
     box-shadow: none;
+    flex: 1;
 
     &.ant-switch {
       width: auto !important;
@@ -29,7 +55,8 @@
     border-left-style: none;
     border-bottom-style: solid;
 
-    &:focus {
+    &:focus,
+    &:hover {
       border-width: 2px;
       box-shadow: none;
     }
@@ -51,7 +78,8 @@
 
   &.daterange {
     .input {
-      &:focus {
+      &:focus,
+      &:hover {
         > span {
           border-width: 2px;
           box-shadow: none;
@@ -89,6 +117,10 @@
       &.ant-input-number-focused {
         border-width: 2px;
       }
+
+      &:hover{
+        border-width: 2px;
+      }
     }
 
     input {
@@ -102,8 +134,8 @@
   &.refer,
   &.select {
     .input {
-      > span,
-      > div {
+      > div,
+      > span {
         border-top-style: none;
         border-right-style: none;
         border-left-style: none;
@@ -113,8 +145,15 @@
 
       &.ant-select-focused,
       &.ref-select-focused {
-        > span,
-        > div {
+        > div,
+        > span {
+          border-width: 2px;
+        }
+      }
+
+      &:hover{
+        > div,
+        > span {
           border-width: 2px;
         }
       }
@@ -127,6 +166,51 @@
 
         &:focus {
           border-width: 0;
+        }
+      }
+    }
+  }
+
+  &.error {
+    input,
+    textarea {
+      border-bottom-color: @error-color;
+    }
+
+    .notsupport {
+      color: @error-color;
+    }
+
+    &.daterange {
+      .input {
+        &:focus {
+          > span {
+            border-bottom-color: @error-color;
+          }
+        }
+
+        > span {
+          border-bottom-color: @error-color;
+
+          input {
+            border-bottom-color: @error-color;
+          }
+        }
+      }
+    }
+
+    &.number {
+      .input {
+        border-bottom-color: @error-color;
+      }
+    }
+
+    &.refer,
+    &.select {
+      .input {
+        > div,
+        > span {
+          border-bottom-color: @error-color;
         }
       }
     }

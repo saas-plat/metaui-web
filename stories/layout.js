@@ -10,9 +10,12 @@ import {
   UIStore,
   UIRender
 } from 'saas-plat-metaui';
+import {
+  observable
+} from "mobx";
 import '../src';
 
-const data = {
+const data = observable({
   code: '',
   item1: 'AAAAAAAAA',
   obj2: {
@@ -26,86 +29,106 @@ const data = {
     a: 20.11
   }],
   array1: [1, 2, 3, 4, 100, 1000000.11]
-};
-
-const tabs = UIStore.create({
-  type: 'tab',
-  items: [{
-    type: 'text',
-    value: '$code',
-    label: '编码',
-  }, {
-    type: 'text',
-    value: '$item1',
-    label: 'item1',
-  }, {
-    type: 'text',
-    value: '$obj2.f1',
-    label: 'f1',
-  }, {
-    type: 'text',
-    value: '$obj2.f2',
-    label: 'f2',
-  }, {
-    type: 'text',
-    value: '$obj2.f3',
-    label: 'f3',
-  }]
-}, data)
+});
 
 const groups = UIStore.create({
   type: 'group',
   items: [{
-    type: 'text',
-    value: '$code',
-    label: '编码',
+    type: 'view',
+    items: [{
+      type: 'text',
+      value: '$code',
+      label: '编码',
+    }, {
+      type: 'text',
+      value: '$item1',
+      label: 'item1',
+    }]
   }, {
-    type: 'text',
-    value: '$item1',
-    label: 'item1',
-  }, {
-    type: 'text',
-    value: '$obj2.f1',
-    label: 'f1',
-  }, {
-    type: 'text',
-    value: '$obj2.f2',
-    label: 'f2',
-  }, {
-    type: 'text',
-    value: '$obj2.f3',
-    label: 'f3',
+    type: 'view',
+    items: [{
+      type: 'text',
+      value: '$obj2.f1',
+      label: 'f1',
+    }, {
+      type: 'text',
+      value: '$obj2.f2',
+      label: 'f2',
+    }, {
+      type: 'text',
+      value: '$obj2.f3',
+      label: 'f3',
+    }]
   }]
-}, data)
+}, data).ui
+
+const tabs = UIStore.create({
+  type: 'group',
+  layout: 'tab',
+  items: [{
+    type: 'view',
+    items: [{
+      type: 'text',
+      value: '$code',
+      label: '编码',
+    }, {
+      type: 'text',
+      value: '$item1',
+      label: 'item1',
+    }]
+  }, {
+    type: 'view',
+    items: [{
+      type: 'text',
+      value: '$obj2.f1',
+      label: 'f1',
+    }, {
+      type: 'text',
+      value: '$obj2.f2',
+      label: 'f2',
+    }, {
+      type: 'text',
+      value: '$obj2.f3',
+      label: 'f3',
+    }]
+  }]
+}, data).ui
 
 const collapses = UIStore.create({
-  type: 'collapse',
+  type: 'group',
+  layout: 'collapse',
   items: [{
-    type: 'text',
-    value: '$code',
-    label: '编码',
+    type: 'view',
+    items: [{
+      type: 'text',
+      value: '$code',
+      label: '编码',
+    }, {
+      type: 'text',
+      value: '$item1',
+      label: 'item1',
+    }]
   }, {
-    type: 'text',
-    value: '$item1',
-    label: 'item1',
-  }, {
-    type: 'text',
-    value: '$obj2.f1',
-    label: 'f1',
-  }, {
-    type: 'text',
-    value: '$obj2.f2',
-    label: 'f2',
-  }, {
-    type: 'text',
-    value: '$obj2.f3',
-    label: 'f3',
+    type: 'view',
+    items: [{
+      type: 'text',
+      value: '$obj2.f1',
+      label: 'f1',
+    }, {
+      type: 'text',
+      value: '$obj2.f2',
+      label: 'f2',
+    }, {
+      type: 'text',
+      value: '$obj2.f3',
+      label: 'f3',
+    }]
   }]
-}, data)
+}, data).ui
 
 const flow = UIStore.create({
   type: 'view',
-  layout: 'flow',
+  layout: 'left',
   items: [{
     type: 'text',
     value: '$code',
@@ -127,7 +150,7 @@ const flow = UIStore.create({
     value: '$obj2.f3',
     label: 'f3',
   }]
-}, data)
+}, data).ui
 
 const list = UIStore.create({
   type: 'view',
@@ -153,7 +176,7 @@ const list = UIStore.create({
     value: '$obj2.f3',
     label: 'f3',
   }]
-}, data)
+}, data).ui
 
 const grid = UIStore.create({
   type: 'view',
@@ -179,7 +202,7 @@ const grid = UIStore.create({
     value: '$obj2.f3',
     label: 'f3',
   }]
-}, data)
+}, data).ui
 
 const topbottom = UIStore.create({
   type: 'view',
@@ -225,7 +248,7 @@ const topbottom = UIStore.create({
       label: 'f3',
     }]
   }]
-}, data)
+}, data).ui
 
 const sidercontent = UIStore.create({
   type: 'view',
@@ -257,20 +280,13 @@ const sidercontent = UIStore.create({
       label: 'f3',
     }]
   }, ]
-}, data)
+}, data).ui
 
 storiesOf('布局类', module)
   .addParameters({
     data
   })
-  .add('Group', () => <UIContainer
-      onEvent={(name,args)=>action(name)(args)}
-      onAction={(name,args)=>action(name)(args)}>
-        <UIRender ui={groups}/>
-        <UIRender ui={tabs}/>
-        <UIRender ui={collapses}/>
-      </UIContainer>)
-      
+
   .add('FlowLayout', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}>
@@ -292,3 +308,11 @@ storiesOf('布局类', module)
           <UIRender ui={topbottom}/>
           <UIRender ui={sidercontent}/>
         </UIContainer>)
+
+  .add('GroupLayout', () => <UIContainer
+            onEvent={(name,args)=>action(name)(args)}
+            onAction={(name,args)=>action(name)(args)}>
+              <UIRender ui={groups}/>
+              <UIRender ui={tabs}/>
+              <UIRender ui={collapses}/>
+            </UIContainer>)

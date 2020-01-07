@@ -11,9 +11,7 @@ import {
 } from 'saas-plat-metaui';
 // layout
 import Layout from './Layout';
-import TabGroup from './TabGroup';
-import TitleGroup from './TitleGroup';
-import CollapseGroup from './CollapseGroup';
+import Group from './Group';
 // input
 import {
   Toolbar,
@@ -36,9 +34,7 @@ moment.locale('zh-cn');
 UIStore.register({
   // layout
   view: [Layout, ContainerModel],
-  tab: [TabGroup, ContainerModel],
-  group: [TitleGroup, ContainerModel],
-  collapse: [CollapseGroup, ContainerModel],
+  group: [Group, ContainerModel],
   toolbar: [Toolbar, ContainerModel],
   buttongroup: [ToolButtonGroup, ContainerModel],
   buttons: [ToolButtons, ContainerModel],

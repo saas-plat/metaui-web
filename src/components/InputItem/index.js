@@ -13,7 +13,8 @@ import {
   TimePicker,
   TreeSelect,
   Select,
-  Icon
+  Icon,
+  Tooltip
 } from 'antd';
 import './style';
 import RcRefSelect from 'rc-ref-select';
@@ -150,7 +151,7 @@ export default class InputItem extends UIComponent {
 
   }
 
-  handleHoverOut = ()=>{
+  handleHoverOut = () => {
     this.setState({
       hover: false
     })
@@ -171,7 +172,7 @@ export default class InputItem extends UIComponent {
       formatter
     } = createFormatter(config);
     value = renderElement(value, formatter);
-    const Component = format === 'password'? Input.Password: Input;
+    const Component = format === 'password' ? Input.Password : Input;
     return (<Component id={key}
       ref={ref=>this.ref = ref}
       autoFocus={this.props.autoFocus}
@@ -474,9 +475,9 @@ export default class InputItem extends UIComponent {
       dataSource = [],
     } = config;
     value = 'value' in this.props ? this.props.value : value;
-    const suffix = this.state.hover ?<Icon type="close-circle" onClick={()=>{
+    const suffix = this.state.hover ? <Icon type="close-circle" onClick={()=>{
       this.handleChange(null)
-    }} theme="filled" onMouseEnter={this.handleHover} onMouseLeave={this.handleHoverOut}/> :null;
+    }} theme="filled" onMouseEnter={this.handleHover} onMouseLeave={this.handleHoverOut}/> : null;
     return <Select
       id={key}
       ref={ref=>this.ref = ref}
@@ -567,7 +568,7 @@ export default class InputItem extends UIComponent {
       displayShowHeader
     } = config;
     const prefixCls = 'ref-select';
-    const suffix = this.state.hover ?<Icon type="close-circle" className={`${prefixCls}-refer-icon`} onClick={()=>{
+    const suffix = this.state.hover ? <Icon type="close-circle" className={`${prefixCls}-refer-icon`} onClick={()=>{
       this.handleChange(null)
     }} theme="filled" onMouseEnter={this.handleHover} onMouseLeave={this.handleHoverOut}/> :
       <Icon type="search" className={`${prefixCls}-refer-icon`} />;
@@ -646,7 +647,39 @@ export default class InputItem extends UIComponent {
   }
 
   renderLabel(config) {
-    return <span className='label'>{config.label}</span>;
+    let className = 'label';
+    let errmsg = null;
+    let style = {};
+    if (config.required) {
+      className += ' required';
+    }
+    if (config.labelWidth){
+      style.width = config.labelWidth;
+    }
+    if (config.link) {
+      className += ' link';
+      return <a className={className} style={style} onClick={()=>this.context.onEvent(config, 'link', {
+        link: config.link
+      })}>{config.label}{errmsg}</a>;
+    }
+    if (config.error){
+      errmsg = <Tooltip title={config.error} overlayClassName='errortip'>
+        <Icon type="exclamation-circle" className='erricon'/>
+      </Tooltip>
+    }
+    return <span className={className} style={style}>{config.label}{errmsg}</span>;
+  }
+
+  renderFormItem(){
+        // type
+        // required
+        // message
+        // enum
+        // len
+        // pattern
+        // whitespace
+        // min
+        // max
   }
 
   render() {
@@ -656,7 +689,7 @@ export default class InputItem extends UIComponent {
     } = this.props;
     let label;
     let element;
-    if (showLabel && config.label){
+    if (showLabel && config.label) {
       label = this.renderLabel(config);
     }
     if (config.readonly) {
@@ -724,7 +757,7 @@ export default class InputItem extends UIComponent {
     //   };
     // }
 
-    return (<div className={'inputitem '+config.type} style={style}>
+    return (<div className={['inputitem',config.type,config.error?'error':null].filter(it=>it).join(' ')} style={style}>
         {label}
         {element}
       </div>);

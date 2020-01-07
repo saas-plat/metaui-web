@@ -183,33 +183,31 @@ const textbox = store.build(UIStore.createSchema({
   type: 'text',
   value: '$text',
   setValue: 'text',
+  label: 'text',
   icon: 'form',
   tip: 'xxxxxxxxxxxxx',
-  rules: [{
-    required: true
-  }]
+  error: 'xxxxxxxxx',
+  required: true
 }));
 const intstring = store.build(UIStore.createSchema({
   type: 'text',
   value: '$text',
   setValue: 'text',
+  label: 'text',
   icon: 'form',
   format: 'intstring',
   tip: 'xxxxxxxxxxxxx',
-  rules: [{
-    required: true
-  }]
+  required: true
 }));
 const password = store.build(UIStore.createSchema({
   type: 'text',
   value: '$text',
   setValue: 'text',
+  label: 'text',
   icon: 'form',
   format: 'password',
   tip: 'xxxxxxxxxxxxx',
-  rules: [{
-    required: true
-  }]
+  required: true
 }));
 const textarea = store.build(UIStore.createSchema({
   type: 'textarea',
@@ -217,9 +215,7 @@ const textarea = store.build(UIStore.createSchema({
   setValue: 'text',
   icon: 'form',
   tip: 'xxxxxxxxxxxxx',
-  rules: [{
-    required: true
-  }]
+  required: true
 }));
 
 const datetime = store.build(UIStore.createSchema({
@@ -330,6 +326,9 @@ const reflist = store.build(UIStore.createSchema({
   dropdownStyle: 'list',
   multiple: false,
   showSearch: false,
+  label: 'xxxxxxx',
+  link: true,
+  required: true,
   dataSource: '$refobjs',
   onFocus: {
     name: 'query',
@@ -353,6 +352,7 @@ const reftablemultiple = store.build(UIStore.createSchema({
   type: 'refer',
   displayField: 'b',
   dropdownStyle: 'table',
+  label: 'xxxxxxx',
   //text: 'Aggs.sum($objs,"a")',   // 要是有text没有displayField，就显示一个text
   value: '$objs', // multiple: true,   是一个数组
   setValue: 'objs',
@@ -383,6 +383,7 @@ const reftablemultiple = store.build(UIStore.createSchema({
 const reftable = store.build(UIStore.createSchema({
   name: 'item6',
   type: 'refer',
+  label: 'xxxxxxx',
   dropdownStyle: 'treetable', // TODO 暂时未支持
   displayField: 'b',
   value: '$obj',

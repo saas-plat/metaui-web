@@ -10,6 +10,9 @@ import {
   UIStore,
   UIRender
 } from 'saas-plat-metaui';
+import {
+  observable
+} from "mobx";
 import '../src';
 
 const data = {}
