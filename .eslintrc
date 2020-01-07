@@ -21,6 +21,7 @@
       "describe": true,
       "it": true,
       "Symbol": true,
+      "Set": true,
       "test": true
     },
     "rules":{

@@ -21,7 +21,9 @@ import {
   UIComponent
 } from 'saas-plat-metaui';
 import InputTable from '../InputTable';
-import {ToolButtons} from '../Toolbar';
+import {
+  ToolButtons
+} from '../Toolbar';
 import moment from 'moment';
 import {
   renderColumns,
@@ -58,7 +60,9 @@ export default class InputItem extends UIComponent {
     if (value && value.toString().length > maxLength) {
       return;
     }
-    this.context.onEvent(this.props.config, 'change', {value}, this.props.onChange || this.setValue);
+    this.context.onEvent(this.props.config, 'change', {
+      value
+    }, this.props.onChange || this.setValue);
   }
 
   handleBlur = () => {
@@ -70,18 +74,26 @@ export default class InputItem extends UIComponent {
 
   selectAll = () => {
     let node = ReactDOM.findDOMNode(this.ref);
-    if (node && node.tagName !== 'INPUT' && node.tagName !== 'TEXTAREA'){
+    if (node && node.tagName !== 'INPUT' && node.tagName !== 'TEXTAREA') {
       node = node.querySelector('input');
     }
-    if (node && (node.tagName === 'INPUT' || node.tagName === 'TEXTAREA')){
+    if (node && (node.tagName === 'INPUT' || node.tagName === 'TEXTAREA')) {
       node.select();
     }
   }
 
   handleFocus = () => {
-    if (this.props.config.selectAll !== false){
-      // inputnumber focus重新设置value会导致select取消，延迟一下
-      setTimeout(this.selectAll,0)
+    if (this.props.config.selectAll !== false) {
+      // 日期框都有下拉面板，不需要选中input
+      if (!(this.ref instanceof TimePicker) &&
+        !(this.ref instanceof DatePicker) &&
+        !(this.ref instanceof MonthPicker) &&
+        !(this.ref instanceof WeekPicker) &&
+        !(this.ref instanceof RangePicker)) {
+        // inputnumber focus重新设置value会导致select取消，延迟一下
+        // EditTable在startedit时会再次赋值，导致select无效，也需要延迟一下
+        setTimeout(this.selectAll, 0);
+      }
     }
     this.setState({
       focus: true
@@ -343,7 +355,7 @@ export default class InputItem extends UIComponent {
       disabled,
       size
     } = config;
-     value = 'value' in this.props ? this.props.value : value;
+    value = 'value' in this.props ? this.props.value : value;
     return <TimePicker  id={key}
     ref={ref=>this.ref = ref}
     autoFocus={this.props.autoFocus}
@@ -481,12 +493,12 @@ export default class InputItem extends UIComponent {
         </TreeSelect>
   }
 
-  closePopup = (e)=>{
+  closePopup = (e) => {
     this.props.config.open = false;
   }
 
-  handlePopup = open=>{
-      this.props.config.open = open;
+  handlePopup = open => {
+    this.props.config.open = open;
   }
 
   renderRefSelect(config) {
@@ -509,6 +521,23 @@ export default class InputItem extends UIComponent {
       displayShowHeader
     } = config;
     const prefixCls = 'ref-select';
+    const props = {
+      removeIcon: <Icon type="close" className={`${prefixCls}-remove-icon`} />,
+      referIcon: <Icon type="search" className={`${prefixCls}-refer-icon`} />,
+      open,
+      value: displayValue,
+      size,
+      tableFooter: buttons ? () => <ToolButtons className={`${prefixCls}-footer-buttons`} config={{items:buttons}} onClick={this.closePopup} /> : undefined,
+      //defaultValue={defaultValue}
+      disabled,
+      onDropdownVisibleChange: this.handlePopup,
+      onRefer: () => this.context.onEvent(this.props.config, 'refer'),
+      onChange: (value) => {
+        multiple ? this.handleChange(Array.from(new Set(value.map(it => it.value)))) : this.handleChange(value.value)
+      },
+      oonBlur: this.handleBlur,
+      onFocus: this.handleFocus
+    }
     // labelInValue 用于格式化显示
     return <RcRefSelect id={key}
         className='input'
@@ -523,19 +552,8 @@ export default class InputItem extends UIComponent {
         defaultExpandKeys={defaultExpandKeys}
         showHeader={displayShowHeader}
         columns={displayColumns?renderColumns(displayColumns):[]}
-        removeIcon={<Icon type="close" className={`${prefixCls}-remove-icon`} />}
-        referIcon={<Icon type="search" className={`${prefixCls}-refer-icon`} />}
-        open={open}
-        value={displayValue}
-        size={size}
-        tableFooter={buttons?()=><ToolButtons className={`${prefixCls}-footer-buttons`} config={{items:buttons}} onClick={this.closePopup} />:undefined}
-        //defaultValue={defaultValue}
-        disabled={disabled}
-        onDropdownVisibleChange={this.handlePopup}
-        onRefer={()=>this.context.onEvent(this.props.config, 'refer')}
-        onChange={(value)=>{multiple?this.handleChange(Array.from(new Set(value.map(it=>it.value)))):this.handleChange(value.value)}}
-        oonBlur={this.handleBlur}
-        onFocus={this.handleFocus}/>
+        {...props}
+      />
   }
 
   renderInputTable(config) {
@@ -615,7 +633,7 @@ export default class InputItem extends UIComponent {
       };
     }
     return (<div className={'inputitem '+config.type} style={style}>
-      {element}
-    </div>);
+        {element}
+      </div>);
   }
 }
