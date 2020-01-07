@@ -105,6 +105,7 @@ export default class EditableTable extends UIComponent {
     return columns.map(it => {
       const columnIndex = counter.i++;
       return {
+        width: 200,  // 增加一个默认值，要不点击后单元格闪烁
         ...it,
         onHeaderCell: column => ({
           width: column.width,

@@ -51,7 +51,8 @@ export default class InputItem extends UIComponent {
   }
 
   state = {
-    focus: false
+    focus: false,
+    hover: false
   }
 
   handleChange = (value) => {
@@ -137,6 +138,19 @@ export default class InputItem extends UIComponent {
     return !txt || txt.match(/^\d+$/) !== null;
   }
 
+  handleHover = () => {
+    this.setState({
+      hover: true
+    })
+
+  }
+
+  handleHoverOut = ()=>{
+    this.setState({
+      hover: false
+    })
+  }
+
   renderInput(config) {
     let {
       key,
@@ -152,7 +166,8 @@ export default class InputItem extends UIComponent {
       formatter
     } = createFormatter(config);
     value = renderElement(value, formatter);
-    return (<Input id={key}
+    const Component = format === 'password'? Input.Password: Input;
+    return (<Component id={key}
       ref={ref=>this.ref = ref}
       autoFocus={this.props.autoFocus}
       size={size}
@@ -272,7 +287,6 @@ export default class InputItem extends UIComponent {
       key,
       type,
       value,
-      clear,
       format,
       showTime = false,
       //defaultValue,
@@ -342,7 +356,8 @@ export default class InputItem extends UIComponent {
     size={size}
     className='input'
     showToday={showToday}
-    allowClear={clear} showTime={showTime} disabled={disabled}
+    allowClear={true}
+    showTime={showTime} disabled={disabled}
     placeholder={placeholder}
     format={format}
     value={value}
@@ -371,7 +386,6 @@ export default class InputItem extends UIComponent {
     let {
       key,
       value,
-      clear,
       format,
       //defaultValue,
       placeholder,
@@ -384,7 +398,8 @@ export default class InputItem extends UIComponent {
     autoFocus={this.props.autoFocus}
     size={size}
     className='input'
-    allowClear={clear}  disabled={disabled}
+    allowClear={true}
+    disabled={disabled}
     placeholder={placeholder}
     //defaultValue={defaultValue}
     value={value?moment(value):null}
@@ -454,6 +469,9 @@ export default class InputItem extends UIComponent {
       dataSource = [],
     } = config;
     value = 'value' in this.props ? this.props.value : value;
+    const suffix = this.state.hover ?<Icon type="close-circle" onClick={()=>{
+      this.handleChange(null)
+    }} theme="filled" onMouseEnter={this.handleHover} onMouseLeave={this.handleHoverOut}/> :null;
     return <Select
       id={key}
       ref={ref=>this.ref = ref}
@@ -464,6 +482,8 @@ export default class InputItem extends UIComponent {
       mode={mode}
       disabled={disabled}
       value={value}
+      suffixIcon={suffix}
+      onMouseEnter={this.handleHover} onMouseLeave={this.handleHoverOut}
       //defaultValue={defaultValue}
       placeholder={placeholder}
       optionFilterProp='children'
@@ -486,7 +506,6 @@ export default class InputItem extends UIComponent {
       size,
       dataSource,
       showSearch = false,
-      allowClear = true,
       multiple = false,
       treeCheckable = false,
       treeDefaultExpandAll = true,
@@ -497,7 +516,7 @@ export default class InputItem extends UIComponent {
         ref={ref=>this.ref = ref}
         autoFocus={this.props.autoFocus}
         size={size}
-        allowClear={allowClear}
+        allowClear={true}
         showSearch={showSearch}
         filterTreeNode={(input, node) => node.props.title.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         placeholder={placeholder}
@@ -531,9 +550,8 @@ export default class InputItem extends UIComponent {
       disabled,
       size,
       dataSource,
-      showSearch,
-      allowClear,
-      multiple,
+      showSearch = false,
+      multiple = false,
       defaultExpandAll,
       defaultExpandKeys = [],
       buttons,
@@ -543,10 +561,14 @@ export default class InputItem extends UIComponent {
       displayColumns,
       displayShowHeader
     } = config;
-    const prefixCls = 'ref-select';
+    const prefixCls = 'ref-select'; 
+    const suffix = this.state.hover ?<Icon type="close-circle" className={`${prefixCls}-refer-icon`} onClick={()=>{
+      this.handleChange(null)
+    }} theme="filled" onMouseEnter={this.handleHover} onMouseLeave={this.handleHoverOut}/> :
+      <Icon type="search" className={`${prefixCls}-refer-icon`} />;
     const props = {
       removeIcon: <Icon type="close" className={`${prefixCls}-remove-icon`} />,
-      referIcon: <Icon type="search" className={`${prefixCls}-refer-icon`} />,
+      referIcon: suffix,
       open,
       value: displayValue,
       size,
@@ -559,7 +581,9 @@ export default class InputItem extends UIComponent {
         multiple ? this.handleChange(Array.from(new Set(value.map(it => it.value)))) : this.handleChange(value.value)
       },
       onBlur: this.handleBlur,
-      onFocus: this.handleFocus
+      onFocus: this.handleFocus,
+      onMouseEnter: this.handleHover,
+      onMouseLeave: this.handleHoverOut,
     }
     // labelInValue 用于格式化显示
     return <RcRefSelect id={key}
@@ -568,7 +592,6 @@ export default class InputItem extends UIComponent {
         prefixCls={prefixCls}
         autoFocus={this.props.autoFocus}
         labelInValue={true}
-        allowClear={allowClear}
         showSearch={showSearch}
         multiple={multiple}
         dataSource={dataSource}
@@ -581,14 +604,35 @@ export default class InputItem extends UIComponent {
   }
 
   renderInputTable(config) {
+    const {
+      value,
+      //defaultValue,
+      placeholder,
+      disabled,
+      size,
+      width,
+      title = this.context.t('编辑'),
+      okText = this.context.t('确定'),
+      cancelText = this.context.t('取消')
+    } = config;
     return <InputTable
-        config={config}
-        ref={ref=>this.ref = ref}
-         disabled={config.disable}
+          config={config}
+          ref={ref=>this.ref = ref}
+          value={value}
+          //defaultValue,
+          placeholder={placeholder}
+          disabled={disabled}
+          size={size}
+          width ={width}
+          title={title}
+          table={config}
+          okText={okText}
+          cancelText={cancelText}
          autoFocus={this.props.autoFocus}
          onChange={this.handleChange}
          onBlur={this.handleBlur}
          onFocus={this.handleFocus}
+         onClear={()=>config.clear()}
          />
   }
 
@@ -659,11 +703,12 @@ export default class InputItem extends UIComponent {
       }
     }
     let style;
-    if (config.width) {
-      style = {
-        width: config.width
-      };
-    }
+    // 取消宽度设置，有容器控制
+    // if (config.width) {
+    //   style = {
+    //     width: config.width
+    //   };
+    // }
     return (<div className={'inputitem '+config.type} style={style}>
         {element}
       </div>);

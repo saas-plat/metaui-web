@@ -200,6 +200,17 @@ const intstring = store.build(UIStore.createSchema({
     required: true
   }]
 }));
+const password = store.build(UIStore.createSchema({
+  type: 'text',
+  value: '$text',
+  setValue: 'text',
+  icon: 'form',
+  format: 'password',
+  tip: 'xxxxxxxxxxxxx',
+  rules: [{
+    required: true
+  }]
+}));
 const textarea = store.build(UIStore.createSchema({
   type: 'textarea',
   value: '$text',
@@ -426,9 +437,9 @@ const reftable = store.build(UIStore.createSchema({
 
 const subtable = store.build(UIStore.createSchema({
   name: 'subtable',
-  text: 'Aggs.sum($refobjs,"a")',
   type: 'subtable',
   dataSource: '$refobjs',
+  value: 'Aggs.sum($refobjs,"a")',
   columns: [{
     type: 'text',
     title: 'aaa',
@@ -526,6 +537,7 @@ storiesOf('输入类', module)
     onAction={(name,args)=>action(name)(args)}>
       <UIRender ui={textbox}/>
       <UIRender ui={intstring}/>
+      <UIRender ui={password}/>
       <UIRender ui={textarea}/>
     </UIContainer>)
   .add('DatePicker', () => <UIContainer

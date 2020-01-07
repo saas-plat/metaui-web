@@ -31,9 +31,15 @@
 
   .notsupport {
     height: 32px;
-    
+
     &::after {
       content: '--';
+    }
+  }
+
+  &.number {
+    .ant-input-number-handler-wrap {
+      border-left-style: none;
     }
   }
 
@@ -90,8 +96,8 @@
   &.refer,
   &.select {
     .input {
-      > div,
-      > span {
+      > span,
+      > div {
         border-top-style: none;
         border-right-style: none;
         border-left-style: none;
@@ -101,8 +107,8 @@
 
       &.ant-select-focused,
       &.ref-select-focused {
-        > div,
-        > span {
+        > span,
+        > div {
           border-width: 2px;
         }
       }
@@ -123,6 +129,6 @@
 
 .ref-select {
   &-footer-buttons {
-    padding:  0px;
+    padding: 0;
   }
 }

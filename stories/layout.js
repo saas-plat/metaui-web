@@ -43,7 +43,6 @@ const list = UIStore.create({
   }]
 }, data)
 
-
 storiesOf('布局类', module)
   .addParameters({
     data
@@ -51,20 +50,20 @@ storiesOf('布局类', module)
   .add('FlowLayout', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}>
-    <UIRender ui={list}/>
+      <UIRender ui={list}/>
     </UIContainer>)
-    .add('ListLayout', () => <UIContainer
+  .add('ListLayout', () => <UIContainer
       onEvent={(name,args)=>action(name)(args)}
       onAction={(name,args)=>action(name)(args)}>
-      <UIRender ui={list}/>
+        <UIRender ui={list}/>
       </UIContainer>)
-    .add('GridLayout', () => <UIContainer
+  .add('GridLayout', () => <UIContainer
       onEvent={(name,args)=>action(name)(args)}
       onAction={(name,args)=>action(name)(args)}>
-      <UIRender ui={list}/>
+        <UIRender ui={list}/>
       </UIContainer>)
-      .add('PortalLayout', () => <UIContainer
+  .add('PortalLayout', () => <UIContainer
         onEvent={(name,args)=>action(name)(args)}
         onAction={(name,args)=>action(name)(args)}>
-        <UIRender ui={list}/>
+          <UIRender ui={list}/>
         </UIContainer>)

@@ -6,7 +6,7 @@
 
   > .table {
     .ant-table-tbody > tr:hover:not(.ant-table-expanded-row):not(.ant-table-row-selected):not(.row-selected) > td {
-      background: lighten(@item-active-bg,7%) ;
+      background: lighten(@item-active-bg,7%);
     }
 
     .row-selected td {
@@ -39,12 +39,17 @@
         border-radius: 0;
         box-shadow: none;
       }
+
       input,
       textarea {
         border: none;
       }
 
-
+      &.number {
+        .ant-input-number-handler-wrap {
+          border-left-style: solid;
+        }
+      }
     }
     // Resizeable
     .react-resizable {
