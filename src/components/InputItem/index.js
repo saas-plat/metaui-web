@@ -73,6 +73,15 @@ export default class InputItem extends UIComponent {
   }
 
   selectAll = () => {
+    // this.ref 判断放到这里，有可能ref还没有赋值
+    // 日期框都有下拉面板，不需要选中input
+    if ((this.ref instanceof TimePicker) ||
+      (this.ref instanceof DatePicker) ||
+      (this.ref instanceof MonthPicker) ||
+      (this.ref instanceof WeekPicker) ||
+      (this.ref instanceof RangePicker)) {
+        return;
+      }
     let node = ReactDOM.findDOMNode(this.ref);
     if (node && node.tagName !== 'INPUT' && node.tagName !== 'TEXTAREA') {
       node = node.querySelector('input');
@@ -84,16 +93,9 @@ export default class InputItem extends UIComponent {
 
   handleFocus = () => {
     if (this.props.config.selectAll !== false) {
-      // 日期框都有下拉面板，不需要选中input
-      if (!(this.ref instanceof TimePicker) &&
-        !(this.ref instanceof DatePicker) &&
-        !(this.ref instanceof MonthPicker) &&
-        !(this.ref instanceof WeekPicker) &&
-        !(this.ref instanceof RangePicker)) {
         // inputnumber focus重新设置value会导致select取消，延迟一下
         // EditTable在startedit时会再次赋值，导致select无效，也需要延迟一下
         setTimeout(this.selectAll, 0);
-      }
     }
     this.setState({
       focus: true
@@ -339,7 +341,14 @@ export default class InputItem extends UIComponent {
         this.handleChange(dates.toDate());
       }
     }}
-    onBlur={this.handleBlur}
+    onOpenChange={status=>{
+      this.open = status;
+    }}
+    onBlur={()=>{
+      if (!this.open){
+        this.handleBlur();
+      }
+    }}
     onFocus={this.handleFocus}
     />
   }
@@ -535,11 +544,12 @@ export default class InputItem extends UIComponent {
       onChange: (value) => {
         multiple ? this.handleChange(Array.from(new Set(value.map(it => it.value)))) : this.handleChange(value.value)
       },
-      oonBlur: this.handleBlur,
+      onBlur: this.handleBlur,
       onFocus: this.handleFocus
     }
     // labelInValue 用于格式化显示
     return <RcRefSelect id={key}
+        ref={ref=>this.ref = ref}
         className='input'
         prefixCls={prefixCls}
         autoFocus={this.props.autoFocus}
@@ -557,7 +567,15 @@ export default class InputItem extends UIComponent {
   }
 
   renderInputTable(config) {
-    return <InputTable config={config} disabled={config.disable} autoFocus={this.props.autoFocus} onChange={this.handleChange}/>
+    return <InputTable
+        config={config}
+        ref={ref=>this.ref = ref}
+         disabled={config.disable}
+         autoFocus={this.props.autoFocus}
+         onChange={this.handleChange}
+         onBlur={this.handleBlur}
+         onFocus={this.handleFocus}
+         />
   }
 
   renderText(config) {
