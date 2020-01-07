@@ -446,20 +446,27 @@ const subtable = store.build(UIStore.createSchema({
     title: 'ddd',
     dataIndex: 'd'
   }],
-  buttons: [{
-    type: 'button',
-    text: 'Button1',
-    style: 'primary'
-  }, {
-    type: 'button',
-    text: 'Button2'
-  }, {
-    type: 'button',
-    text: 'Button3'
-  }, {
-    type: 'button',
-    text: 'Button4'
-  }]
+  buttons: {
+    type: 'view',
+    layout: 'right',
+    items: [{
+      type: 'button',
+      icon: 'plus',
+      style: 'link'
+    }, {
+      type: 'button',
+      icon: 'search',
+      style: 'link'
+    }, {
+      type: 'button',
+      icon: 'search',
+      style: 'link'
+    }, {
+      type: 'button',
+      icon: 'search',
+      style: 'link'
+    }]
+  }
 }));
 
 const edittable = store.build(UIStore.createSchema({

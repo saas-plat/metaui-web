@@ -120,7 +120,7 @@ export default class EditableTable extends UIComponent {
 
   render() {
     const config = this.props.config;
-    const {
+    let {
       data,
       columns,
       showCheck,
@@ -144,9 +144,15 @@ export default class EditableTable extends UIComponent {
         //name: record.name,
       }),
     } : null;
+    let btns = null;
+    if (Array.isArray(buttons)){
+      btns = <ToolButtons config={{items:buttons}} />
+    }else{
+      btns = this.renderItem(buttons);
+    }
     return (
       <div className='editableTable'>
-        {buttons?<ToolButtons config={{items:buttons}} />:null}
+        {btns}
         <Table
           bordered={bordered}
           showHeader={showHeader}

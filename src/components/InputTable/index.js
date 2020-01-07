@@ -73,7 +73,9 @@ export default class InputTable extends UIComponent {
       //defaultValue,
       placeholder,
       disabled,
-      size
+      size,
+      width = 720,
+      title = this.context.t('编辑')
     } = this.props.config;
     const {
       visible,
@@ -99,14 +101,17 @@ export default class InputTable extends UIComponent {
       />
       <Modal
         className='inputtable-modal'
-        width={720}
+        width={width}
           visible={visible}
-          title="Title"
+          title={title}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           footer={[
-            <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
-              {this.context.t('关闭')}
+            <Button key="cancel" type="default" className="cancel" onClick={this.handleCancel}>
+              {this.context.t('取消')}
+            </Button>,
+            <Button key="ok" type="primary" className="ok" loading={loading} onClick={this.handleOk}>
+              {this.context.t('确定')}
             </Button>
           ]}>
           <EditableTable config={this.props.config} onChange={this.handleChange} />

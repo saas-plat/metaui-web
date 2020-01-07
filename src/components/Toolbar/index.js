@@ -28,7 +28,7 @@ class TextAndIcon extends UIComponent {
     const {
       config
     } = this.props;
-    return <span>{config.icon?<Icon type={config.icon}/>:null}{config.text || this.t('未命名')}</span>
+    return <span>{config.icon?<Icon type={config.icon}/>:null}{config.text || (config.icon?'':this.t('未命名'))}</span>
   }
 }
 
