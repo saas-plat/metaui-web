@@ -20,8 +20,8 @@ import {
   ButtonItem
 } from './Toolbar';
 import InputItem from './InputItem';
-import EditableTable from './EditableTable';
-import EditableTree from './EditableTree';
+import EditTable from './EditTable';
+import EditTree from './EditTree';
 import Options from './Options';
 // display
 import Table from './Table';
@@ -59,9 +59,9 @@ UIStore.register({
   // 子表编辑器
   subtable: [InputItem, TableModel],
   // 可编辑主表
-  edittable: [EditableTable, TableModel],
+  edittable: [EditTable, TableModel],
   // 分类编辑器
-  edittree: [EditableTree, TableModel],
+  edittree: [EditTree, TableModel],
   // 选项编辑器
   options: [Options, TableModel],
   search: [Options, FilterModel],

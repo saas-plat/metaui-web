@@ -669,19 +669,7 @@ export default class InputItem extends UIComponent {
     }
     return <span className={className} style={style}>{config.label}{errmsg}</span>;
   }
-
-  renderFormItem(){
-        // type
-        // required
-        // message
-        // enum
-        // len
-        // pattern
-        // whitespace
-        // min
-        // max
-  }
-
+ 
   render() {
     const {
       config,

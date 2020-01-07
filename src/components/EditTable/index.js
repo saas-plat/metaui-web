@@ -4,6 +4,8 @@ import {
 } from "mobx-react";
 import {
   Table,
+  Tooltip,
+  Icon
 } from 'antd';
 import {
   ToolButtons
@@ -44,8 +46,8 @@ const ResizeableTitle = props => {
 };
 
 @observer
-class EditableCell extends UIComponent {
-  constructor(){
+class EditCell extends UIComponent {
+  constructor() {
     super();
     // endEdit 需要触发，包括直接改tablemodel
   }
@@ -58,7 +60,10 @@ class EditableCell extends UIComponent {
       rowIndex,
       columnIndex
     } = this.props;
-    const {value, cellProps} = cell;
+    const {
+      value,
+      cellProps
+    } = cell;
     // 支持行按钮，行按钮一直显示
     return (
       <div className="editable-cell">
@@ -83,7 +88,7 @@ class EditableCell extends UIComponent {
 }
 
 @observer
-export default class EditableTable extends UIComponent {
+export default class EditTable extends UIComponent {
 
   components = {
     header: {
@@ -106,7 +111,7 @@ export default class EditableTable extends UIComponent {
     return columns.map(it => {
       const columnIndex = counter.i++;
       return {
-        width: 200,  // 增加一个默认值，要不点击后单元格闪烁
+        width: 200, // 增加一个默认值，要不点击后单元格闪烁
         ...it,
         onHeaderCell: column => ({
           width: column.width,
@@ -114,10 +119,28 @@ export default class EditableTable extends UIComponent {
         }),
         children: it.children && this.createColumns(it.children, counter.i),
         render: it.children && it.children.length > 0 ? null : (text, row, rowIndex) => (
-          <EditableCell config={this.props.config} row={row} cell={row.value[it.dataIndex] || {}}
+          <EditCell config={this.props.config} row={row} cell={row.value[it.dataIndex] || {}}
             column={it} rowIndex={rowIndex} columnIndex={columnIndex} />)
       }
     });
+  }
+
+  numColumn = {
+    width: 1,
+    align: 'center',
+    title: this.context.t('序号'),
+    dataIndex: 'key',
+    render: (text, row) => {
+      let errmsg;
+      let className = 'numcol';
+      if (row.error) {
+        errmsg = <Tooltip title={row.error} overlayClassName='errortip'>
+          <Icon type="exclamation-circle" className='erricon'/>
+        </Tooltip>
+        className += ' error';
+      }
+      return <span className={className}>{text}{errmsg}</span>;
+    }
   }
 
   render() {
@@ -133,7 +156,7 @@ export default class EditableTable extends UIComponent {
       rowIndex,
       buttons,
     } = config;
-    const columnItems = this.createColumns(columns);
+    const columnItems = [this.numColumn, ...this.createColumns(columns)];
     const rowSelection = showCheck ? {
       onChange: (selectedRowKeys, selectedRows) => {
         this.context.onEvent(this.props.config, 'selectRow', {
@@ -147,9 +170,9 @@ export default class EditableTable extends UIComponent {
       }),
     } : null;
     let btns = null;
-    if (Array.isArray(buttons)){
+    if (Array.isArray(buttons)) {
       btns = <ToolButtons config={{items:buttons}} />
-    }else{
+    } else {
       btns = this.renderItem(buttons);
     }
     return (

@@ -1,15 +1,5 @@
-import React from 'react';
-import InputItem from './InputItem';
-import EditableTable from './EditableTable';
 import moment from 'moment';
 import _isDate from 'lodash/isDate';
-
-export const createComponent = (config, options) => {
-  if (config.type === 'table') {
-    return <EditableTable config={config} {...options}/>;
-  }
-  return <InputItem config={config} {...options}/>;
-}
 
 const noformatter = value => value;
 const noparser = value => value;

@@ -9,7 +9,7 @@ import {
   Icon,
   Button
 } from 'antd';
-import EditableTable from '../EditableTable';
+import EditTable from '../EditTable';
 import './style';
 
 // 可录入子表，用于相关表单的快速录入，比如进货时录入预付款信息
@@ -170,7 +170,7 @@ export default class InputTable extends React.Component {
               {okText}
             </Button>
           ]}>
-          <EditableTable config={table} onChange={onChange} />
+          <EditTable config={table} onChange={onChange} />
         </Modal>
     </div>);
   }

@@ -5,6 +5,19 @@
   width: 100%;
 
   > .table {
+
+    .numcol{
+      display: block;
+      text-align: center;
+      color: @text-color-secondary;
+
+      .erricon{
+        position: absolute;
+        right: 5px;
+        
+      }
+    }
+
     .ant-table-tbody > tr:hover:not(.ant-table-expanded-row):not(.ant-table-row-selected):not(.row-selected) > td {
       background: lighten(@item-active-bg,7%);
     }
@@ -18,7 +31,7 @@
       margin: 0;
     }
 
-    .editable-cell-input-wrapper {
+    .edit-cell-input-wrapper {
       min-height: @cellHeight;
     }
 

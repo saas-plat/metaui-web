@@ -6,10 +6,10 @@ import {
   Tooltip,
   Icon
 } from 'antd';
-import './style'; 
+import './style';
 import {UIComponent} from 'saas-plat-metaui';
 
-export default class EditableTree extends UIComponent {
+export default class EditTree extends UIComponent {
 
   render() {
 
