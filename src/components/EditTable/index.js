@@ -74,12 +74,12 @@ class EditCell extends UIComponent {
                 showLabel: false,
                   ...cellProps,
                   value,
-                  onChange: (value)=>this.context.onEvent(config, 'setCell', value, ()=>config.setCell(rowIndex,columnIndex,value)),
-                  onPressEnter:()=>this.context.onEvent(config, 'endEdit', undefined, ()=>config.endEdit()),
-                  onBlur:()=>this.context.onEvent(config, 'endEdit', undefined, ()=>config.endEdit())
+                  onChange: (value)=>this.context.onEvent(config, 'setCell', value, async()=>await config.setCell(rowIndex,columnIndex,value)),
+                  onPressEnter:()=>this.context.onEvent(config, 'endEdit', undefined, async()=>await config.endEdit()),
+                  onBlur:()=>this.context.onEvent(config, 'endEdit', undefined, async()=> await config.endEdit())
                 })}
             </div>
-          : <div className="editable-cell-text-wrapper" onClick={()=>this.context.onEvent(config, 'startEdit', undefined, ()=>config.startEdit(rowIndex,columnIndex))}>
+          : <div className="editable-cell-text-wrapper" onClick={()=>this.context.onEvent(config, 'startEdit', undefined, async()=> await config.startEdit(rowIndex,columnIndex))}>
             {renderElement(value, createFormatter(column).formatter)}
           </div>}
       </div>
