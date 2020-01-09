@@ -1,6 +1,16 @@
+@import '~antd/es/style/themes/default.less';
+
 .layout {
   // 同时两个layout对不齐
   vertical-align: middle;
+
+  .item{
+    padding: 2px 0;
+  }
+
+  .content{
+    background: #fff;
+  }
 
   &.flow {
     .item {
@@ -28,7 +38,15 @@
     }
   }
 
-  &.portal {}
+  &.portal {
+    .menubar{
+      line-height: 64px;
+    }
+
+    .content{
+      padding: 20px;
+    }
+  }
 
   &.list {
     .ant-list-item {

@@ -88,7 +88,7 @@ export class ButtonItem extends UIComponent {
     );
   }
 
-  renderConfirm(btn){
+  renderConfirm(btn) {
     const {
       config,
     } = this.props;
@@ -175,33 +175,14 @@ export class ButtonItem extends UIComponent {
   }
 }
 
-export class Toolbar extends UIComponent {
-  render() {
-    const {
-      className,
-      config,
-      onClick,
-      ...other
-    } = this.props;
-    const {
-      text,
-      items = []
-    } = config;
-    return (
-      <div className={classNames('toolbar',className)} {...other}>
-        { text?<h2 className='title'>{text}</h2>:null}
-        {items.map(it=>this.renderItem(it,{onClick}))}
-      </div>
-    );
-  }
-}
-
-export class ToolButtonGroup extends UIComponent {
+export class ToolbarBase extends UIComponent {
   static childContextTypes = {
+    ...UIComponent.childContextTypes,
     childType: PropTypes.string,
   }
 
   static contextTypes = {
+    ...UIComponent.contextTypes,
     childType: PropTypes.string,
   }
 
@@ -211,7 +192,90 @@ export class ToolButtonGroup extends UIComponent {
     };
   }
 
+  findItem(key, items) {
+    return items.find(it => {
+      if (it.key === key) {
+        return it;
+      }
+      return this.findItem(key, it.items);
+    });
+  }
+
+  handleMenuClick = ({
+    key
+  }) => {
+    const item = this.findItem(key, this.props.config.items);
+    if (item && !item.disabled) {
+      this.onEvent(item, 'click');
+    }
+  }
+
+  renderMenu() {
+    const {
+      className,
+      config,
+      theme="dark",
+      mode = "horizontal"
+    } = this.props;
+    this.childType = 'menu';
+    return (
+      <Menu mode={mode} theme={theme} className={['menubar',className].join(' ')} onClick={this.handleMenuClick}>
+        {(config.items || []).map(it=>this.renderItem(it))}
+      </Menu>
+    );
+  }
+
+  renderButtons(props) {
+    const {
+      config
+    } = this.props;
+    return (config.items || []).map(it => this.renderItem(it, props));
+  }
+
+  renderToolbar() {
+    const {
+      onClick
+    } = this.props;
+    return this.renderToolbar({
+      onClick
+    });
+  }
+
   render() {
+    const {
+      type,
+    } = this.props;
+    if (type === 'menu') {
+      return this.renderMenu();
+    }
+    return this.renderToolbar();
+  }
+}
+
+export class Toolbar extends ToolbarBase {
+
+  renderToolbar() {
+    const {
+      className,
+      config,
+      onClick,
+      ...other
+    } = this.props;
+    const {
+      text,
+    } = config;
+    return (
+      <div className={classNames('toolbar',className)} {...other}>
+        {text?<h2 className='title'>{text}</h2>:null}
+        {this.renderButtons({onClick})}
+      </div>
+    );
+  }
+}
+
+export class ToolButtonGroup extends ToolbarBase {
+
+  renderToolbar() {
     const {
       className,
       config,
@@ -224,24 +288,23 @@ export class ToolButtonGroup extends UIComponent {
     const {
       key,
       text,
-      items = []
     } = config;
     if (childType === 'menu') {
       return (<Menu.ItemGroup {...other} key={key} title={text}>
-         {items.map(it=>this.renderItem(it, {onClick}))}
+         {this.renderButtons({onClick})}
         </Menu.ItemGroup>)
     }
     return (
       <ButtonGroup key={key} className={classNames('toolgroup',className)}>
         { text?<h2 className='title'>{text}</h2>:null}
-        {items.map(it=>this.renderItem(it, {onClick}))}
+        {this.renderButtons({onClick})}
       </ButtonGroup>
     );
   }
 }
 
-export class ToolButtons extends UIComponent {
-  render() {
+export class ToolButtons extends ToolbarBase {
+  renderToolbar() {
     const {
       className,
       config,
@@ -251,12 +314,11 @@ export class ToolButtons extends UIComponent {
     const {
       key,
       text,
-      items = []
     } = config;
     return (
       <div key={key} className={classNames('toolbtns',className)} {...other}>
         {text?<h2 className='title'>{text}</h2>:null}
-        {items.map(it=>this.renderItem(it,{onClick}))}
+        {this.renderButtons({onClick})}
       </div>
     );
   }

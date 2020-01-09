@@ -37,7 +37,7 @@ UIStore.register({
   group: [Group, ContainerModel],
   toolbar: [Toolbar, ContainerModel],
   buttongroup: [ToolButtonGroup, ContainerModel],
-  buttons: [ToolButtons, ContainerModel],
+  buttons: [Toolbar, ContainerModel],
 
   // input
   button: [ButtonItem, SimpleModel],

@@ -80,3 +80,6 @@ storiesOf('示例', module)
   .add('Report', () => <UIContainer
           onEvent={(name,args)=>action(name)(args)}
           onAction={(name,args)=>action(name)(args)}><UIRender ui={voucher}/></UIContainer>)
+          .add('Options', () => <UIContainer
+                  onEvent={(name,args)=>action(name)(args)}
+                  onAction={(name,args)=>action(name)(args)}><UIRender ui={voucher}/></UIContainer>)

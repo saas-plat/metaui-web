@@ -36,7 +36,7 @@ export default class PortalLayout extends React.Component {
       if (layout === 'topbottom') {
         if (i === 0) {
           contents.push(<Header className='header' key={it.key}>
-            {this.props.renderItem(it,{autoFocus}, items)}
+            {this.props.renderItem(it,{autoFocus,type:'menu'}, items)}
           </Header>)
         } else if (i === 1) {
           if (this.props.autoFocus && !it.disabled && !hasFocus) {
@@ -57,7 +57,7 @@ export default class PortalLayout extends React.Component {
       if (layout === 'sidercontent') {
         if (i === 0) {
           contents.push(<Sider className='sider' key={it.key}>
-              {this.props.renderItem(it,{autoFocus}, items)}
+              {this.props.renderItem(it,{autoFocus,type:'menu',mode:'inline'}, items)}
             </Sider>)
         } else if (i === 1) {
           if (this.props.autoFocus && !it.disabled && !hasFocus) {
@@ -83,7 +83,7 @@ export default class PortalLayout extends React.Component {
 
         } else if (i === 1) {
           contents.push(<Sider className='sider' key={it.key}>
-              {this.props.renderItem(it,{autoFocus}, items)}
+              {this.props.renderItem(it,{autoFocus,type:'menu',mode:'inline'}, items)}
             </Sider>)
         } else {
           console.warn('layout not render!', it);
@@ -93,7 +93,7 @@ export default class PortalLayout extends React.Component {
       if (layout === 'sidertopbottom') {
         if (i === 0) {
           contents.push(<Sider className='sider' key={it.key}>
-            {this.props.renderItem(it,{autoFocus}, items)}
+            {this.props.renderItem(it,{autoFocus,type:'menu',mode:'inline'}, items)}
           </Sider>)
         } else if (i === 1) {
           if (this.props.autoFocus && !it.disabled && !hasFocus) {
@@ -102,7 +102,7 @@ export default class PortalLayout extends React.Component {
           }
           contents.push(<Layout key={it.key}>
             <Header className='header'>
-              {this.props.renderItem(it,{autoFocus:false}, items)}
+              {this.props.renderItem(it,{autoFocus:false,type:'menu'}, items)}
             </Header>
               {i+1<l?<Content className='content'>
               {this.props.renderItem(it,{autoFocus}, items)}

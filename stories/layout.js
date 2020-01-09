@@ -207,10 +207,10 @@ const grid = UIStore.create({
 
 const topbottom = UIStore.create({
   type: 'view',
-  layout: 'sidercontent',
+  layout: 'topbottom',
   items: [{
     name: 'toolbar',
-    type: 'buttongroup',
+    type: 'toolbar',
     items: [{
       type: 'button',
       text: 'Button1',
@@ -255,6 +255,23 @@ const sidercontent = UIStore.create({
   type: 'view',
   layout: 'sidercontent',
   items: [{
+    name: 'toolbar',
+    type: 'toolbar',
+    items: [{
+      type: 'button',
+      text: 'Button1',
+      style: 'primary'
+    }, {
+      type: 'button',
+      text: 'Button2'
+    }, {
+      type: 'button',
+      text: 'Button3'
+    }, {
+      type: 'button',
+      text: 'Button4'
+    }]
+  }, {
     type: 'view',
     items: [{
       type: 'text',
@@ -264,10 +281,7 @@ const sidercontent = UIStore.create({
       type: 'text',
       value: '$item1',
       label: 'item1',
-    }]
-  }, {
-    type: 'view',
-    items: [{
+    },{
       type: 'text',
       value: '$obj2.f1',
       label: 'f1',
@@ -307,13 +321,14 @@ storiesOf('布局类', module)
         onEvent={(name,args)=>action(name)(args)}
         onAction={(name,args)=>action(name)(args)}>
           <UIRender ui={topbottom}/>
+          <hr/>
           <UIRender ui={sidercontent}/>
         </UIContainer>)
 
   .add('GroupLayout', () => <UIContainer
             onEvent={(name,args)=>action(name)(args)}
             onAction={(name,args)=>action(name)(args)}>
-              <UIRender ui={groups}/>
-              <UIRender ui={tabs}/>
+              <UIRender ui={groups}/><hr/>
+              <UIRender ui={tabs}/><hr/>
               <UIRender ui={collapses}/>
             </UIContainer>)
