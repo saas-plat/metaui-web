@@ -501,7 +501,7 @@ const edittable = store.build(UIStore.createSchema({
     dataIndex: 'c',
     width: 300
   }, {
-    type: 'text',
+    type: 'refer',
     title: 'ddd',
     dataIndex: 'd'
   }],

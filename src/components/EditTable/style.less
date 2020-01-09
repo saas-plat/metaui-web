@@ -14,7 +14,7 @@
       .erricon{
         position: absolute;
         right: 5px;
-        
+
       }
     }
 
@@ -58,9 +58,64 @@
         border: none;
       }
 
+      &.daterange {
+        .input {
+          &:focus,
+          &:hover {
+            > span {
+              border : none;
+            }
+          }
+
+          > span {
+            border : none;
+
+          }
+        }
+      }
+
       &.number {
-        .ant-input-number-handler-wrap {
-          border-left-style: solid;
+        .input {
+          border : none;
+
+          .ant-input-number-handler-wrap {
+            border-left-style: solid;
+          }
+
+          &.ant-input-number-focused {
+            border : none;
+          }
+
+          &:hover{
+            border : none;
+          }
+        }
+
+      }
+
+      &.refer,
+      &.select {
+        .input {
+          > div,
+          > span {
+          border : none;
+          }
+
+          &.ant-select-focused,
+          &.ref-select-focused {
+            > div,
+            > span {
+              border : none;
+            }
+          }
+
+          &:hover{
+            > div,
+            > span {
+              border : none;
+            }
+          }
+ 
         }
       }
     }

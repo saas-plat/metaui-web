@@ -411,7 +411,14 @@ export default class InputItem extends UIComponent {
     value={value?moment(value):null}
     format={format}
     onChange={(value)=>{this.handleChange(value)}}
-    onBlur={this.handleBlur}
+    onOpenChange={status=>{
+      this.open = status;
+    }}
+    onBlur={()=>{
+      if (!this.open){
+        this.handleBlur();
+      }
+    }}
     onFocus={this.handleFocus}
     />
   }
@@ -495,7 +502,14 @@ export default class InputItem extends UIComponent {
       optionFilterProp='children'
       filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
       onChange={(value)=>{this.handleChange(value)}}
-      onBlur={this.handleBlur}
+      onDropdownVisibleChange={status => {
+        this.open = status;
+      }}
+      onBlur={()=>{
+        if (!this.open){
+          this.handleBlur();
+        }
+      }}
       onFocus={this.handleFocus}
       >
       {dataSource.map((d,key) => <Select.Option key={key} value={d.value}>{d.title || d.text}</Select.Option>)}
@@ -536,16 +550,23 @@ export default class InputItem extends UIComponent {
         //defaultValue={defaultValue}
         disabled={disabled}
         onChange={(value)=>{this.handleChange(value)}}
-        onBlur={this.handleBlur}
+        onDropdownVisibleChange={this.handlePopup}
+        onBlur={()=>{
+          if (!this.open){
+            this.handleBlur();
+          }
+        }}
         onFocus={this.handleFocus}>
         </TreeSelect>
   }
 
-  closePopup = (e) => {
+  closePopup = () => {
+    this.open = false;
     this.props.config.open = false;
   }
 
   handlePopup = open => {
+    this.open = open;
     this.props.config.open = open;
   }
 
@@ -586,7 +607,11 @@ export default class InputItem extends UIComponent {
       onChange: (value) => {
         multiple ? this.handleChange(Array.from(new Set(value.map(it => it.value)))) : this.handleChange(value.value)
       },
-      onBlur: this.handleBlur,
+      onBlur: ()=>{
+        if (!this.open){
+          this.handleBlur();
+        }
+      },
       onFocus: this.handleFocus,
       onMouseEnter: this.handleHover,
       onMouseLeave: this.handleHoverOut,
@@ -669,7 +694,7 @@ export default class InputItem extends UIComponent {
     }
     return <span className={className} style={style}>{config.label}{errmsg}</span>;
   }
- 
+
   render() {
     const {
       config,
