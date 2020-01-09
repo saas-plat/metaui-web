@@ -16,7 +16,6 @@ import Group from './Group';
 import {
   Toolbar,
   ToolButtonGroup,
-  ToolButtons,
   ButtonItem
 } from './Toolbar';
 import InputItem from './InputItem';
@@ -24,7 +23,7 @@ import EditTable from './EditTable';
 import EditTree from './EditTree';
 import Options from './Options';
 // display
-import Table from './Table';
+import DataTable from './DataTable';
 import Chart from './Chart';
 
 import moment from 'moment';
@@ -67,7 +66,7 @@ UIStore.register({
   search: [Options, FilterModel],
 
   // display
-  table: [Table, TableModel],
+  table: [DataTable, TableModel],
   // treetable: [TreeTable, ContainerModel],
   chart: [Chart, ReportModel],
 })

@@ -53,7 +53,9 @@ storiesOf('展示类', module)
   .add('Big Data', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}>
+    <div className='full'>
       <UIRender ui={bigdata}/>
+    </div>
     </UIContainer>)
 
   .add('Sub Total', () => <UIContainer
