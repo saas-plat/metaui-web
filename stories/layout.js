@@ -39,6 +39,7 @@ const groups = UIStore.create({
     items: [{
       type: 'text',
       value: '$code',
+      setValue: 'code',
       label: '编码',
     }, {
       type: 'text',
@@ -68,6 +69,7 @@ const tabs = UIStore.create({
   layout: 'tab',
   items: [{
     type: 'view',
+    text: 'view1',
     items: [{
       type: 'text',
       value: '$code',
@@ -79,6 +81,7 @@ const tabs = UIStore.create({
     }]
   }, {
     type: 'view',
+    text: 'view2',
     items: [{
       type: 'text',
       value: '$obj2.f1',
@@ -100,6 +103,7 @@ const collapses = UIStore.create({
   layout: 'collapse',
   items: [{
     type: 'view',
+    text: 'view1',
     items: [{
       type: 'text',
       value: '$code',
@@ -111,6 +115,7 @@ const collapses = UIStore.create({
     }]
   }, {
     type: 'view',
+    text: 'view2',
     items: [{
       type: 'text',
       value: '$obj2.f1',

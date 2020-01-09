@@ -4,6 +4,7 @@ import {
 } from 'antd';
 import './style';
 import {UIComponent} from 'saas-plat-metaui';
+import {TextAndIcon} from '../../Toolbar';
 
 const TabPane = Tabs.TabPane;
 
@@ -17,9 +18,9 @@ export default class TabGroup extends UIComponent {
     if (items.length == 1) {
       return this.renderItem(items[0]);
     }
-    return <Tabs type="card" className='tabs' key={key}>
+    return <Tabs type="card" className='groups tabs' key={key}>
       {items.map(it=>(
-        <TabPane tab={it.text} key={it.key}>
+        <TabPane tab={<TextAndIcon config={it}/>} key={it.key} className='panel'>
           {this.renderItem(it)}
         </TabPane>))}
     </Tabs>

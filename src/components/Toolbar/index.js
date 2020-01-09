@@ -23,7 +23,7 @@ const MenuItem = Menu.Item;
 const MenuDivider = Menu.Divider;
 
 @observer
-class TextAndIcon extends UIComponent {
+export class TextAndIcon extends UIComponent {
   render() {
     const {
       config
