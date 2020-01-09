@@ -10,6 +10,7 @@ import {
   UIStore,
   UIRender
 } from 'saas-plat-metaui';
+import dataAddon from '../.storybook/data/dataAddon';
 import '../src';
 
 const data = {}
@@ -45,6 +46,7 @@ storiesOf('其他', module)
   .addParameters({
     data
   })
+  .addDecorator(dataAddon)
   .add('Options', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}>

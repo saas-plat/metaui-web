@@ -13,6 +13,7 @@ import {
 import {
   observable
 } from "mobx";
+import dataAddon from '../.storybook/data/dataAddon';
 import '../src';
 
 const data = observable({
@@ -142,7 +143,7 @@ const flow = UIStore.create({
     value: '$obj2.f1',
     label: 'f1',
   }, {
-    type: 'text',
+    type: 'date',
     value: '$obj2.f2',
     label: 'f2',
   }, {
@@ -154,7 +155,7 @@ const flow = UIStore.create({
 
 const list = UIStore.create({
   type: 'view',
-  layout: 'vertical',
+  layout: 'list',
   items: [{
     type: 'text',
     value: '$code',
@@ -286,7 +287,7 @@ storiesOf('布局类', module)
   .addParameters({
     data
   })
-
+.addDecorator(dataAddon)
   .add('FlowLayout', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}>

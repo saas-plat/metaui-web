@@ -10,6 +10,7 @@ import {
   UIStore,
   UIRender
 } from 'saas-plat-metaui';
+import dataAddon from '../.storybook/data/dataAddon';
 import {
   observable
 } from "mobx";
@@ -48,6 +49,7 @@ storiesOf('展示类', module)
   .addParameters({
     data
   })
+  .addDecorator(dataAddon)
   .add('Big Data', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
     onAction={(name,args)=>action(name)(args)}>

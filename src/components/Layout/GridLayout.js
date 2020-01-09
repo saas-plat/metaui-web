@@ -21,7 +21,7 @@ export default class GridLayout extends React.Component {
     const {
       key,
       items = [],
-      columnCount
+      columnCount = 4
     } = this.props.config;
     let hasFocus = false;
     const rows = [];
@@ -37,7 +37,9 @@ export default class GridLayout extends React.Component {
           autoFocus = true;
           hasFocus = true;
         }
-        cols.push(<Col key={'Col'+key+it.key} span={span} className='item'>{this.props.renderItem(it,{autoFocus}, items)}</Col>);
+        cols.push(<Col key={'Col'+key+it.key} sm={span} xs={24} className='item'>{
+          this.props.renderItem(it,{autoFocus}, items)
+        }</Col>);
       }
       rows.push(<Row key={'Row'+key+i} className='row'>{cols}</Row>);
     }
