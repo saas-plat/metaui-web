@@ -64,22 +64,41 @@ storiesOf('示例', module)
   })
   .add('Archive', () => <UIContainer
       onEvent={(name,args)=>action(name)(args)}
-      onAction={(name,args)=>action(name)(args)}><UIRender ui={voucher}/></UIContainer>)
+      onAction={(name,args)=>action(name)(args)}>
+        <UIRender ui={voucher}/>
+      </UIContainer>)
+  .add('Refer', () => <UIContainer
+      onEvent={(name,args)=>action(name)(args)}
+      onAction={(name,args)=>action(name)(args)}>
+        <UIRender ui={voucher}/>
+      </UIContainer>)
   .add('Voucher', () => <UIContainer
       onEvent={(name,args)=>action(name)(args)}
-      onAction={(name,args)=>action(name)(args)}><UIRender ui={voucher}/></UIContainer>)
+      onAction={(name,args)=>action(name)(args)}>
+        <UIRender ui={voucher}/>
+      </UIContainer>)
   .add('EditList', () => <UIContainer
-          onEvent={(name,args)=>action(name)(args)}
-          onAction={(name,args)=>action(name)(args)}><UIRender ui={voucher}/></UIContainer>)
+      onEvent={(name,args)=>action(name)(args)}
+      onAction={(name,args)=>action(name)(args)}>
+        <UIRender ui={voucher}/>
+      </UIContainer>)
+  .add('Search', () => <UIContainer
+      onEvent={(name,args)=>action(name)(args)}
+      onAction={(name,args)=>action(name)(args)}>
+        <UIRender ui={voucher}/>
+      </UIContainer>)
   .add('VoucherList', () => <UIContainer
-        onEvent={(name,args)=>action(name)(args)}
-        onAction={(name,args)=>action(name)(args)}><UIRender ui={voucher}/></UIContainer>)
+      onEvent={(name,args)=>action(name)(args)}
+      onAction={(name,args)=>action(name)(args)}>
+        <UIRender ui={voucher}/>
+      </UIContainer>)
   .add('ArchiveList', () => <UIContainer
       onEvent={(name,args)=>action(name)(args)}
-      onAction={(name,args)=>action(name)(args)}><UIRender ui={voucher}/></UIContainer>)
+      onAction={(name,args)=>action(name)(args)}>
+        <UIRender ui={voucher}/>
+      </UIContainer>)
   .add('Report', () => <UIContainer
-          onEvent={(name,args)=>action(name)(args)}
-          onAction={(name,args)=>action(name)(args)}><UIRender ui={voucher}/></UIContainer>)
-          .add('Options', () => <UIContainer
-                  onEvent={(name,args)=>action(name)(args)}
-                  onAction={(name,args)=>action(name)(args)}><UIRender ui={voucher}/></UIContainer>)
+      onEvent={(name,args)=>action(name)(args)}
+      onAction={(name,args)=>action(name)(args)}>
+        <UIRender ui={voucher}/>
+      </UIContainer>)

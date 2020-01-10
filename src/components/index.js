@@ -21,7 +21,7 @@ import {
 import InputItem from './InputItem';
 import EditTable from './EditTable';
 import EditTree from './EditTree';
-import Options from './Options';
+import Search from './Search';
 // display
 import DataTable from './DataTable';
 import Chart from './Chart';
@@ -61,9 +61,7 @@ UIStore.register({
   edittable: [EditTable, TableModel],
   // 分类编辑器
   edittree: [EditTree, TableModel],
-  // 选项编辑器
-  options: [Options, TableModel],
-  search: [Options, FilterModel],
+  search: [Search, FilterModel],
 
   // display
   table: [DataTable, TableModel],
