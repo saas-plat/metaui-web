@@ -1,5 +1,81 @@
+@import '../style/vars.less';
+
 .datatable {
   width: 100%;
   height: 100%;
   padding: 0;
+
+  .row {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+  }
+
+  .leftSideGridContainer {
+    flex: 0 0 75px;
+    z-index: 10;
+  }
+
+  .leftSide {
+    overflow: hidden !important;
+  }
+
+  .header {
+    width: 100%;
+    overflow: hidden !important;
+  }
+
+  .body {
+    width: 100%;
+  }
+
+  .evenRow {}
+
+  .oddRow {
+    background-color: rgba(0, 0, 0, .1);
+  }
+
+  .cell,
+  .headerCell,
+  .leftCell {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 0.5em;
+  }
+
+  .cell {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &.link {
+      color: @link-color;
+    }
+  }
+
+  .headerCell,
+  .leftCell {
+    font-weight: bold;
+  }
+
+  .emptydata {
+    text-align: center;
+    margin: 0 auto;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+
 }
