@@ -1,6 +1,8 @@
 import React from 'react';
 import Spin from '../Spin';
-import {UIComponent} from 'saas-plat-metaui';
+import {
+  UIComponent
+} from 'saas-plat-metaui';
 import './style.less';
 const style = require('!less-to-json-loader!./style.less');
 
@@ -12,13 +14,22 @@ const loadEchart = (cb) => {
 
 export default class Chart extends UIComponent {
 
+  constructor() {
+    super();
+    loadEchart((Echart) => {
+      this.setState({
+        Echart
+      })
+    })
+  }
+
   getOption() {
     const {
       config
     } = this.props;
     //柱状图数据
     const barOption = {
-      color: [style['primary-color']],  // todo 这里的颜色需要充default.less中取@brand-primary
+      color: [style['primary-color']], // todo 这里的颜色需要充default.less中取@brand-primary
       tooltip: {
         trigger: 'axis',
         axisPointer: { // 坐标轴指示器，坐标轴触发有效
@@ -60,23 +71,21 @@ export default class Chart extends UIComponent {
     this.context.onEvent(this.props.config, 'ready');
   }
 
-  componentWillMount() {
-    loadEchart((Echart) => {
-      this.setState({
-        Echart
-      })
-    })
-  }
-
   render() {
     const {
       config
     } = this.props;
+    const {
+      style={
+        height: 400,
+        width: '100%'
+      }
+    } = config;
     return (<div className='chart'>
          <Spin spinning={!this.state.Echart}/>
           {this.state.Echart?<this.state.Echart
             option={this.getOption()}
-            style={{height:config.style.height, width: config.style.width}}
+            style={{height:style.height, width: style.width}}
             // notMerge={true}
             // lazyUpdate={true}
             //theme="my_theme"
