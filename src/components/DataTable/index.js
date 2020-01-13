@@ -74,9 +74,9 @@ export default class Table extends UIComponent {
     } = this.props;
     const {
       columns = [],
-        columnCount, // 包含固定列的最末级列数
-        fixedColumnCount, // 固定列最末级列数
-        headerRowCount,
+        columnCount = 0, // 包含固定列的最末级列数
+        fixedColumnCount = 0, // 固定列最末级列数
+        headerRowCount=0,
         rowCount = 0,
         rowHeight = 40,
         cellMeasurer = false,
