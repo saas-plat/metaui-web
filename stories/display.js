@@ -24,12 +24,6 @@ const bigdata = UIStore.create({
 
 }, data).ui;
 
-const subtotal = UIStore.create({
-  name: 'table',
-  type: 'table',
-
-}, data).ui;
-
 const bar = UIStore.create({
   type: 'chart',
 
@@ -57,12 +51,6 @@ storiesOf('展示类', module)
       <UIRender ui={bigdata}/>
     </div>
     </UIContainer>)
-
-  .add('Sub Total', () => <UIContainer
-      onEvent={(name,args)=>action(name)(args)}
-      onAction={(name,args)=>action(name)(args)}>
-        <UIRender ui={subtotal}/>
-      </UIContainer>)
 
   .add('Chart', () => <UIContainer
     onEvent={(name,args)=>action(name)(args)}
