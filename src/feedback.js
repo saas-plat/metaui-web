@@ -8,7 +8,7 @@ import {
 } from 'antd';
 import {
   registerFeedback
-} from 'saas-plat-metaui';
+} from '@saas-plat/metaui';
 
 registerFeedback({
   // 轻信息，无操作自动消失

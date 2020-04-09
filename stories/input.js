@@ -9,7 +9,7 @@ import {
   UIRender,
   UIContainer,
   UIStore,
-} from 'saas-plat-metaui';
+} from '@saas-plat/metaui';
 import {
   observable
 } from "mobx";

@@ -20,7 +20,7 @@ import './style';
 import RcRefSelect from 'rc-ref-select';
 import {
   UIComponent
-} from 'saas-plat-metaui';
+} from '@saas-plat/metaui';
 import InputTable from '../InputTable';
 import {
   ToolButtons

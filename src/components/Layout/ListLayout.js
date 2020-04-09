@@ -10,7 +10,7 @@ import {
 } from "mobx-react";
 import {
   UIComponent
-} from 'saas-plat-metaui';
+} from '@saas-plat/metaui';
 import './style.less';
 // 这里必须是可观察要不listitem不能重新render
 const ObserverList = observer(List);

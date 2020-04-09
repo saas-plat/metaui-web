@@ -4,7 +4,7 @@ import {
   Collapse,
 } from 'antd';
 import './style';
-import {UIComponent} from 'saas-plat-metaui';
+import {UIComponent} from '@saas-plat/metaui';
 
 const Panel = Collapse.Panel;
 

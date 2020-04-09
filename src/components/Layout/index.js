@@ -4,7 +4,7 @@ import {
 } from "mobx-react";
 import {
   UIComponent
-} from 'saas-plat-metaui';
+} from '@saas-plat/metaui';
 import ListLayout from './ListLayout';
 import FlowLayout from './FlowLayout';
 import GridLayout from './GridLayout';

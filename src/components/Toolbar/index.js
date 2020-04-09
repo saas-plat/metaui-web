@@ -9,7 +9,7 @@ import {
 import PropTypes from 'prop-types';
 import {
   UIComponent
-} from 'saas-plat-metaui';
+} from '@saas-plat/metaui';
 import {
   observer
 } from "mobx-react";

@@ -12,7 +12,7 @@ import {
 import scrollbarSize from 'dom-helpers/scrollbarSize';
 import {
   UIComponent
-} from 'saas-plat-metaui';
+} from '@saas-plat/metaui';
 import {
   Modal,
   Button,

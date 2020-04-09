@@ -10,7 +10,7 @@ import './style';
 import {
   createComponent
 } from '../util';
-import {UIComponent} from 'saas-plat-metaui';
+import {UIComponent} from '@saas-plat/metaui';
 
 export default class Search extends UIComponent {
 

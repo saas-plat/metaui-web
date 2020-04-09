@@ -2,7 +2,7 @@ import React from 'react';
 import Spin from '../Spin';
 import {
   UIComponent
-} from 'saas-plat-metaui';
+} from '@saas-plat/metaui';
 import './style.less';
 const style = require('!less-to-json-loader!./style.less');
 

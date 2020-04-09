@@ -4,7 +4,7 @@ import {
 } from "mobx-react";
 import {
   UIComponent
-} from 'saas-plat-metaui';
+} from '@saas-plat/metaui';
 import CollapseGroup from './CollapseGroup';
 import TabGroup from './TabGroup';
 import TitleGroup from './TitleGroup';

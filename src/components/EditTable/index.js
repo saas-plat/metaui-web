@@ -12,7 +12,7 @@ import {
 } from '../Toolbar';
 import {
   UIComponent
-} from 'saas-plat-metaui';
+} from '@saas-plat/metaui';
 import {
   Resizable
 } from 'react-resizable';

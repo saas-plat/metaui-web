@@ -3,7 +3,7 @@ import {
   Tabs,
 } from 'antd';
 import './style';
-import {UIComponent} from 'saas-plat-metaui';
+import {UIComponent} from '@saas-plat/metaui';
 import {TextAndIcon} from '../../Toolbar';
 
 const TabPane = Tabs.TabPane;
