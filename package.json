@@ -26,7 +26,6 @@
     "antd": ">=3.0.0",
     "echarts": ">=4.0.0",
     "echarts-for-react": ">=2.0.0",
-    "@saas-plat/expression": ">=1.0.0",
     "@saas-plat/metaui": ">=1.1.0"
   },
   "dependencies": {
@@ -50,8 +49,7 @@
     "@babel/preset-react": "^7.9.4",
     "@babel/register": "^7.9.0",
     "@babel/runtime": "^7.9.2",
-    "@saas-plat/expression": "^1.0.4",
-    "@saas-plat/metaui": "^1.1.37",
+    "@saas-plat/metaui": "^1.1.41",
     "@storybook/addon-actions": "^5.2.8",
     "@storybook/react": "^5.2.8",
     "antd": "^3.26.6",
