@@ -1,12 +1,12 @@
 {
   "name": "@saas-plat/metaui-web",
-  "version": "1.1.20",
+  "version": "1.1.21",
   "description": "meta web components",
   "productName": "saas-plat",
   "main": "dist/index.js",
   "scripts": {
     "start": "start-storybook -p 9001 -c .storybook",
-    "build": "rm -rf dist && babel src --out-dir dist --source-maps",
+    "build": "rm -rf dist && babel src --out-dir dist --source-maps && cd src && find . -name '*.less' | xargs -i cp --parents {} ../dist/ ",
     "test": "echo \"Error: no test specified\""
   },
   "repository": {
