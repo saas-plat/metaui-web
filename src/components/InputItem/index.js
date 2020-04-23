@@ -31,6 +31,7 @@ import {
   createFormatter,
   renderElement
 } from '../util';
+import { withTranslation } from 'react-i18next';
 
 const TextArea = Input.TextArea;
 const {
@@ -39,6 +40,7 @@ const {
   WeekPicker
 } = DatePicker;
 
+@withTranslation('metaui-web')
 @observer
 export default class InputItem extends UIComponent {
   static propTypes = {

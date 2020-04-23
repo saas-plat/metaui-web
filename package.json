@@ -26,6 +26,7 @@
     "antd": ">=3.26.6",
     "echarts": ">=4.0.0",
     "echarts-for-react": ">=2.0.0",
+    "react-i18next": ">=11.0.0",
     "@saas-plat/metaui": ">=1.1.0"
   },
   "dependencies": {

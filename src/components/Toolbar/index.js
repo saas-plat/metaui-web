@@ -15,6 +15,7 @@ import {
 } from "mobx-react";
 import './style';
 import classNames from 'classnames';
+import { withTranslation } from 'react-i18next';
 const ButtonGroup = Button.Group;
 const {
   SubMenu
@@ -22,6 +23,7 @@ const {
 const MenuItem = Menu.Item;
 const MenuDivider = Menu.Divider;
 
+@withTranslation('metaui-web')
 @observer
 export class TextAndIcon extends UIComponent {
   render() {
