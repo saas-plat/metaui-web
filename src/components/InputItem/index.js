@@ -19,6 +19,7 @@ import {
 import './style';
 import RcRefSelect from 'rc-ref-select';
 import {
+  api,
   UIComponent
 } from '@saas-plat/metaui';
 import InputTable from '../InputTable';
@@ -127,12 +128,12 @@ export default class InputItem extends UIComponent {
     if (!title) {
       if (maxLength) {
         if (precision) {
-          title = this.t('整数{{integer}}位, 小数{{precision}}位', {
+          title = api.i18n.t('整数{{integer}}位, 小数{{precision}}位', {
             integer: maxLength - precision - 1,
             precision
           });
         } else {
-          title = this.t('最大长度{{maxLength}}位', {
+          title = api.i18n.t('最大长度{{maxLength}}位', {
             maxLength
           });
         }

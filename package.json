@@ -1,6 +1,6 @@
 {
   "name": "@saas-plat/metaui-web",
-  "version": "1.1.21",
+  "version": "1.1.22",
   "description": "meta web components",
   "productName": "saas-plat",
   "main": "dist/index.js",
@@ -50,7 +50,7 @@
     "@babel/preset-react": "^7.9.4",
     "@babel/register": "^7.9.0",
     "@babel/runtime": "^7.9.2",
-    "@saas-plat/metaui": "^1.1.41",
+    "@saas-plat/metaui": "^1.1.46",
     "@storybook/addon-actions": "^5.2.8",
     "@storybook/react": "^5.2.8",
     "antd": "^3.26.6",
