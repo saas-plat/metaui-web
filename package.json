@@ -19,9 +19,9 @@
     "input",
     "display",
     "feedback"
-  ],
-  "author": "saas-plat",
-  "license": "ISC",
+  ], 
+  "author": "saas-plat.com",
+  "license": "MPL-2.0",
   "peerDependencies": {
     "antd": ">=3.26.6",
     "echarts": ">=4.0.0",
