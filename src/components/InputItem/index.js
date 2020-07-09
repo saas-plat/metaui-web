@@ -19,7 +19,7 @@ import {
 import './style';
 import RcRefSelect from 'rc-ref-select';
 import {
-  api,
+  i18n,
   UIComponent
 } from '@saas-plat/metaui';
 import InputTable from '../InputTable';
@@ -128,12 +128,12 @@ export default class InputItem extends UIComponent {
     if (!title) {
       if (maxLength) {
         if (precision) {
-          title = api.i18n.t('整数{{integer}}位, 小数{{precision}}位', {
+          title = this.props.t('整数{{integer}}位, 小数{{precision}}位', {
             integer: maxLength - precision - 1,
             precision
           });
         } else {
-          title = api.i18n.t('最大长度{{maxLength}}位', {
+          title = this.props.t('最大长度{{maxLength}}位', {
             maxLength
           });
         }
@@ -645,9 +645,9 @@ export default class InputItem extends UIComponent {
       disabled,
       size,
       width,
-      title = this.context.t('编辑'),
-      okText = this.context.t('确定'),
-      cancelText = this.context.t('取消')
+      title = this.props.t('编辑'),
+      okText = this.props.t('确定'),
+      cancelText = this.props.t('取消')
     } = config;
     return <InputTable
           config={config}

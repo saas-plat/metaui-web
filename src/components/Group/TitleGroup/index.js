@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './style';
+import { withTranslation } from 'react-i18next';
 
+@withTranslation('metaui-web')
 export default class TitleGroup extends React.Component {
   static propTypes = {
     config: PropTypes.object,

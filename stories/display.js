@@ -10,6 +10,9 @@ import {
   MetaUI,
   UIRender
 } from '@saas-plat/metaui';
+import {
+  View
+} from '@saas-plat/metaschema';
 import dataAddon from '../.storybook/data/dataAddon';
 import {
   observable
@@ -18,26 +21,26 @@ import '../src';
 
 const data = {}
 
-const bigdata = MetaUI.create({
+const bigdata = MetaUI.create(View({
   name: 'table',
   type: 'table',
 
-}, data).ui;
+}), data).ui;
 
-const bar = MetaUI.create({
+const bar = MetaUI.create(View({
   type: 'chart',
 
-}, data).ui;
+}), data).ui;
 
-const pie = MetaUI.create({
+const pie = MetaUI.create(View({
   type: 'chart',
 
-}, data).ui;
+}), data).ui;
 
-const line = MetaUI.create({
+const line = MetaUI.create(View({
   type: 'chart',
 
-}, data).ui;
+}), data).ui;
 
 storiesOf('展示类', module)
   .addParameters({

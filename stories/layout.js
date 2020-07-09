@@ -11,6 +11,9 @@ import {
   UIRender
 } from '@saas-plat/metaui';
 import {
+  View
+} from '@saas-plat/metaschema';
+import {
   observable
 } from "mobx";
 import dataAddon from '../.storybook/data/dataAddon';
@@ -32,7 +35,7 @@ const data = observable({
   array1: [1, 2, 3, 4, 100, 1000000.11]
 });
 
-const groups = MetaUI.create({
+const groups = MetaUI.create(View({
   type: 'group',
   items: [{
     type: 'view',
@@ -62,9 +65,9 @@ const groups = MetaUI.create({
       label: 'f3',
     }]
   }]
-}, data).ui
+}), data).ui
 
-const tabs = MetaUI.create({
+const tabs = MetaUI.create(View({
   type: 'group',
   layout: 'tab',
   items: [{
@@ -96,9 +99,9 @@ const tabs = MetaUI.create({
       label: 'f3',
     }]
   }]
-}, data).ui
+}), data).ui
 
-const collapses = MetaUI.create({
+const collapses = MetaUI.create(View({
   type: 'group',
   layout: 'collapse',
   items: [{
@@ -130,9 +133,9 @@ const collapses = MetaUI.create({
       label: 'f3',
     }]
   }]
-}, data).ui
+}), data).ui
 
-const flow = MetaUI.create({
+const flow = MetaUI.create(View({
   type: 'view',
   layout: 'left',
   items: [{
@@ -156,9 +159,9 @@ const flow = MetaUI.create({
     value: '$obj2.f3',
     label: 'f3',
   }]
-}, data).ui
+}), data).ui
 
-const list = MetaUI.create({
+const list = MetaUI.create(View({
   type: 'view',
   layout: 'list',
   items: [{
@@ -182,9 +185,9 @@ const list = MetaUI.create({
     value: '$obj2.f3',
     label: 'f3',
   }]
-}, data).ui
+}), data).ui
 
-const grid = MetaUI.create({
+const grid = MetaUI.create(View({
   type: 'view',
   layout: 'grid',
   items: [{
@@ -208,9 +211,9 @@ const grid = MetaUI.create({
     value: '$obj2.f3',
     label: 'f3',
   }]
-}, data).ui
+}), data).ui
 
-const topbottom = MetaUI.create({
+const topbottom = MetaUI.create(View({
   type: 'view',
   layout: 'topbottom',
   items: [{
@@ -254,9 +257,9 @@ const topbottom = MetaUI.create({
       label: 'f3',
     }]
   }]
-}, data).ui
+}), data).ui
 
-const sidercontent = MetaUI.create({
+const sidercontent = MetaUI.create(View({
   type: 'view',
   layout: 'sidercontent',
   items: [{
@@ -300,7 +303,7 @@ const sidercontent = MetaUI.create({
       label: 'f3',
     }]
   }, ]
-}, data).ui
+}), data).ui
 
 storiesOf('布局类', module)
   .addParameters({

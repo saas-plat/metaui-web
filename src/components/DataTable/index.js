@@ -13,6 +13,7 @@ import scrollbarSize from 'dom-helpers/scrollbarSize';
 import {
   UIComponent
 } from '@saas-plat/metaui';
+import { withTranslation } from 'react-i18next';
 import {
   Modal,
   Button,
@@ -21,6 +22,7 @@ import {
 import './style';
 import Options from './options';
 
+@withTranslation('metaui-web')
 @observer
 export default class Table extends UIComponent {
 
@@ -82,9 +84,9 @@ export default class Table extends UIComponent {
         cellMeasurer = false,
 
         // options
-        title = this.context.t('选项'),
-        cancelText = this.context.t('取消'),
-        okText = this.context.t('确定'),
+        title = this.props.t('选项'),
+        cancelText = this.props.t('取消'),
+        okText = this.props.t('确定'),
         width,
         visible,
         loading
@@ -193,7 +195,7 @@ export default class Table extends UIComponent {
                               rowHeight={rowHeight}
                               rowCount={rowCount}
                               width={width}
-                            />:<div className='emptydata'>{this.context.t('无数据')}</div>}
+                            />:<div className='emptydata'>{this.props.t('无数据')}</div>}
                           </div>
                       </div>
                   </div>

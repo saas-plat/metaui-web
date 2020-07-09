@@ -16,6 +16,7 @@ import {
 import {
   Resizable
 } from 'react-resizable';
+import { withTranslation } from 'react-i18next';
 import {
   renderElement,
   createFormatter
@@ -87,6 +88,7 @@ class EditCell extends UIComponent {
   }
 }
 
+@withTranslation('metaui-web')
 @observer
 export default class EditTable extends UIComponent {
 
@@ -128,7 +130,7 @@ export default class EditTable extends UIComponent {
   numColumn = {
     width: 1,
     align: 'center',
-    title: this.context.t('序号'),
+    title: this.props.t('序号'),
     dataIndex: 'key',
     render: (text, row) => {
       let errmsg;

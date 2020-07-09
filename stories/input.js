@@ -11,11 +11,19 @@ import {
   MetaUI,
 } from '@saas-plat/metaui';
 import {
+  View
+} from '@saas-plat/metaschema';
+import {
   observable
 } from "mobx";
 import '../src';
 import dataAddon from '../.storybook/data/dataAddon';
 import './style.less';
+import i18next from 'i18next';
+import {
+  initReactI18next
+} from 'react-i18next';
+i18next.use(initReactI18next).init();
 
 const store = new MetaUI();
 const data = observable({
@@ -61,7 +69,7 @@ const data = observable({
   }]
 });
 store.setModel(data);
-const simpletoolbar = store.build(MetaUI.createSchema({
+const simpletoolbar = store.build(MetaUI.loadModel(View({
   name: 'toolbar',
   type: 'buttongroup',
   items: [{
@@ -78,9 +86,9 @@ const simpletoolbar = store.build(MetaUI.createSchema({
     type: 'button',
     text: 'Button4'
   }]
-}));
+}).root));
 
-const toolbar = store.build(MetaUI.createSchema({
+const toolbar = store.build(MetaUI.loadModel(View({
   name: 'toolbar',
   type: 'buttons',
   items: [{
@@ -107,9 +115,9 @@ const toolbar = store.build(MetaUI.createSchema({
       style: 'link'
     }]
   }]
-}));
+}).root));
 
-const bigtoolbar = store.build(MetaUI.createSchema({
+const bigtoolbar = store.build(MetaUI.loadModel(View({
   name: 'toolbar',
   type: 'toolbar',
   items: [{
@@ -177,9 +185,9 @@ const bigtoolbar = store.build(MetaUI.createSchema({
       style: 'link'
     }]
   }]
-}));
+}).root));
 
-const textbox = store.build(MetaUI.createSchema({
+const textbox = store.build(MetaUI.loadModel(View({
   type: 'text',
   value: '$text',
   setValue: 'text',
@@ -188,8 +196,8 @@ const textbox = store.build(MetaUI.createSchema({
   tip: 'xxxxxxxxxxxxx',
   error: 'xxxxxxxxx',
   required: true
-}));
-const intstring = store.build(MetaUI.createSchema({
+}).root));
+const intstring = store.build(MetaUI.loadModel(View({
   type: 'text',
   value: '$text',
   setValue: 'text',
@@ -198,8 +206,8 @@ const intstring = store.build(MetaUI.createSchema({
   format: 'intstring',
   tip: 'xxxxxxxxxxxxx',
   required: true
-}));
-const password = store.build(MetaUI.createSchema({
+}).root));
+const password = store.build(MetaUI.loadModel(View({
   type: 'text',
   value: '$text',
   setValue: 'text',
@@ -208,105 +216,105 @@ const password = store.build(MetaUI.createSchema({
   format: 'password',
   tip: 'xxxxxxxxxxxxx',
   required: true
-}));
-const textarea = store.build(MetaUI.createSchema({
+}).root));
+const textarea = store.build(MetaUI.loadModel(View({
   type: 'textarea',
   value: '$text',
   setValue: 'text',
   icon: 'form',
   tip: 'xxxxxxxxxxxxx',
   required: true
-}));
+}).root));
 
-const datetime = store.build(MetaUI.createSchema({
+const datetime = store.build(MetaUI.loadModel(View({
   type: 'datetime',
   value: '$date',
   setValue: 'date',
   required: true,
   extra: 'xxxxxxxxxxxxx'
-}));
+}).root));
 
-const time = store.build(MetaUI.createSchema({
+const time = store.build(MetaUI.loadModel(View({
   type: 'time',
   value: '$date',
   setValue: 'date',
   text: 'time'
-}));
+}).root));
 
-const date = store.build(MetaUI.createSchema({
+const date = store.build(MetaUI.loadModel(View({
   type: 'date',
   value: '$date',
   setValue: 'date',
   required: true,
   extra: 'xxxxxxxxxxxxx'
-}));
+}).root));
 
-const month = store.build(MetaUI.createSchema({
+const month = store.build(MetaUI.loadModel(View({
   type: 'month',
   value: '$date',
   setValue: 'date',
   text: 'time'
-}));
+}).root));
 
-const week = store.build(MetaUI.createSchema({
+const week = store.build(MetaUI.loadModel(View({
   type: 'week',
   value: '$date',
   setValue: 'date',
   text: 'time'
-}));
+}).root));
 
-const daterange = store.build(MetaUI.createSchema({
+const daterange = store.build(MetaUI.loadModel(View({
   type: 'daterange',
   value: '$dates',
   setValue: 'dates',
   text: 'time'
-}));
+}).root));
 
-const number = store.build(MetaUI.createSchema({
+const number = store.build(MetaUI.loadModel(View({
   type: 'number',
   value: '$number',
   setValue: 'number',
   text: 'number'
-}));
+}).root));
 
-const thousandth = store.build(MetaUI.createSchema({
+const thousandth = store.build(MetaUI.loadModel(View({
   type: 'number',
   value: '$number',
   setValue: 'number',
   format: 'thousandth',
   text: 'number'
-}));
+}).root));
 
-const percentage = store.build(MetaUI.createSchema({
+const percentage = store.build(MetaUI.loadModel(View({
   type: 'number',
   value: '$number',
   setValue: 'number',
   format: 'percentage',
   text: 'number'
-}));
+}).root));
 
-const check = store.build(MetaUI.createSchema({
+const check = store.build(MetaUI.loadModel(View({
   type: 'check',
   value: '$bool',
   setValue: 'bool',
   text: 'check'
-}));
-const switch1 = store.build(MetaUI.createSchema({
+}).root));
+const switch1 = store.build(MetaUI.loadModel(View({
   type: 'switch',
   value: '$bool',
   setValue: 'bool',
   text: 'check'
-}));
+}).root));
 
-const select = store.build(MetaUI.createSchema({
+const select = store.build(MetaUI.loadModel(View({
   type: 'select',
   value: '$number',
   setValue: 'number',
   dataSource: '$selectes',
 
-}));
+}).root));
 
-const treeselect = store.build(MetaUI.createSchema({
+const treeselect = store.build(MetaUI.loadModel(View({
   name: 'treesel',
   type: 'select',
   dropdownStyle: 'tree',
@@ -315,9 +323,9 @@ const treeselect = store.build(MetaUI.createSchema({
   dataSource: '$tree',
   multiple: true,
 
-}));
+}).root));
 
-const reflist = store.build(MetaUI.createSchema({
+const reflist = store.build(MetaUI.loadModel(View({
   name: 'item2',
   type: 'refer',
   displayField: 'b',
@@ -345,9 +353,9 @@ const reflist = store.build(MetaUI.createSchema({
     text: 'add',
     style: 'primary'
   }]
-}));
+}).root));
 
-const reftablemultiple = store.build(MetaUI.createSchema({
+const reftablemultiple = store.build(MetaUI.loadModel(View({
   name: 'item4',
   type: 'refer',
   displayField: 'b',
@@ -377,10 +385,10 @@ const reftablemultiple = store.build(MetaUI.createSchema({
     title: 'ccc',
     dataIndex: 'c'
   }]
-}));
+}).root));
 
 // treetable和table带tree是不一样的，tree和table是不同的数据结构
-const reftable = store.build(MetaUI.createSchema({
+const reftable = store.build(MetaUI.loadModel(View({
   name: 'item6',
   type: 'refer',
   label: 'xxxxxxx',
@@ -434,9 +442,9 @@ const reftable = store.build(MetaUI.createSchema({
       text: '右模糊匹配'
     }]
   }]
-}));
+}).root));
 
-const subtable = store.build(MetaUI.createSchema({
+const subtable = store.build(MetaUI.loadModel(View({
   name: 'subtable',
   type: 'subtable',
   dataSource: '$refobjs',
@@ -479,9 +487,9 @@ const subtable = store.build(MetaUI.createSchema({
       style: 'link'
     }]
   }
-}));
+}).root));
 
-const edittable = store.build(MetaUI.createSchema({
+const edittable = store.build(MetaUI.loadModel(View({
   name: 'subtable',
   type: 'edittable',
   dataSource: '$refobjs',
@@ -519,7 +527,7 @@ const edittable = store.build(MetaUI.createSchema({
     type: 'button',
     text: 'Button4'
   }]
-}));
+}).root));
 
 storiesOf('输入类', module)
   .addParameters({
