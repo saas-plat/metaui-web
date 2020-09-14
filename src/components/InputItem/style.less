@@ -48,173 +48,173 @@
     }
   }
 
-  input,
-  textarea {
-    border-top-style: none;
-    border-right-style: none;
-    border-left-style: none;
-    border-bottom-style: solid;
-
-    &:focus,
-    &:hover {
-      border-width: 2px;
-      box-shadow: none;
-    }
-  }
-
-  .notsupport {
-    height: 32px;
-
-    &::after {
-      content: '--';
-    }
-  }
-
-  &.number {
-    .ant-input-number-handler-wrap {
-      border-left-style: none;
-    }
-  }
-
-  &.daterange {
-    .input {
-      &:focus,
-      &:hover {
-        > span {
-          border-width: 2px;
-          box-shadow: none;
-        }
-      }
-
-      > span {
-        border-top-style: none;
-        border-right-style: none;
-        border-left-style: none;
-        border-bottom-style: solid;
-
-        input {
-          border-top-style: none;
-          border-right-style: none;
-          border-left-style: none;
-          border-bottom-style: none;
-
-          &:focus {
-            border-width: 0;
-            box-shadow: none;
-          }
-        }
-      }
-    }
-  }
-
-  &.number {
-    .input {
-      border-top-style: none;
-      border-right-style: none;
-      border-left-style: none;
-      border-bottom-style: solid;
-
-      &.ant-input-number-focused {
-        border-width: 2px;
-      }
-
-      &:hover{
-        border-width: 2px;
-      }
-    }
-
-    input {
-      border-top-style: none;
-      border-right-style: none;
-      border-left-style: none;
-      border-bottom-style: none;
-    }
-  }
-
-  &.refer,
-  &.select {
-    .input {
-      > div,
-      > span {
-        border-top-style: none;
-        border-right-style: none;
-        border-left-style: none;
-        border-bottom-style: solid;
-        box-shadow: none;
-      }
-
-      &.ant-select-focused,
-      &.ref-select-focused {
-        > div,
-        > span {
-          border-width: 2px;
-        }
-      }
-
-      &:hover{
-        > div,
-        > span {
-          border-width: 2px;
-        }
-      }
-
-      input {
-        border-top-style: none;
-        border-right-style: none;
-        border-left-style: none;
-        border-bottom-style: none;
-
-        &:focus {
-          border-width: 0;
-        }
-      }
-    }
-  }
-
-  &.error {
-    input,
-    textarea {
-      border-bottom-color: @error-color;
-    }
-
-    .notsupport {
-      color: @error-color;
-    }
-
-    &.daterange {
-      .input {
-        &:focus {
-          > span {
-            border-bottom-color: @error-color;
-          }
-        }
-
-        > span {
-          border-bottom-color: @error-color;
-
-          input {
-            border-bottom-color: @error-color;
-          }
-        }
-      }
-    }
-
-    &.number {
-      .input {
-        border-bottom-color: @error-color;
-      }
-    }
-
-    &.refer,
-    &.select {
-      .input {
-        > div,
-        > span {
-          border-bottom-color: @error-color;
-        }
-      }
-    }
-  }
+  // input,
+  // textarea {
+  //   border-top-style: none;
+  //   border-right-style: none;
+  //   border-left-style: none;
+  //   border-bottom-style: solid;
+  //
+  //   &:focus,
+  //   &:hover {
+  //     border-width: 2px;
+  //     box-shadow: none;
+  //   }
+  // }
+  //
+  // .notsupport {
+  //   height: 32px;
+  //
+  //   &::after {
+  //     content: '--';
+  //   }
+  // }
+  //
+  // &.number {
+  //   .ant-input-number-handler-wrap {
+  //     border-left-style: none;
+  //   }
+  // }
+  //
+  // &.daterange {
+  //   .input {
+  //     &:focus,
+  //     &:hover {
+  //       > span {
+  //         border-width: 2px;
+  //         box-shadow: none;
+  //       }
+  //     }
+  //
+  //     > span {
+  //       border-top-style: none;
+  //       border-right-style: none;
+  //       border-left-style: none;
+  //       border-bottom-style: solid;
+  //
+  //       input {
+  //         border-top-style: none;
+  //         border-right-style: none;
+  //         border-left-style: none;
+  //         border-bottom-style: none;
+  //
+  //         &:focus {
+  //           border-width: 0;
+  //           box-shadow: none;
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
+  //
+  // &.number {
+  //   .input {
+  //     border-top-style: none;
+  //     border-right-style: none;
+  //     border-left-style: none;
+  //     border-bottom-style: solid;
+  //
+  //     &.ant-input-number-focused {
+  //       border-width: 2px;
+  //     }
+  //
+  //     &:hover{
+  //       border-width: 2px;
+  //     }
+  //   }
+  //
+  //   input {
+  //     border-top-style: none;
+  //     border-right-style: none;
+  //     border-left-style: none;
+  //     border-bottom-style: none;
+  //   }
+  // }
+  //
+  // &.refer,
+  // &.select {
+  //   .input {
+  //     > div,
+  //     > span {
+  //       border-top-style: none;
+  //       border-right-style: none;
+  //       border-left-style: none;
+  //       border-bottom-style: solid;
+  //       box-shadow: none;
+  //     }
+  //
+  //     &.ant-select-focused,
+  //     &.ref-select-focused {
+  //       > div,
+  //       > span {
+  //         border-width: 2px;
+  //       }
+  //     }
+  //
+  //     &:hover{
+  //       > div,
+  //       > span {
+  //         border-width: 2px;
+  //       }
+  //     }
+  //
+  //     input {
+  //       border-top-style: none;
+  //       border-right-style: none;
+  //       border-left-style: none;
+  //       border-bottom-style: none;
+  //
+  //       &:focus {
+  //         border-width: 0;
+  //       }
+  //     }
+  //   }
+  // }
+  //
+  // &.error {
+  //   input,
+  //   textarea {
+  //     border-bottom-color: @error-color;
+  //   }
+  //
+  //   .notsupport {
+  //     color: @error-color;
+  //   }
+  //
+  //   &.daterange {
+  //     .input {
+  //       &:focus {
+  //         > span {
+  //           border-bottom-color: @error-color;
+  //         }
+  //       }
+  //
+  //       > span {
+  //         border-bottom-color: @error-color;
+  //
+  //         input {
+  //           border-bottom-color: @error-color;
+  //         }
+  //       }
+  //     }
+  //   }
+  //
+  //   &.number {
+  //     .input {
+  //       border-bottom-color: @error-color;
+  //     }
+  //   }
+  //
+  //   &.refer,
+  //   &.select {
+  //     .input {
+  //       > div,
+  //       > span {
+  //         border-bottom-color: @error-color;
+  //       }
+  //     }
+  //   }
+  // }
 }
 
 .ref-select {
