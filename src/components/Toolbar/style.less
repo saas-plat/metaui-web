@@ -1,4 +1,4 @@
-@import '../style/vars.less';
+@import '../style/index.less';
 
 .basetools {
   min-height: 32px;
@@ -31,7 +31,7 @@
   }
 }
 
-.toolbar {
+.@{prefix}-toolbar {
   .basetools;
   box-shadow: 2px 2px 4px #ddd;
 
@@ -48,15 +48,15 @@
   }
 }
 
-.toolgroup {
+.@{prefix}-toolgroup {
   .basetools
 }
 
-.toolbtns {
+.@{prefix}-toolbtns {
   .basetools
 }
 @media (max-width: 576px) {
-  .toolbar {
+  .@{prefix}-toolbar {
     text-align: center;
 
     .title {

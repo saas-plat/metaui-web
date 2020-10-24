@@ -1,13 +1,9 @@
-import React from 'react';
-import {
-  observer
-} from "mobx-react";
-import PropTypes from 'prop-types';
-import {
-  Row,
-  Col
-} from 'antd';
-import './style';
+import React from "react";
+import { observer } from "mobx-react";
+import PropTypes from "prop-types";
+import { Row, Col } from "antd";
+import "./style";
+const style = require('!less-to-json-loader!../style/vars.less');
 
 @observer
 export default class GridLayout extends React.Component {
@@ -15,14 +11,10 @@ export default class GridLayout extends React.Component {
     config: PropTypes.object,
     autoFocus: PropTypes.bool,
     renderItem: PropTypes.func.isRequired,
-  }
+  };
 
   render() {
-    const {
-      key,
-      items = [],
-      columnCount = 4
-    } = this.props.config;
+    const { key, items = [], columnCount = 4 } = this.props.config;
     let hasFocus = false;
     const rows = [];
     const span = parseInt(24 / columnCount);
@@ -37,14 +29,18 @@ export default class GridLayout extends React.Component {
           autoFocus = true;
           hasFocus = true;
         }
-        cols.push(<Col key={'Col'+key+it.key} sm={span} xs={24} className='item'>{
-          this.props.renderItem(it,{autoFocus}, items)
-        }</Col>);
+        cols.push(
+          <Col key={"Col" + key + it.key} sm={span} xs={24} className="item">
+            {this.props.renderItem(it, { autoFocus }, items)}
+          </Col>
+        );
       }
-      rows.push(<Row key={'Row'+key+i} className='row'>{cols}</Row>);
+      rows.push(
+        <Row key={"Row" + key + i} className="row">
+          {cols}
+        </Row>
+      );
     }
-    return (<div className={['layout','grid'].join(' ')}>
-      {rows}
-    </div>);
+    return <div className={[`${style.prefix}-layout`, "grid"].join(" ")}>{rows}</div>;
   }
 }

@@ -6,7 +6,8 @@ import {
   Tooltip,
   Icon
 } from 'antd';
-import './style';
+import "./style";
+const style = require("!less-to-json-loader!../style/vars.less");
 import {
   createComponent
 } from '../util';
